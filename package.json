@@ -1,0 +1,26 @@
+{
+  "name": "antislop",
+  "version": "1.0.0",
+  "description": "Minimal TypeScript project with Oxlint anti-slop rules",
+  "main": "dist/index.js",
+  "bin": {
+    "detector": "src/cli/index.ts"
+  },
+  "scripts": {
+    "lint": "oxlint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "@oxlint/plugins": "1.89.0",
+    "@types/node": "26.6.5",
+    "oxlint": "1.89.0",
+    "typescript": "7.0.2"
+  },
+  "dependencies": {
+    "puppeteer-core": "25.15.0"
+  }
+}
