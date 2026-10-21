@@ -1,6 +1,8 @@
 import { defineRule, type Files } from "../../api/index.ts";
 import { cssClassStyles, isSourceCard, voidElements } from "../shared/cards.ts";
 
+const cardContainers = new Set(["article", "aside", "div", "footer", "form", "header", "li", "main", "nav", "section"]);
+
 function countNestedSourceCards(files: Files): number {
   const classStyles = cssClassStyles(files);
   let nestedCards = 0;
@@ -31,7 +33,7 @@ function countNestedSourceCards(files: Files): number {
         continue;
       }
 
-      const card = isSourceCard(attributes, classStyles);
+      const card = cardContainers.has(tag) && isSourceCard(attributes, classStyles);
 
       if (card && stack.some((entry) => entry.card)) {
         nestedCards += 1;
@@ -54,8 +56,13 @@ export default defineRule({
     const nestedCards = context.type === "puppeteer"
       ? await context.page.$$eval("*", (elements) => {
         const cards = new Set<Element>();
+        const containerTags = new Set(["ARTICLE", "ASIDE", "DIV", "FOOTER", "FORM", "HEADER", "LI", "MAIN", "NAV", "SECTION"]);
 
         for (const element of elements) {
+          if (!containerTags.has(element.tagName)) {
+            continue;
+          }
+
           const style = getComputedStyle(element);
 
           const rounded = [
@@ -68,7 +75,10 @@ export default defineRule({
           const background = style.backgroundImage !== "none"
             || (style.backgroundColor !== "transparent" && !style.backgroundColor.endsWith(", 0)"));
 
-          if (rounded && background && element.getClientRects().length > 0) {
+          const box = element.getBoundingClientRect();
+          const containerSized = box.width >= 80 && box.height >= 40;
+
+          if (rounded && background && containerSized && element.getClientRects().length > 0) {
             cards.add(element);
           }
         }

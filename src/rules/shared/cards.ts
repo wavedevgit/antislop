@@ -3,7 +3,7 @@ import { cssRules } from "./styles.ts";
 
 export const voidElements = new Set(["area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "source", "track", "wbr"]);
 
-export type CardStyle = { rounded: boolean; background: boolean };
+export type CardStyle = { rounded: boolean; background: boolean; color?: string };
 
 export function cardStyleFromDeclarations(value: string): CardStyle {
   const radius = value.match(/(?:border-radius|border(?:TopLeft|TopRight|BottomLeft|BottomRight)Radius)\s*[:=]\s*["']?([^;"',}\s]+)/i)?.[1];
@@ -11,7 +11,7 @@ export function cardStyleFromDeclarations(value: string): CardStyle {
   const rounded = radius !== undefined && !/^0(?:px|rem|em|%)?$/.test(radius);
   const background = fill !== undefined && !/^(?:none|transparent)$/.test(fill);
 
-  return { rounded, background };
+  return { rounded, background, color: background ? fill : undefined };
 }
 
 export function cssClassStyles(files: Files): Map<string, CardStyle> {
@@ -33,6 +33,7 @@ export function cssClassStyles(files: Files): Map<string, CardStyle> {
         classes.set(className, {
           rounded: declarations.rounded || existing?.rounded === true,
           background: declarations.background || existing?.background === true,
+          color: declarations.color ?? existing?.color,
         });
       }
     }
@@ -41,15 +42,16 @@ export function cssClassStyles(files: Files): Map<string, CardStyle> {
   return classes;
 }
 
-function isTailwindCard(attributes: string): boolean {
+function tailwindCardStyle(attributes: string): CardStyle {
   const classValue = attributes.match(/(?:class|className)\s*=\s*["']([^"']*)["']/)?.[1];
 
   if (!classValue) {
-    return false;
+    return { rounded: false, background: false };
   }
 
   let rounded = false;
   let background = false;
+  let color: string | undefined;
 
   for (const className of classValue.split(/\s+/)) {
     const utility = className.slice(className.lastIndexOf(":") + 1);
@@ -63,34 +65,48 @@ function isTailwindCard(attributes: string): boolean {
       && !/^bg-(?:auto|bottom|center|clip|contain|cover|fixed|left|local|none|no-repeat|opacity|origin|repeat|right|scroll|top|transparent)(?:-|$)/.test(utility)
     ) {
       background = true;
+      color = utility.slice(3);
     }
   }
 
-  return rounded && background;
+  return { rounded, background, color };
 }
 
-export function isSourceCard(attributes: string, classStyles: Map<string, CardStyle>): boolean {
+export function sourceCardStyle(attributes: string, classStyles: Map<string, CardStyle>): CardStyle {
   const inlineStyle = cardStyleFromDeclarations(attributes);
+  const tailwindStyle = tailwindCardStyle(attributes);
 
-  if ((inlineStyle.rounded && inlineStyle.background) || isTailwindCard(attributes)) {
-    return true;
+  if (inlineStyle.rounded && inlineStyle.background) {
+    return inlineStyle;
+  }
+
+  if (tailwindStyle.rounded && tailwindStyle.background) {
+    return tailwindStyle;
   }
 
   const classValue = attributes.match(/(?:class|className)\s*=\s*["']([^"']*)["']/)?.[1];
 
   if (!classValue) {
-    return false;
+    return { rounded: false, background: false };
   }
 
   let rounded = false;
   let background = false;
+  let color: string | undefined;
 
   for (const className of classValue.split(/\s+/)) {
     const style = classStyles.get(className);
 
     rounded ||= style?.rounded === true;
     background ||= style?.background === true;
+    color = style?.color ?? color;
   }
 
-  return rounded && background;
+  return { rounded, background, color };
+}
+
+export function isSourceCard(attributes: string, classStyles: Map<string, CardStyle>): boolean {
+  const style = sourceCardStyle(attributes, classStyles);
+
+  return style.rounded && style.background;
 }
