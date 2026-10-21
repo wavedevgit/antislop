@@ -9,10 +9,11 @@ export async function detect(rules: readonly Rule[], context: RuleContext): Prom
   const findings: Finding[] = [];
 
   for (const rule of rules) {
+    const result = await rule.match(context);
 
-    if (await rule.match(context)) {
+    if (result.matches) {
 
-      findings.push({ rule, explanation: await rule.generateExplanation(context) });
+      findings.push({ rule, explanation: result.explanation });
     }
   }
 

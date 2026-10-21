@@ -1,11 +1,7 @@
 #!/usr/bin/env node
 
-import { parseArguments } from "../config/index.ts";
-import { withContext } from "../context/index.ts";
-import { detect } from "../detector/index.ts";
-import type { Rule } from "../rules/index.ts";
-
-const rules: Rule[] = [];
+import { detect, parseArguments, withContext } from "../api/index.ts";
+import { rules } from "../rules/index.ts";
 
 try {
   const config = parseArguments(process.argv.slice(2));
