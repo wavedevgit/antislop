@@ -12,6 +12,7 @@ import neonBorder from "./neon-border/index.ts";
 import oneHtmlFile from "./one-html-file/index.ts";
 import overusedFonts from "./overused-fonts/index.ts";
 import patternedBackground from "./patterned-background/index.ts";
+import softCornersEverywhere from "./soft-corners-everywhere/index.ts";
 import textArrow from "./text-arrow/index.ts";
 import tooManyEmDashes from "./too-many-em-dashes/index.ts";
 import tooManyEmojis from "./too-many-emojis/index.ts";
@@ -29,6 +30,7 @@ export const rules: Rule[] = [
   overusedFonts,
   mostlyItalicTitles,
   neonBorder,
+  softCornersEverywhere,
   tooManyEmDashes,
   tooManyEmojis,
   oneHtmlFile,

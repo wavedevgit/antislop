@@ -12,6 +12,20 @@ export function count(value: string, pattern: RegExp): number {
   return Array.from(value.matchAll(pattern)).length;
 }
 
+export function fileReference(path: string, content: string, index: number): Reference {
+  const before = content.slice(0, index);
+  const lineStart = before.lastIndexOf("\n") + 1;
+  const lineEnd = content.indexOf("\n", index);
+
+  return {
+    type: "file",
+    path,
+    line: count(before, /\n/g) + 1,
+    column: index - lineStart + 1,
+    source: content.slice(lineStart, lineEnd === -1 ? undefined : lineEnd).trim().slice(0, 200),
+  };
+}
+
 export async function textMatches(context: RuleContext, pattern: RegExp): Promise<{ count: number; references: Reference[] }> {
   if (context.type === "puppeteer") {
     return context.page.$$eval("body *", (elements, source, flags) => {
@@ -55,18 +69,7 @@ export async function textMatches(context: RuleContext, pattern: RegExp): Promis
   const references: Reference[] = [];
 
   for (const match of context.files.search(pattern)) {
-    const before = match.content.slice(0, match.index);
-    const line = count(before, /\n/g) + 1;
-    const lineStart = before.lastIndexOf("\n") + 1;
-    const lineEnd = match.content.indexOf("\n", match.index);
-
-    references.push({
-      type: "file",
-      path: match.path,
-      line,
-      column: match.index - lineStart + 1,
-      source: match.content.slice(lineStart, lineEnd === -1 ? undefined : lineEnd).trim().slice(0, 200),
-    });
+    references.push(fileReference(match.path, match.content, match.index));
   }
 
   return { count: references.length, references };

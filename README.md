@@ -79,6 +79,7 @@ References identify the matching file position during source scans or the exact 
 - Overused fonts such as Playfair Display and Instrument Serif
 - Mostly italic titles
 - Neon borders
+- Soft corners everywhere
 - Too many em dashes
 - Too many emojis
 - Everything in one HTML file
