@@ -18,6 +18,16 @@ Scan a folder of source files:
 node src/cli/index.ts --folder ./path/to/site
 ```
 
+Disable rules by ID with a comma-separated list:
+
+```sh
+node src/cli/index.ts \
+  --folder ./path/to/site \
+  --disable gradients,neon-border
+```
+
+Unknown rule IDs cause an error instead of being silently ignored.
+
 Scan a rendered page with an installed Chromium browser:
 
 ```sh
@@ -51,6 +61,7 @@ Example output:
 - Eyebrows over every title
 - Unicode bullets
 - Visible gradients
+- Dotted or grid backgrounds
 - Cream-colored backgrounds
 - Cards inside cards
 - Contrasting SVG logo cards
