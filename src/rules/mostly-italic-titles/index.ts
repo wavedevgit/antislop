@@ -1,7 +1,7 @@
-import { defineRule, type Files } from "../../api/index.ts";
+import { defineRule, type Files, type Reference } from "../../api/index.ts";
 import { cssRules } from "../shared/styles.ts";
 
-type TitleCounts = { titles: number; italic: number };
+type TitleCounts = { titles: number; italic: number; references?: Reference[] };
 
 function isItalic(value: string): boolean {
   return /font-style\s*:\s*(?:italic|oblique)\b/i.test(value)
@@ -45,10 +45,29 @@ export default defineRule({
     const counts = context.type === "puppeteer"
       ? await context.page.$$eval("h1, h2, h3, h4, h5, h6", (headings) => {
         const visible = headings.filter((heading) => heading.textContent?.trim() && heading.getClientRects().length > 0);
+        const italic = visible.filter((heading) => /^(?:italic|oblique)$/.test(getComputedStyle(heading).fontStyle));
 
         return {
           titles: visible.length,
-          italic: visible.filter((heading) => /^(?:italic|oblique)$/.test(getComputedStyle(heading).fontStyle)).length,
+          italic: italic.length,
+          references: italic.map((element) => {
+            const path: string[] = [];
+            let current: Element | null = element;
+
+            while (current) {
+              const siblings = current.parentElement ? Array.from(current.parentElement.children).filter((sibling) => sibling.tagName === current?.tagName) : [];
+              const position = siblings.indexOf(current) + 1;
+
+              path.unshift(`${current.tagName.toLowerCase()}${siblings.length > 1 ? `[${position}]` : ""}`);
+              current = current.parentElement;
+            }
+
+            return {
+              type: "element" as const,
+              selector: element.id ? `#${CSS.escape(element.id)}` : `xpath=/${path.join("/")}`,
+              source: element.outerHTML.slice(0, 200),
+            };
+          }),
         };
       })
       : sourceTitleCounts(context.files);
@@ -56,7 +75,7 @@ export default defineRule({
     const matches = counts.titles >= 2 && counts.italic > counts.titles / 2;
 
     return matches
-      ? { matches, explanation: `${counts.italic} of ${counts.titles} titles are italic. Reserve italics for emphasis instead.` }
+      ? { matches, explanation: `${counts.italic} of ${counts.titles} titles are italic. Reserve italics for emphasis instead.`, references: counts.references }
       : { matches };
   },
 });

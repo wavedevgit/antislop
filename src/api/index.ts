@@ -15,6 +15,7 @@ export type {
   FilesContext,
   MatchResult,
   PuppeteerContext,
+  Reference,
   Rule,
   RuleContext,
 } from "./rules/index.ts";

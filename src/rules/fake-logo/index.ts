@@ -156,7 +156,7 @@ export default defineRule({
   title: "Contrasting SVG logo card",
   description: "AI-generated websites often place a generic SVG in a logo card whose color clashes with its parent card.",
   async match(context) {
-    const fakeLogos = context.type === "puppeteer"
+    const result = context.type === "puppeteer"
       ? await context.page.$$eval("svg", (svgs) => {
         type BrowserColor = { red: number; green: number; blue: number; alpha: number };
 
@@ -254,12 +254,29 @@ export default defineRule({
           }
         }
 
-        return logos.size;
-      })
-      : countSourceLogos(context.files);
+        return Array.from(logos, (element) => {
+          const path: string[] = [];
+          let current: Element | null = element;
 
-    return fakeLogos > 0
-      ? { matches: true, explanation: `${fakeLogos} SVG logo cards use a different color family from their parent card.` }
+          while (current) {
+            const siblings = current.parentElement ? Array.from(current.parentElement.children).filter((sibling) => sibling.tagName === current?.tagName) : [];
+            const position = siblings.indexOf(current) + 1;
+
+            path.unshift(`${current.tagName.toLowerCase()}${siblings.length > 1 ? `[${position}]` : ""}`);
+            current = current.parentElement;
+          }
+
+          return {
+            type: "element" as const,
+            selector: element.id ? `#${CSS.escape(element.id)}` : `xpath=/${path.join("/")}`,
+            source: element.outerHTML.slice(0, 200),
+          };
+        });
+      }).then((references) => ({ count: references.length, references }))
+      : { count: countSourceLogos(context.files), references: undefined };
+
+    return result.count > 0
+      ? { matches: true, explanation: `${result.count} SVG logo cards use a different color family from their parent card.`, references: result.references }
       : { matches: false };
   },
 });

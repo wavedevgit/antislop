@@ -37,8 +37,8 @@ export default defineRule({
   title: "Dotted or grid backgrounds",
   description: "AI-generated websites often place repeating dot or grid patterns behind page content.",
   async match(context) {
-    const patterns = context.type === "puppeteer"
-      ? await context.page.$$eval("*", (elements) => elements.filter((element) => {
+    const result = context.type === "puppeteer"
+      ? await context.page.$$eval("*", (elements) => elements.flatMap((element) => {
         const style = getComputedStyle(element);
         const image = style.backgroundImage;
         const gradients = image.match(/(?:radial|linear)-gradient\s*\(/gi)?.length ?? 0;
@@ -48,12 +48,31 @@ export default defineRule({
         const dots = image.includes("radial-gradient(");
         const grid = gradients >= 2 && image.includes("linear-gradient(");
 
-        return element.getClientRects().length > 0 && repeated && transparent && (dots || grid);
-      }).length)
+        if (element.getClientRects().length === 0 || !repeated || !transparent || (!dots && !grid)) {
+          return [];
+        }
+
+        const path: string[] = [];
+        let current: Element | null = element;
+
+        while (current) {
+          const siblings = current.parentElement ? Array.from(current.parentElement.children).filter((sibling) => sibling.tagName === current?.tagName) : [];
+          const position = siblings.indexOf(current) + 1;
+
+          path.unshift(`${current.tagName.toLowerCase()}${siblings.length > 1 ? `[${position}]` : ""}`);
+          current = current.parentElement;
+        }
+
+        const selector = element.id ? `#${CSS.escape(element.id)}` : `xpath=/${path.join("/")}`;
+
+        return [{ type: "element" as const, selector, source: element.outerHTML.slice(0, 200) }];
+      }))
       : sourcePatterns(context.files);
 
+    const patterns = Array.isArray(result) ? result.length : result;
+
     return patterns > 0
-      ? { matches: true, explanation: `${patterns} dotted or grid ${patterns === 1 ? "background was" : "backgrounds were"} found.` }
+      ? { matches: true, explanation: `${patterns} dotted or grid ${patterns === 1 ? "background was" : "backgrounds were"} found.`, references: Array.isArray(result) ? result : undefined }
       : { matches: false };
   },
 });

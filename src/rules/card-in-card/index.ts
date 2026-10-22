@@ -53,7 +53,7 @@ export default defineRule({
   title: "Cards inside cards",
   description: "AI-generated websites often nest rounded, filled containers inside each other, creating unnecessary visual layers.",
   async match(context) {
-    const nestedCards = context.type === "puppeteer"
+    const result = context.type === "puppeteer"
       ? await context.page.$$eval("*", (elements) => {
         const cards = new Set<Element>();
         const containerTags = new Set(["ARTICLE", "ASIDE", "DIV", "FOOTER", "FORM", "HEADER", "LI", "MAIN", "NAV", "SECTION"]);
@@ -83,14 +83,27 @@ export default defineRule({
           }
         }
 
-        let nested = 0;
+        const references: Array<{ type: "element"; selector: string; source: string }> = [];
 
         for (const card of cards) {
           let parent = card.parentElement;
 
           while (parent) {
             if (cards.has(parent)) {
-              nested += 1;
+              const path: string[] = [];
+              let current: Element | null = card;
+
+              while (current) {
+                const siblings = current.parentElement ? Array.from(current.parentElement.children).filter((sibling) => sibling.tagName === current?.tagName) : [];
+                const position = siblings.indexOf(current) + 1;
+
+                path.unshift(`${current.tagName.toLowerCase()}${siblings.length > 1 ? `[${position}]` : ""}`);
+                current = current.parentElement;
+              }
+
+              const selector = card.id ? `#${CSS.escape(card.id)}` : `xpath=/${path.join("/")}`;
+
+              references.push({ type: "element", selector, source: card.outerHTML.slice(0, 200) });
               break;
             }
 
@@ -98,12 +111,12 @@ export default defineRule({
           }
         }
 
-        return nested;
+        return { count: references.length, references };
       })
-      : countNestedSourceCards(context.files);
+      : { count: countNestedSourceCards(context.files), references: undefined };
 
-    return nestedCards > 0
-      ? { matches: true, explanation: `${nestedCards} rounded containers with backgrounds were nested inside another such container.` }
+    return result.count > 0
+      ? { matches: true, explanation: `${result.count} rounded containers with backgrounds were nested inside another such container.`, references: result.references }
       : { matches: false };
   },
 });

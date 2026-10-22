@@ -1,4 +1,4 @@
-import { defineRule, type Files } from "../../api/index.ts";
+import { defineRule, type Files, type Reference } from "../../api/index.ts";
 import { voidElements } from "../shared/cards.ts";
 import { cssRules } from "../shared/styles.ts";
 
@@ -6,7 +6,7 @@ type TextStyle = { size?: number; weight?: number; color?: string };
 
 type SourceNode = { tag: string; attributes: string; children: SourceNode[] };
 
-type EyebrowCounts = { titles: number; eyebrows: number };
+type EyebrowCounts = { titles: number; eyebrows: number; references?: Reference[] };
 
 const headingSizes = new Map([
   ["h1", 32],
@@ -229,7 +229,7 @@ export default defineRule({
     const counts = context.type === "puppeteer"
       ? await context.page.$$eval("h1, h2, h3, h4, h5, h6", (headings) => {
         let titles = 0;
-        let eyebrows = 0;
+        const references: Array<{ type: "element"; selector: string; source: string }> = [];
 
         for (const title of headings) {
           if (!title.textContent?.trim() || title.getClientRects().length === 0) {
@@ -258,18 +258,31 @@ export default defineRule({
             && titleStyle.color !== eyebrowStyle.color
             && eyebrowBox.bottom <= titleBox.top + 2
           ) {
-            eyebrows += 1;
+            const path: string[] = [];
+            let current: Element | null = title;
+
+            while (current) {
+              const siblings = current.parentElement ? Array.from(current.parentElement.children).filter((sibling) => sibling.tagName === current?.tagName) : [];
+              const position = siblings.indexOf(current) + 1;
+
+              path.unshift(`${current.tagName.toLowerCase()}${siblings.length > 1 ? `[${position}]` : ""}`);
+              current = current.parentElement;
+            }
+
+            const selector = title.id ? `#${CSS.escape(title.id)}` : `xpath=/${path.join("/")}`;
+
+            references.push({ type: "element", selector, source: title.outerHTML.slice(0, 200) });
           }
         }
 
-        return { titles, eyebrows };
+        return { titles, eyebrows: references.length, references };
       })
       : countSourceEyebrows(context.files);
 
     const matches = counts.titles >= 2 && counts.eyebrows === counts.titles;
 
     return matches
-      ? { matches, explanation: `All ${counts.titles} headings have smaller, differently colored eyebrow text above them.` }
+      ? { matches, explanation: `All ${counts.titles} headings have smaller, differently colored eyebrow text above them.`, references: counts.references }
       : { matches };
   },
 });

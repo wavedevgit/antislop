@@ -98,12 +98,12 @@ export default defineRule({
   title: "Cream colors",
   description: "Avoid cream backgrounds, especially the overused cream-and-terracotta palette.",
   async match(context) {
-    const creams = context.type === "puppeteer"
-      ? await context.page.$$eval("*", (elements) => elements.filter((element) => {
+    const result = context.type === "puppeteer"
+      ? await context.page.$$eval("*", (elements) => elements.flatMap((element) => {
         const match = getComputedStyle(element).backgroundColor.match(/rgba?\(\s*(\d+)\D+(\d+)\D+(\d+)/i);
 
         if (!match || element.getClientRects().length === 0) {
-          return false;
+          return [];
         }
 
         const red = Number(match[1]);
@@ -128,12 +128,31 @@ export default defineRule({
 
         hue = hue < 0 ? hue + 360 : hue;
 
-        return hue >= 25 && hue <= 60 && saturation >= 0.1 && lightness >= 0.85 && lightness <= 0.98;
-      }).length)
+        if (hue < 25 || hue > 60 || saturation < 0.1 || lightness < 0.85 || lightness > 0.98) {
+          return [];
+        }
+
+        const path: string[] = [];
+        let current: Element | null = element;
+
+        while (current) {
+          const siblings = current.parentElement ? Array.from(current.parentElement.children).filter((sibling) => sibling.tagName === current?.tagName) : [];
+          const position = siblings.indexOf(current) + 1;
+
+          path.unshift(`${current.tagName.toLowerCase()}${siblings.length > 1 ? `[${position}]` : ""}`);
+          current = current.parentElement;
+        }
+
+        const selector = element.id ? `#${CSS.escape(element.id)}` : `xpath=/${path.join("/")}`;
+
+        return [{ type: "element" as const, selector, source: element.outerHTML.slice(0, 200) }];
+      }))
       : sourceCreams(context.files);
 
+    const creams = Array.isArray(result) ? result.length : result;
+
     return creams > 0
-      ? { matches: true, explanation: `${creams} cream-colored ${creams === 1 ? "background was" : "backgrounds were"} found.` }
+      ? { matches: true, explanation: `${creams} cream-colored ${creams === 1 ? "background was" : "backgrounds were"} found.`, references: Array.isArray(result) ? result : undefined }
       : { matches: false };
   },
 });

@@ -71,15 +71,15 @@ export default defineRule({
   title: "Neon borders",
   description: "AI-generated websites often pair saturated borders with matching colored glows.",
   async match(context) {
-    const borders = context.type === "puppeteer"
-      ? await context.page.$$eval("*", (elements) => elements.filter((element) => {
+    const result = context.type === "puppeteer"
+      ? await context.page.$$eval("*", (elements) => elements.flatMap((element) => {
         const style = getComputedStyle(element);
 
         const borderVisible = [style.borderTopWidth, style.borderRightWidth, style.borderBottomWidth, style.borderLeftWidth]
           .some((width) => Number.parseFloat(width) > 0);
 
         if (!borderVisible || style.boxShadow === "none" || element.getClientRects().length === 0) {
-          return false;
+          return [];
         }
 
         const parse = (value: string) => {
@@ -92,18 +92,37 @@ export default defineRule({
         const shadow = parse(style.boxShadow);
 
         if (!border || !shadow) {
-          return false;
+          return [];
         }
 
         const saturated = Math.max(...border) >= 180 && Math.max(...border) - Math.min(...border) >= 100;
         const distance = Math.hypot(border[0] - shadow[0], border[1] - shadow[1], border[2] - shadow[2]);
 
-        return saturated && distance <= 80;
-      }).length)
+        if (!saturated || distance > 80) {
+          return [];
+        }
+
+        const path: string[] = [];
+        let current: Element | null = element;
+
+        while (current) {
+          const siblings = current.parentElement ? Array.from(current.parentElement.children).filter((sibling) => sibling.tagName === current?.tagName) : [];
+          const position = siblings.indexOf(current) + 1;
+
+          path.unshift(`${current.tagName.toLowerCase()}${siblings.length > 1 ? `[${position}]` : ""}`);
+          current = current.parentElement;
+        }
+
+        const selector = element.id ? `#${CSS.escape(element.id)}` : `xpath=/${path.join("/")}`;
+
+        return [{ type: "element" as const, selector, source: element.outerHTML.slice(0, 200) }];
+      }))
       : sourceNeonBorders(context.files);
 
+    const borders = Array.isArray(result) ? result.length : result;
+
     return borders > 0
-      ? { matches: true, explanation: `${borders} neon ${borders === 1 ? "border was" : "borders were"} found.` }
+      ? { matches: true, explanation: `${borders} neon ${borders === 1 ? "border was" : "borders were"} found.`, references: Array.isArray(result) ? result : undefined }
       : { matches: false };
   },
 });

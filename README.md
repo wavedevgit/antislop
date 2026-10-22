@@ -51,10 +51,19 @@ Example output:
       "title": "Text arrow",
       "description": "Only AI uses this arrow. Use an icon instead."
     },
-    "explanation": "2 text arrows were found. Use icons instead."
+    "explanation": "2 text arrows were found. Use icons instead.",
+    "references": [
+      {
+        "type": "element",
+        "selector": "#primary-cta",
+        "source": "Get started →"
+      }
+    ]
   }
 ]
 ```
+
+References identify the matching file position during source scans or the exact matching element during browser scans. Browser references use an element ID when available and otherwise provide a unique XPath selector.
 
 ## Rules
 

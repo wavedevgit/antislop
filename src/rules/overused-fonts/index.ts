@@ -1,4 +1,4 @@
-import { defineRule } from "../../api/index.ts";
+import { defineRule, type Reference } from "../../api/index.ts";
 import { markup } from "../shared/index.ts";
 
 const overusedFonts = new Set(["Playfair Display", "Instrument Serif"]);
@@ -57,12 +57,44 @@ export default defineRule({
   title: "Overused fonts",
   description: "Don't use Playfair Display or Instrument Serif. AI-generated websites overuse them.",
   async match(context) {
-    const detected = context.type === "puppeteer"
-      ? (await context.page.$$eval("*", (elements) => elements
-        .filter((element) => element.getClientRects().length > 0)
-        .map((element) => getComputedStyle(element).fontFamily)))
-        .map(findOverusedFont).filter((font): font is string => font !== undefined)
-      : await markup(context).then((content) => [...declaredFonts(content), ...tailwindFonts(content)]);
+    let detected: string[];
+    let references: Reference[] = [];
+
+    if (context.type === "puppeteer") {
+      const elements = await context.page.$$eval("*", (nodes) => nodes.flatMap((element) => {
+        if (element.getClientRects().length === 0) {
+          return [];
+        }
+
+        const path: string[] = [];
+        let current: Element | null = element;
+
+        while (current) {
+          const siblings = current.parentElement ? Array.from(current.parentElement.children).filter((sibling) => sibling.tagName === current?.tagName) : [];
+          const position = siblings.indexOf(current) + 1;
+
+          path.unshift(`${current.tagName.toLowerCase()}${siblings.length > 1 ? `[${position}]` : ""}`);
+          current = current.parentElement;
+        }
+
+        const selector = element.id ? `#${CSS.escape(element.id)}` : `xpath=/${path.join("/")}`;
+
+        return [{ family: getComputedStyle(element).fontFamily, reference: { type: "element" as const, selector, source: element.outerHTML.slice(0, 200) } }];
+      }));
+
+      detected = [];
+
+      for (const element of elements) {
+        const font = findOverusedFont(element.family);
+
+        if (font) {
+          detected.push(font);
+          references.push(element.reference);
+        }
+      }
+    } else {
+      detected = await markup(context).then((content) => [...declaredFonts(content), ...tailwindFonts(content)]);
+    }
 
     const counts = new Map<string, number>();
 
@@ -73,7 +105,7 @@ export default defineRule({
     const details = Array.from(counts, ([font, uses]) => `${font} (${uses})`).join(", ");
 
     return detected.length > 0
-      ? { matches: true, explanation: `Detected overused fonts: ${details}. Choose a less overused typeface.` }
+      ? { matches: true, explanation: `Detected overused fonts: ${details}. Choose a less overused typeface.`, references }
       : { matches: false };
   },
 });

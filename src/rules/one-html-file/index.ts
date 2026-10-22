@@ -6,7 +6,7 @@ export default defineRule({
   description: "AI-generated websites are often shipped as one HTML document with all code embedded inline.",
   async match(context) {
     if (context.type === "puppeteer") {
-      const localCodeResources = await context.page.evaluate(() => {
+      const result = await context.page.evaluate(() => {
         const urls = new Set<string>();
 
         for (const element of document.querySelectorAll("script[src], link[rel='stylesheet'][href], link[rel='modulepreload'][href]")) {
@@ -36,11 +36,14 @@ export default defineRule({
           }
         }
 
-        return [...urls];
+        return {
+          localCodeResources: [...urls],
+          reference: { type: "element" as const, selector: "html", source: document.documentElement.outerHTML.slice(0, 200) },
+        };
       });
 
-      return localCodeResources.length === 0
-        ? { matches: true, explanation: "The page loaded no same-origin code files beyond its HTML document." }
+      return result.localCodeResources.length === 0
+        ? { matches: true, explanation: "The page loaded no same-origin code files beyond its HTML document.", references: [result.reference] }
         : { matches: false };
     }
 
