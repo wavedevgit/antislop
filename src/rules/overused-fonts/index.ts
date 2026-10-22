@@ -1,49 +1,55 @@
 import { defineRule } from "../../api/index.ts";
 import { markup } from "../shared/index.ts";
 
-const overusedFonts = new Set(["playfair display", "instrument serif"]);
+const overusedFonts = new Set(["Playfair Display", "Instrument Serif"]);
 
-function usesOverusedFont(value: string): boolean {
+function findOverusedFont(value: string): string | undefined {
   const normalized = value.toLowerCase().replaceAll("_", " ");
 
   for (const font of overusedFonts) {
-    if (normalized.includes(font)) {
-      return true;
+    if (normalized.includes(font.toLowerCase())) {
+      return font;
     }
   }
 
-  return false;
+  return undefined;
 }
 
-function isOverusedTailwindFont(value: string): boolean {
-  const candidate = value.replace(/^font-(?:\[)?|\]$/g, "").replaceAll("-", " ");
+function findOverusedTailwindFont(value: string): string | undefined {
+  const candidate = value.replace(/^font-(?:\[)?|\]$/g, "").replaceAll("-", " ").toLowerCase();
 
   for (const font of overusedFonts) {
-    if (candidate === font || candidate === font.split(" ")[0] || candidate.includes(font)) {
-      return true;
+    const normalized = font.toLowerCase();
+
+    if (candidate === normalized || candidate === normalized.split(" ")[0] || candidate.includes(normalized)) {
+      return font;
     }
   }
 
-  return false;
+  return undefined;
 }
 
-function tailwindFontUses(content: string): number {
-  let uses = 0;
+function tailwindFonts(content: string): string[] {
+  const fonts: string[] = [];
 
   for (const attribute of content.matchAll(/(?:class|className)\s*=\s*(["'])(.*?)\1/g)) {
-    uses += attribute[2]?.split(/\s+/).filter((name) => {
+    for (const name of attribute[2]?.split(/\s+/) ?? []) {
       const utility = name.slice(name.lastIndexOf(":") + 1).replaceAll("_", " ");
+      const font = findOverusedTailwindFont(utility);
 
-      return isOverusedTailwindFont(utility);
-    }).length ?? 0;
+      if (font) {
+        fonts.push(font);
+      }
+    }
   }
 
-  return uses;
+  return fonts;
 }
 
-function declaredFontUses(content: string): number {
+function declaredFonts(content: string): string[] {
   return Array.from(content.matchAll(/(?:font-family|fontFamily|font)\s*[:=]\s*([^;{}]*)/gi))
-    .filter((declaration) => usesOverusedFont(declaration[1] ?? "")).length;
+    .map((declaration) => findOverusedFont(declaration[1] ?? ""))
+    .filter((font): font is string => font !== undefined);
 }
 
 export default defineRule({
@@ -51,16 +57,23 @@ export default defineRule({
   title: "Overused fonts",
   description: "Don't use Playfair Display or Instrument Serif. AI-generated websites overuse them.",
   async match(context) {
-    const uses = context.type === "puppeteer"
-      ? await context.page.$$eval("*", (elements) => elements.filter((element) => {
-        const family = getComputedStyle(element).fontFamily;
+    const detected = context.type === "puppeteer"
+      ? (await context.page.$$eval("*", (elements) => elements
+        .filter((element) => element.getClientRects().length > 0)
+        .map((element) => getComputedStyle(element).fontFamily)))
+        .map(findOverusedFont).filter((font): font is string => font !== undefined)
+      : await markup(context).then((content) => [...declaredFonts(content), ...tailwindFonts(content)]);
 
-        return element.getClientRects().length > 0 && /Playfair Display|Instrument Serif/i.test(family);
-      }).length)
-      : await markup(context).then((content) => declaredFontUses(content) + tailwindFontUses(content));
+    const counts = new Map<string, number>();
 
-    return uses > 0
-      ? { matches: true, explanation: `${uses} ${uses === 1 ? "use" : "uses"} of Playfair Display or Instrument Serif ${uses === 1 ? "was" : "were"} found. Choose a less overused typeface.` }
+    for (const font of detected) {
+      counts.set(font, (counts.get(font) ?? 0) + 1);
+    }
+
+    const details = Array.from(counts, ([font, uses]) => `${font} (${uses})`).join(", ");
+
+    return detected.length > 0
+      ? { matches: true, explanation: `Detected overused fonts: ${details}. Choose a less overused typeface.` }
       : { matches: false };
   },
 });
