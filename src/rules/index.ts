@@ -11,6 +11,7 @@ import monospaceFont from "./monospace-font/index.ts";
 import mostlyItalicTitles from "./mostly-italic-titles/index.ts";
 import neonBorder from "./neon-border/index.ts";
 import oneHtmlFile from "./one-html-file/index.ts";
+import excessivePadding from "./excessive-padding/index.ts";
 import oversizedCtaHeading from "./oversized-cta-heading/index.ts";
 import overusedFonts from "./overused-fonts/index.ts";
 import patternedBackground from "./patterned-background/index.ts";
@@ -39,5 +40,6 @@ export const rules: Rule[] = [
   tooManyEmDashes,
   tooManyEmojis,
   oneHtmlFile,
+  excessivePadding,
   oversizedCtaHeading,
 ];

@@ -86,6 +86,7 @@ References identify the matching file position during source scans or the exact 
 - Oversized CTA headings
 - Divided list rows
 - Excessive letter spacing
+- Excessive padding
 
 ## Development
 
