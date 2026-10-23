@@ -15,7 +15,7 @@ import oversizedCtaHeading from "./oversized-cta-heading/index.ts";
 import overusedFonts from "./overused-fonts/index.ts";
 import patternedBackground from "./patterned-background/index.ts";
 import softCornersEverywhere from "./soft-corners-everywhere/index.ts";
-import scheduleRows from "./schedule-rows/index.ts";
+import dividedListRows from "./divided-list-rows/index.ts";
 import textArrow from "./text-arrow/index.ts";
 import tooManyEmDashes from "./too-many-em-dashes/index.ts";
 import tooManyEmojis from "./too-many-emojis/index.ts";
@@ -35,7 +35,7 @@ export const rules: Rule[] = [
   mostlyItalicTitles,
   neonBorder,
   softCornersEverywhere,
-  scheduleRows,
+  dividedListRows,
   tooManyEmDashes,
   tooManyEmojis,
   oneHtmlFile,
