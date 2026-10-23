@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Second Turn Repair Café</title>
+  <style>
+    :root { --blue:#1555d5; --orange:#ff6a2a; --cream:#fff7df; --ink:#17233b; --steel:#d9dfdf; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--steel); color:var(--ink); font-family:Arial,Helvetica,sans-serif; }
+    a { color:inherit; }
+    .shell { width:min(1160px,calc(100% - 28px)); margin:14px auto; background:var(--cream); border:3px solid var(--ink); box-shadow:8px 8px 0 var(--ink); }
+    header { display:grid; grid-template-columns:1fr auto; align-items:center; padding:18px 22px; border-bottom:3px solid var(--ink); }
+    .logo { font-size:24px; font-weight:900; letter-spacing:-.06em; text-decoration:none; }
+    .logo span { color:var(--orange); }
+    nav { display:flex; gap:10px; }
+    nav a { padding:9px 12px; border:2px solid var(--ink); font-size:12px; font-weight:800; text-transform:uppercase; text-decoration:none; }
+    nav a:hover { background:var(--ink); color:white; }
+    .hero { display:grid; grid-template-columns:1.4fr .6fr; min-height:570px; border-bottom:3px solid var(--ink); }
+    .pitch { padding:clamp(35px,7vw,82px); position:relative; overflow:hidden; }
+    .eyebrow { display:inline-block; padding:7px 10px; background:var(--orange); color:white; transform:rotate(-2deg); font-size:12px; font-weight:900; letter-spacing:.08em; text-transform:uppercase; }
+    h1 { max-width:770px; margin:28px 0 22px; font-size:clamp(61px,10vw,130px); line-height:.75; letter-spacing:-.085em; text-transform:uppercase; }
+    h1 span { color:var(--blue); }
+    .pitch p { max-width:610px; font:600 clamp(18px,2vw,24px)/1.35 Georgia,serif; }
+    .book { display:inline-flex; margin-top:22px; padding:15px 19px; background:var(--ink); color:white; font-weight:900; text-decoration:none; text-transform:uppercase; box-shadow:5px 5px 0 var(--orange); }
+    .tools { border-left:3px solid var(--ink); background:var(--blue); display:flex; align-items:center; justify-content:center; padding:35px; overflow:hidden; }
+    .tools svg { width:100%; max-width:330px; transform:rotate(5deg); }
+    .status { display:grid; grid-template-columns:repeat(3,1fr); border-bottom:3px solid var(--ink); }
+    .status article { padding:25px; border-right:3px solid var(--ink); }
+    .status article:last-child { border:0; }
+    .label { font-size:11px; font-weight:900; letter-spacing:.13em; text-transform:uppercase; }
+    .status strong { display:block; margin-top:8px; font-size:24px; }
+    .board { display:grid; grid-template-columns:.75fr 1.25fr; }
+    .board > div { padding:45px; }
+    .board h2 { margin:0; font-size:clamp(38px,5vw,68px); line-height:.9; letter-spacing:-.06em; text-transform:uppercase; }
+    .rules { background:var(--orange); color:white; border-right:3px solid var(--ink); }
+    .rules ol { margin:28px 0 0; padding-left:22px; font:700 17px/1.55 Georgia,serif; }
+    .bench h3 { margin:0 0 20px; font-size:15px; text-transform:uppercase; letter-spacing:.1em; }
+    .slots { border-top:3px solid var(--ink); }
+    .slot { display:grid; grid-template-columns:100px 1fr auto; gap:20px; align-items:center; padding:18px 0; border-bottom:2px solid var(--ink); }
+    .slot time { font-size:21px; font-weight:900; }
+    .slot b { font-family:Georgia,serif; font-size:19px; }
+    .slot span { padding:5px 8px; background:#b8e58a; font-size:10px; font-weight:900; text-transform:uppercase; }
+    footer { display:flex; justify-content:space-between; padding:20px 22px; background:var(--ink); color:white; font-size:12px; }
+    a:focus-visible { outline:4px solid #ffdc31; outline-offset:3px; }
+    @media(max-width:740px) { nav a:not(:last-child) { display:none; } .hero,.board { grid-template-columns:1fr; } .tools { border-left:0; border-top:3px solid var(--ink); max-height:330px; } .status { grid-template-columns:1fr; } .status article { border-right:0; border-bottom:3px solid var(--ink); } .rules { border-right:0; border-bottom:3px solid var(--ink); } .slot { grid-template-columns:70px 1fr; } .slot span { grid-column:2; justify-self:start; } }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header><a class="logo" href="#">SECOND<span>TURN</span></a><nav aria-label="Main navigation"><a href="#how">How it works</a><a href="#bench">Repair bench</a><a href="#book">Book a spot</a></nav></header>
+    <main>
+      <section class="hero">
+        <div class="pitch"><span class="eyebrow">Next café · Sunday 10–4</span><h1>Don’t bin it.<br><span>Bring it.</span></h1><p>Neighbors with tools help you mend lamps, toasters, clothes, bikes and other almost-working things.</p><a class="book" id="book" href="mailto:hello@secondturn.example">Book a repair spot →</a></div>
+        <div class="tools">
+          <svg viewBox="0 0 340 500" role="img" aria-label="Crossed wrench and screwdriver">
+            <path d="M86 421 232 109c-24-30-12-74 22-91l-8 48 31 19 39-30c3 42-32 73-70 68L104 436c-11 24-46 8-18-15Z" fill="#fff7df" stroke="#17233b" stroke-width="8"/>
+            <path d="m54 49 48 23-16 33 139 249 29-16 41 73-85 48-40-73 29-17L59 121 31 106Z" fill="#ff6a2a" stroke="#17233b" stroke-width="8"/>
+            <circle cx="94" cy="414" r="10" fill="#1555d5" stroke="#17233b" stroke-width="6"/>
+          </svg>
+        </div>
+      </section>
+      <section class="status"><article><span class="label">Where</span><strong>Mill Street Hall</strong></article><article><span class="label">Cost</span><strong>Free · parts at cost</strong></article><article><span class="label">This month</span><strong>12 fixers on hand</strong></article></section>
+      <section class="board" id="how">
+        <div class="rules"><h2>You bring the thing. We fix it together.</h2><ol><li>Reserve a half-hour bench spot.</li><li>Bring all loose parts and chargers.</li><li>Stay, learn, and help with the repair.</li></ol></div>
+        <div class="bench" id="bench"><h3>Sunday bench availability</h3><div class="slots"><div class="slot"><time>10:30</time><b>Electrical & small appliances</b><span>2 spots</span></div><div class="slot"><time>12:00</time><b>Clothing & textiles</b><span>4 spots</span></div><div class="slot"><time>14:30</time><b>Bikes & mechanical</b><span>1 spot</span></div></div></div>
+      </section>
+    </main>
+    <footer><span>Repair beats replacement.</span><span>Run by neighbors since 2019.</span></footer>
+  </div>
+</body>
+</html>

@@ -28,7 +28,7 @@ function tailwindSize(name: string): number | undefined {
   return sizes.get(utility) ?? pixels(utility.match(/^text-\[([^\]]+)\]$/)?.[1] ?? "");
 }
 
-function headingSize(attributes: string, tag: string, file: string): number {
+function headingSize(attributes: string, tag: string, file: string, firstHeading: boolean): number {
   const inline = attributes.match(/font-size\s*:\s*([^;"']+)/i)?.[1];
   const sizes = inline ? [pixels(inline)] : [];
 
@@ -37,7 +37,17 @@ function headingSize(attributes: string, tag: string, file: string): number {
   }
 
   for (const rule of cssRules({ all: () => [{ path: "", content: file }], get: () => undefined, search: () => [] })) {
-    if (!/(?:^|[\s,>])\.?h[1-3](?:[\s.#:[,>]|$)/i.test(rule.selectors) && !classNames(attributes).some((name) => rule.selectors.includes(`.${name}`))) {
+    const selectors = rule.selectors.split(",").map((selector) => selector.trim());
+
+    const matches = selectors.some((selector) => {
+      const directTag = new RegExp(`^${tag}(?::|$)`, "i").test(selector);
+      const compoundTag = new RegExp(`(?:^|[\\s>+~])${tag}(?::|$)`, "i").test(selector);
+      const directClass = classNames(attributes).some((name) => selector.includes(`.${name}`));
+
+      return directTag || directClass || (firstHeading && compoundTag);
+    });
+
+    if (!matches) {
       continue;
     }
 
@@ -55,13 +65,17 @@ function sourceReferences(files: Files): Reference[] {
   for (const file of files.all()) {
     if (!/<\s*(?:a\b|button\b|[^>]+role\s*=\s*["']button)/i.test(file.content)) continue;
 
+    let headingIndex = 0;
+
     for (const match of file.content.matchAll(headingPattern)) {
       const tag = match[1]?.toLowerCase();
       const attributes = match[2] ?? "";
 
-      if (tag && headingSize(attributes, tag, file.content) >= threshold) {
+      if (tag && headingSize(attributes, tag, file.content, headingIndex === 0) >= threshold) {
         references.push(fileReference(file.path, file.content, match.index ?? 0));
       }
+
+      headingIndex += 1;
     }
   }
 
