@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fenwick Ridge Observatory</title>
+<style>
+  :root {
+    --night: #0a0f1e;
+    --dusk: #141c33;
+    --panel: #1b2440;
+    --line: #32406b;
+    --ink: #dfe6ff;
+    --dim: #8d9ac9;
+    --red: #ff5a5a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--night);
+    color: var(--ink);
+    font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+    line-height: 1.55;
+  }
+  h1, h2, h3 { line-height: 1.1; margin: 0 0 .5em; }
+  h1 { font-size: 3rem; letter-spacing: .01em; }
+  h2 { font-size: 1.6rem; color: #9db8ff; }
+  p { margin: 0 0 1em; }
+  a { color: #9db8ff; }
+  .wrap { max-width: 1000px; margin: 0 auto; padding: 0 1.5rem; }
+
+  header {
+    border-bottom: 1px solid var(--line);
+    background: var(--dusk);
+    position: sticky; top: 0;
+    z-index: 5;
+  }
+  .bar { display: flex; align-items: center; gap: 1rem; padding: .8rem 1.5rem; max-width: 1000px; margin: 0 auto; flex-wrap: wrap; }
+  .bar .name { display: flex; gap: .55rem; align-items: center; font-weight: bold; }
+  .bar nav { margin-left: auto; font-size: .9rem; }
+  .bar nav a { color: var(--dim); text-decoration: none; margin-left: 1.1rem; }
+  .bar nav a:hover { color: #fff; }
+
+  .hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--line); }
+  .hero svg.sky { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .hero .content { position: relative; padding: 4.5rem 1.5rem 4rem; max-width: 1000px; margin: 0 auto; }
+  .status {
+    display: inline-flex; align-items: center; gap: .5rem;
+    font-size: .8rem; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--red); border: 1px solid var(--red);
+    padding: .3rem .7rem; margin-bottom: 1.2rem;
+  }
+  .status .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--red); }
+  .hero p { max-width: 46rem; font-size: 1.1rem; color: var(--dim); }
+  .hero .meta { display: flex; gap: 2.5rem; flex-wrap: wrap; margin-top: 2rem; font-size: .9rem; }
+  .hero .meta b { display: block; font-size: 1.5rem; color: #fff; font-weight: normal; }
+
+  main { padding: 3rem 0; }
+  section { margin-bottom: 3.5rem; }
+
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: start; }
+  .instrument { background: var(--panel); border: 1px solid var(--line); padding: 1.4rem; }
+  .instrument h3 { font-size: 1.05rem; }
+  .spec { list-style: none; padding: 0; margin: .8rem 0 0; font-size: .9rem; }
+  .spec li { display: flex; justify-content: space-between; border-bottom: 1px dashed var(--line); padding: .45rem 0; }
+  .spec span:last-child { color: var(--dim); }
+
+  .sky-table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+  .sky-table th { text-align: left; color: var(--dim); font-weight: normal; font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; }
+  .sky-table td, .sky-table th { padding: .6rem .5rem; border-bottom: 1px solid var(--line); }
+  .sky-table tr:hover td { background: var(--dusk); }
+
+  .callout { border: 1px solid var(--line); background: var(--dusk); padding: 1.4rem; }
+  .callout h3 { color: #9db8ff; }
+
+  footer { border-top: 1px solid var(--line); background: var(--dusk); padding: 2rem 0; font-size: .88rem; color: var(--dim); }
+  footer .inner { display: flex; gap: 2rem; flex-wrap: wrap; justify-content: space-between; }
+
+  @media (max-width: 720px) {
+    .split { grid-template-columns: 1fr; }
+    h1 { font-size: 2.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="bar">
+    <span class="name">
+      <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true">
+        <circle cx="13" cy="13" r="6" fill="none" stroke="#9db8ff" stroke-width="1.6"/>
+        <ellipse cx="13" cy="13" rx="12" ry="4.5" fill="none" stroke="#ff5a5a" stroke-width="1.4" transform="rotate(-25 13 13)"/>
+      </svg>
+      Fenwick Ridge
+    </span>
+    <nav>
+      <a href="#tonight">Tonight</a>
+      <a href="#instruments">Instruments</a>
+      <a href="#visit">Visit</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <svg class="sky" viewBox="0 0 1000 420" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <radialGradient id="glow" cx="70%" cy="25%" r="60%">
+        <stop offset="0%" stop-color="#22335f"/>
+        <stop offset="100%" stop-color="#0a0f1e"/>
+      </radialGradient>
+    </defs>
+    <rect width="1000" height="420" fill="url(#glow)"/>
+    <g fill="#ffffff">
+      <circle cx="80" cy="60" r="1.6" opacity=".9"/>
+      <circle cx="190" cy="130" r="1.1" opacity=".6"/>
+      <circle cx="300" cy="45" r="1.8" opacity=".8"/>
+      <circle cx="420" cy="160" r="1" opacity=".5"/>
+      <circle cx="540" cy="70" r="1.4" opacity=".7"/>
+      <circle cx="660" cy="120" r="2" opacity=".95"/>
+      <circle cx="740" cy="40" r="1.2" opacity=".6"/>
+      <circle cx="820" cy="150" r="1.6" opacity=".8"/>
+      <circle cx="910" cy="80" r="1.1" opacity=".55"/>
+      <circle cx="960" cy="200" r="1.7" opacity=".85"/>
+      <circle cx="140" cy="230" r="1.2" opacity=".6"/>
+      <circle cx="380" cy="250" r="1.5" opacity=".7"/>
+      <circle cx="600" cy="220" r="1" opacity=".5"/>
+      <circle cx="870" cy="270" r="1.3" opacity=".65"/>
+      <circle cx="240" cy="310" r="1.4" opacity=".6"/>
+      <circle cx="700" cy="330" r="1.1" opacity=".5"/>
+    </g>
+    <!-- ridge line with dome -->
+    <path d="M0 420 L0 350 L260 320 L430 338 L520 300 L700 336 L1000 356 L1000 420 Z" fill="#05070f"/>
+    <g transform="translate(520 300)">
+      <path d="M-46 0 A46 46 0 0 1 46 0 Z" fill="#0d1322" stroke="#32406b"/>
+      <rect x="-54" y="0" width="108" height="10" fill="#0d1322" stroke="#32406b"/>
+      <line x1="0" y1="-46" x2="0" y2="0" stroke="#32406b"/>
+      <rect x="-4" y="-40" width="8" height="40" fill="#1b2440"/>
+    </g>
+    <g stroke="#ff5a5a" stroke-width="1" opacity=".7">
+      <line x1="0" y1="356" x2="1000" y2="352" stroke-dasharray="4 8" opacity=".35"/>
+    </g>
+  </svg>
+  <div class="content">
+    <div class="status"><span class="dot"></span> Dome open &middot; seeing 3/5</div>
+    <h1>Fenwick Ridge Observatory</h1>
+    <p>A volunteer-run dark-sky station at 640&nbsp;m on the eastern ridge.
+    Public viewing every clear Thursday; research time by arrangement with
+    the university group that shares our 16-inch.</p>
+    <div class="meta">
+      <div><b>38.7&deg;</b> north latitude</div>
+      <div><b>Bortle 3</b> sky quality</div>
+      <div><b>1994</b> founded</div>
+      <div><b>412</b> members</div>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <section id="tonight">
+    <div class="split">
+      <div>
+        <h2>Tonight&rsquo;s targets</h2>
+        <p>Updated at dusk by the duty officer. Objects below the horizon by
+        21:00 are listed for the early window only.</p>
+        <table class="sky-table">
+          <thead>
+            <tr><th>Object</th><th>Type</th><th>Best at</th><th>Mag</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>M31 Andromeda</td><td>Galaxy</td><td>20:15</td><td>3.4</td></tr>
+            <tr><td>NGC 7662</td><td>Planetary nebula</td><td>21:40</td><td>8.3</td></tr>
+            <tr><td>Albireo</td><td>Double star</td><td>19:50</td><td>3.1</td></tr>
+            <tr><td>M15</td><td>Globular cluster</td><td>22:05</td><td>6.2</td></tr>
+            <tr><td>Saturn</td><td>Planet</td><td>19:30</td><td>0.6</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout">
+        <h3>Thursday public night</h3>
+        <p>Doors 19:30, first light 20:00, hot cocoa in the warm room until
+        we lock up around 23:00. No booking needed for individuals; groups of
+        ten or more should email first so we can staff the second scope.</p>
+        <p style="margin:0"><a href="mailto:duty@fenwickridge.example">duty@fenwickridge.example</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="instruments">
+    <h2>Instruments under the dome</h2>
+    <div class="split">
+      <div class="instrument">
+        <h3>Ritchey&ndash;Chr&eacute;tien 16&Prime;</h3>
+        <p style="color:var(--dim);font-size:.92rem">Shared with the Millbrook
+        University physics department since 2016. CCD imaging available on
+        research nights.</p>
+        <ul class="spec">
+          <li><span>Aperture</span><span>406 mm</span></li>
+          <li><span>Focal ratio</span><span>f/8</span></li>
+          <li><span>Mount</span><span>Fork, equatorial</span></li>
+          <li><span>Camera</span><span>Cooling CCD, 4k</span></li>
+        </ul>
+      </div>
+      <div class="instrument">
+        <h3>Club refractor 5&Prime;</h3>
+        <p style="color:var(--dim);font-size:.92rem">The public night workhorse.
+        Lives on the outdoor pier so queues can start before the dome opens.</p>
+        <ul class="spec">
+          <li><span>Aperture</span><span>127 mm</span></li>
+          <li><span>Focal ratio</span><span>f/9</span></li>
+          <li><span>Mount</span><span>German equatorial</span></li>
+          <li><span>Eyepieces</span><span>25, 10, 6 mm</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="visit">
+    <h2>Getting here</h2>
+    <p>The last 4&nbsp;km of ridge road is unpaved; take it slowly after rain.
+    Park at the lower lot by the transmitter mast &mdash; the dome road is
+    reserved for accessibility permits. Red torches only past the gate.</p>
+    <div class="split">
+      <div class="callout">
+        <h3>Coordinates</h3>
+        <p style="font-family:'Courier New',monospace;margin:0;color:var(--dim)">
+          44&deg;31&prime;12&Prime; N<br>7&deg;48&prime;03&Prime; E<br>
+          altitude 640 m
+        </p>
+      </div>
+      <div class="callout">
+        <h3>Contact</h3>
+        <p style="margin:0;color:var(--dim)">
+          Ridge Road, Fenwick<br>
+          duty@fenwickridge.example<br>
+          Duty phone answered on observing nights
+        </p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap inner">
+    <div>Fenwick Ridge Observatory &middot; volunteer-run since 1994</div>
+    <div>Sky data refreshes at local dusk. Weather calls posted by 17:00.</div>
+  </div>
+</footer>
+
+</body>
+</html>

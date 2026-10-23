@@ -83,6 +83,7 @@ References identify the matching file position during source scans or the exact 
 - Too many em dashes
 - Too many emojis
 - Everything in one HTML file
+- Oversized CTA headings
 
 ## Development
 

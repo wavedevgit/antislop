@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Slip &amp; Stone — Ceramics Studio, Bexhill Lane</title>
+<style>
+  :root {
+    --clay: #a9532c;
+    --clay-dark: #6f3117;
+    --kiln: #d96f32;
+    --stone: #8c8577;
+    --wash: #efe9df;
+    --shelf: #e0d6c6;
+    --ink: #241d17;
+    --line: #c9bcab;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    color: var(--ink);
+    background: var(--wash);
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  h1, h2, h3 { font-family: Georgia, "Times New Roman", serif; line-height: 1.1; margin: 0 0 .5rem; }
+  h1 { font-size: 3.2rem; }
+  h2 { font-size: 2rem; color: var(--clay-dark); }
+  p { margin: 0 0 1em; }
+  a { color: var(--clay-dark); }
+  .wrap { max-width: 1020px; margin: 0 auto; padding: 0 1.5rem; }
+
+  header { background: var(--ink); color: var(--wash); }
+  .bar { display: flex; align-items: center; gap: .9rem; padding: .8rem 1.5rem; max-width: 1020px; margin: 0 auto; flex-wrap: wrap; }
+  .brand { display: flex; align-items: center; gap: .55rem; font-family: Georgia, serif; font-size: 1.1rem; }
+  nav { margin-left: auto; font-size: .9rem; }
+  nav a { color: #cbbfae; text-decoration: none; margin-left: 1.2rem; }
+  nav a:hover { color: #fff; text-decoration: underline; }
+
+  .hero { background: var(--shelf); border-bottom: 1px solid var(--line); }
+  .hero .grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 2.5rem; align-items: center; padding: 3.5rem 0; }
+  .hero .lede { font-size: 1.1rem; max-width: 33rem; }
+  .btn {
+    display: inline-block; background: var(--clay); color: #fff;
+    text-decoration: none; padding: .75rem 1.5rem; border: 2px solid var(--clay-dark);
+  }
+  .btn:hover { background: var(--clay-dark); }
+  .btn.alt { background: transparent; color: var(--clay-dark); }
+  .btn.alt:hover { background: var(--clay); color: #fff; }
+
+  main { padding: 3rem 0; }
+  section { margin-bottom: 3.2rem; }
+
+  .classes { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.6rem; }
+  .klass { background: #fff; border: 1px solid var(--line); border-left: 6px solid var(--kiln); padding: 1.2rem 1.3rem; }
+  .klass h3 { font-size: 1.2rem; }
+  .klass .meta { font-size: .85rem; color: var(--stone); margin-bottom: .5rem; }
+  .klass .price { font-weight: bold; color: var(--clay-dark); }
+
+  .shelf {
+    background: var(--shelf);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 2.4rem 0;
+  }
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; counter-reset: step; }
+  .step { counter-increment: step; }
+  .step::before {
+    content: counter(step);
+    display: block; width: 2.1rem; height: 2.1rem; line-height: 2.1rem;
+    text-align: center; border-radius: 50%;
+    background: var(--clay); color: #fff; font-weight: bold; margin-bottom: .6rem;
+  }
+  .step h3 { font-size: 1.05rem; }
+  .step p { font-size: .9rem; color: #4d443a; margin: 0; }
+
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: start; }
+  .hours { border: 1px solid var(--line); background: #fff; padding: 1.2rem 1.4rem; }
+  .hours dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: .35rem 1.2rem; font-size: .95rem; }
+  .hours dt { font-weight: bold; }
+  .hours dd { margin: 0; color: #4d443a; }
+  .hours .closed { color: var(--clay); }
+
+  blockquote {
+    margin: 0 0 1.2rem; padding: 0 0 0 1.1rem;
+    border-left: 4px solid var(--kiln);
+    font-family: Georgia, serif; font-size: 1.05rem;
+  }
+  blockquote cite { display: block; font-family: Verdana, sans-serif; font-style: normal; font-size: .82rem; color: var(--stone); margin-top: .3rem; }
+
+  footer { background: var(--ink); color: #cbbfae; padding: 2.2rem 0; font-size: .88rem; }
+  footer .cols { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 2rem; }
+  footer b { color: var(--wash); display: block; margin-bottom: .3rem; }
+
+  @media (max-width: 800px) {
+    .hero .grid, .split { grid-template-columns: 1fr; }
+    .classes, .steps, footer .cols { grid-template-columns: 1fr 1fr; }
+    h1 { font-size: 2.3rem; }
+  }
+  @media (max-width: 520px) {
+    .classes, .steps, footer .cols { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="bar">
+    <span class="brand">
+      <svg width="26" height="28" viewBox="0 0 26 28" aria-hidden="true">
+        <path d="M8 2h10l-1 4c3 2 5 5 5 9 0 6-4 11-9 11S4 21 4 15c0-4 2-7 5-9Z" fill="#d96f32"/>
+        <ellipse cx="13" cy="6" rx="5" ry="2" fill="#6f3117"/>
+        <path d="M9 16c2 2 6 2 8 0" stroke="#6f3117" stroke-width="1.6" fill="none"/>
+      </svg>
+      Slip &amp; Stone
+    </span>
+    <nav>
+      <a href="#classes">Classes</a>
+      <a href="#process">How it works</a>
+      <a href="#visit">Visit</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap grid">
+    <div>
+      <h1>A working ceramics studio on Bexhill Lane.</h1>
+      <p class="lede">Twelve wheels, two kilns, one extremely patient glaze
+      librarian. We teach beginners, take in work to fire, and open the
+      membership shelves to anyone willing to wash their own splash pans.</p>
+      <p><a class="btn" href="#classes">See class times</a>
+      <a class="btn alt" href="#visit" style="margin-left:.5rem">Open studio</a></p>
+    </div>
+    <div>
+      <svg viewBox="0 0 420 300" role="img" aria-label="Illustration of a potter's wheel and vessels">
+        <rect width="420" height="300" fill="#e0d6c6"/>
+        <!-- shelf -->
+        <rect x="20" y="70" width="380" height="8" fill="#8c8577"/>
+        <!-- pots on shelf -->
+        <g>
+          <path d="M56 70V44c0-8 6-12 12-12s12 4 12 12v26Z" fill="#a9532c"/>
+          <path d="M100 70V50c0-6 10-6 10 0v20Z" fill="#6f3117"/>
+          <ellipse cx="170" cy="56" rx="22" ry="14" fill="#d96f32"/>
+          <rect x="164" y="34" width="12" height="10" fill="#d96f32"/>
+          <path d="M240 70c0-18 8-30 20-30s20 12 20 30Z" fill="#8c8577"/>
+          <path d="M310 70V42c0-7 5-11 11-11s11 4 11 11v28Z" fill="#a9532c"/>
+          <path d="M356 70V52c0-5 8-5 8 0v18Z" fill="#6f3117"/>
+        </g>
+        <!-- wheel -->
+        <g transform="translate(150 120)">
+          <ellipse cx="60" cy="30" rx="72" ry="18" fill="#8c8577"/>
+          <rect x="52" y="30" width="16" height="80" fill="#6f3117"/>
+          <path d="M10 110h100l14 40H-4Z" fill="#a9532c"/>
+          <ellipse cx="60" cy="30" rx="34" ry="9" fill="#d96f32"/>
+          <path d="M36 24c0-16 8-26 24-26s24 10 24 26c0 6-10 10-24 10s-24-4-24-10Z" fill="#c9bcab"/>
+        </g>
+        <!-- hands -->
+        <g fill="#e7c39f">
+          <path d="M188 118c-8-10-2-22 8-20 6 1 8 8 6 14Z"/>
+          <path d="M256 116c10-9 5-22-6-20-6 1-8 8-5 14Z"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<main>
+  <div class="wrap">
+
+    <section id="classes">
+      <h2>Classes this term</h2>
+      <p>Every course includes clay, glazes, and firing for the pieces you
+      actually finish. Missed weeks can be made up in open studio.</p>
+      <div class="classes">
+        <div class="klass">
+          <h3>Wheel throwing for beginners</h3>
+          <div class="meta">Tuesdays 18:30&ndash;21:00 &middot; 6 weeks &middot; 8 places</div>
+          <p>Centring, pulling, and the emotional recovery from your first
+          collapsed cylinder. No prerequisites beyond short fingernails.</p>
+          <p class="price">185 &euro;</p>
+        </div>
+        <div class="klass">
+          <h3>Handbuilding: slabs &amp; coils</h3>
+          <div class="meta">Thursdays 10:00&ndash;12:30 &middot; 6 weeks &middot; 10 places</div>
+          <p>Boxes, planters, and one intentionally wobbly vase. Good for
+          anyone who dislikes the wheel or enjoys rulers.</p>
+          <p class="price">160 &euro;</p>
+        </div>
+        <div class="klass">
+          <h3>Glaze lab</h3>
+          <div class="meta">Monthly, Saturday 14:00&ndash;17:00 &middot; 6 places</div>
+          <p>Test tiles, notebooks, and arguments about rutile. Members only
+          after the first session.</p>
+          <p class="price">45 &euro;</p>
+        </div>
+        <div class="klass">
+          <h3>Open studio membership</h3>
+          <div class="meta">Rolling &middot; day or night access &middot; shelf rental</div>
+          <p>Unlimited wheel and handbuilding time during staffed hours, half
+          a metre of shelf, and firing at cost per kilo.</p>
+          <p class="price">70 &euro; / month</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <section class="shelf">
+    <div class="wrap">
+      <h2>How a pot gets made here</h2>
+      <div class="steps">
+        <div class="step">
+          <h3>Throw or build</h3>
+          <p>Wheels and handbuilding tables are booked by the two-hour slot.</p>
+        </div>
+        <div class="step">
+          <h3>Dry on the rack</h3>
+          <p>Leather-hard work waits on labelled shelves near the damp box.</p>
+        </div>
+        <div class="step">
+          <h3>Bisque fire</h3>
+          <p>Kiln 1 goes to 1000&deg;C most Wednesdays when it is full enough.</p>
+        </div>
+        <div class="step">
+          <h3>Glaze &amp; fire</h3>
+          <p>Glaze day is Saturday. Work returns to your shelf three weeks later.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <section class="split">
+      <div>
+        <h2>From the studio floor</h2>
+        <blockquote>
+          I came for one plant pot and left with a shelf problem and six new
+          mugs of my own making.
+          <cite>&mdash; Farah N., member since 2022</cite>
+        </blockquote>
+        <blockquote>
+          The glaze librarian knows every bucket by smell. Do not test her.
+          <cite>&mdash; studio rule, pinned since 2019</cite>
+        </blockquote>
+      </div>
+      <div id="visit" class="hours">
+        <h3 style="font-family:Georgia,serif;font-size:1.2rem">Opening hours</h3>
+        <dl>
+          <dt>Mon</dt><dd class="closed">Closed (kiln day)</dd>
+          <dt>Tue&ndash;Fri</dt><dd>10:00&ndash;22:00</dd>
+          <dt>Sat</dt><dd>09:00&ndash;18:00 (glaze day)</dd>
+          <dt>Sun</dt><dd>11:00&ndash;17:00</dd>
+        </dl>
+        <p style="margin-top:1rem">4B Bexhill Lane, rear entrance through
+        the yard. Street parking after 18:00. The buzzer is the middle one;
+        the top one is the bakery and they will not be pleased.</p>
+        <p style="margin:0"><a href="mailto:studio@slipandstone.example">studio@slipandstone.example</a></p>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap cols">
+    <div><b>Slip &amp; Stone Ceramics</b>4B Bexhill Lane, yard entrance. Twelve wheels, two kilns, one glaze librarian.</div>
+    <div><b>Firing for non-members</b>Accepted Tuesdays. Roughly three weeks turnaround, longer if the kiln misbehaves.</div>
+    <div><b>Clean studio policy</b>Wash your splash pan. This is the whole policy.</div>
+  </div>
+</footer>
+
+</body>
+</html>

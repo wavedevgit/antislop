@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mercer Street Public Library</title>
+<style>
+  :root{
+    --paper:#f6f2e8;
+    --paper-2:#efe9db;
+    --ink:#17130d;
+    --ink-soft:#57503f;
+    --rule:#d6cdb9;
+    --oxblood:#8b2f26;
+    --oxblood-dark:#6d211a;
+    --display:"Iowan Old Style","Palatino Linotype","Book Antiqua",Palatino,Georgia,serif;
+    --sans:"Avenir Next","Segoe UI",Helvetica,Arial,sans-serif;
+    --pad:clamp(20px,4vw,56px);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit}
+  a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--oxblood);outline-offset:3px}
+  .wrap{max-width:1220px;margin:0 auto;padding:0 var(--pad)}
+  .skip{position:absolute;left:-9999px;top:0;background:var(--ink);color:var(--paper);padding:10px 16px;z-index:20}
+  .skip:focus{left:12px;top:12px}
+  .mono{font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase}
+
+  /* ---------- top bar ---------- */
+  .topbar{border-bottom:1px solid var(--rule);font-size:.76rem;letter-spacing:.04em}
+  .topbar .wrap{display:flex;justify-content:space-between;gap:16px;padding-top:10px;padding-bottom:10px;flex-wrap:wrap;color:var(--ink-soft)}
+  .topbar strong{color:var(--ink);font-weight:600}
+  .hours-dot{color:var(--oxblood)}
+
+  /* ---------- header ---------- */
+  header.site{border-bottom:1px solid var(--ink);position:sticky;top:0;z-index:10;background:var(--paper)}
+  .masthead{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding-top:18px;padding-bottom:18px}
+  .brand{display:flex;align-items:center;gap:14px;text-decoration:none}
+  .brand svg{flex:none}
+  .brand-name{font-family:var(--display);font-size:clamp(1.35rem,2.4vw,1.85rem);line-height:1.05;letter-spacing:-.02em}
+  .brand-name em{font-style:italic;color:var(--oxblood)}
+  .brand-sub{display:block;font-family:var(--sans);font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);margin-top:4px}
+  nav.main{display:flex;align-items:center;gap:clamp(12px,2vw,28px);flex-wrap:wrap;justify-content:flex-end}
+  nav.main a{text-decoration:none;font-size:.85rem;letter-spacing:.02em;padding:6px 0;border-bottom:1px solid transparent}
+  nav.main a:hover{border-color:var(--ink)}
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    background:var(--ink);color:var(--paper);text-decoration:none;
+    padding:11px 18px;font-size:.82rem;letter-spacing:.03em;
+    border:1px solid var(--ink);
+  }
+  .btn:hover{background:var(--oxblood);border-color:var(--oxblood)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .btn.ghost:hover{background:var(--ink);color:var(--paper)}
+
+  /* ---------- hero ---------- */
+  .hero{padding:clamp(40px,6vw,80px) 0 clamp(28px,4vw,48px)}
+  .hero-grid{display:grid;grid-template-columns:1.55fr .85fr;gap:clamp(28px,5vw,80px);align-items:start}
+  .kicker{display:flex;align-items:center;gap:12px;color:var(--oxblood);margin-bottom:22px}
+  .kicker::before{content:"";width:44px;height:1px;background:var(--oxblood)}
+  h1{
+    font-family:var(--display);
+    font-weight:400;
+    font-size:clamp(2.6rem,7.2vw,5.9rem);
+    line-height:.96;
+    letter-spacing:-.035em;
+    margin:0 0 26px;
+  }
+  h1 em{font-style:italic;color:var(--oxblood)}
+  .hero-lede{max-width:34ch;font-size:clamp(1rem,1.35vw,1.15rem);color:var(--ink-soft);margin:0 0 30px}
+  .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+  .hero-meta{display:flex;gap:26px;margin-top:44px;padding-top:18px;border-top:1px solid var(--rule);flex-wrap:wrap}
+  .hero-meta div{min-width:110px}
+  .hero-meta b{display:block;font-family:var(--display);font-size:1.6rem;font-weight:400;line-height:1.1}
+  .hero-meta span{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+
+  /* catalogue card */
+  .card{
+    background:var(--paper-2);
+    border:1px solid var(--ink);
+    padding:24px;
+    position:relative;
+  }
+  .card::after{content:"";position:absolute;inset:5px;border:1px solid var(--rule);pointer-events:none}
+  .card-head{display:flex;justify-content:space-between;align-items:baseline;border-bottom:2px solid var(--ink);padding-bottom:10px;margin-bottom:4px}
+  .card-head b{font-family:var(--display);font-size:1.12rem;font-weight:400}
+  .today-list{list-style:none;margin:0;padding:0}
+  .today-list li{display:grid;grid-template-columns:58px 1fr;gap:10px;padding:13px 0;border-bottom:1px solid var(--rule)}
+  .today-list time{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.78rem;padding-top:3px;color:var(--oxblood)}
+  .today-list b{display:block;font-weight:600;font-size:.9rem;line-height:1.3}
+  .today-list span{font-size:.76rem;color:var(--ink-soft)}
+  .card-link{display:inline-block;margin-top:16px;font-size:.8rem;text-decoration:none;border-bottom:1px solid var(--ink);padding-bottom:2px}
+  .card-link:hover{color:var(--oxblood);border-color:var(--oxblood)}
+  .stamp{
+    width:104px;height:104px;border-radius:50%;border:1.5px solid var(--oxblood);
+    display:grid;place-content:center;text-align:center;color:var(--oxblood);
+    font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;line-height:1.5;
+    transform:rotate(-9deg);margin:22px 0 0 auto;
+    background:var(--paper);
+  }
+  .stamp b{display:block;font-family:var(--display);font-size:1.1rem;letter-spacing:.02em;margin:2px 0}
+
+  /* ---------- ribbon ---------- */
+  .ribbon{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);background:var(--ink);color:var(--paper)}
+  .ribbon .wrap{display:flex;gap:clamp(24px,6vw,80px);overflow-x:auto;padding-top:13px;padding-bottom:13px;white-space:nowrap}
+  .ribbon span{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+  .ribbon span::before{content:"";width:5px;height:5px;background:var(--oxblood);border-radius:50%}
+
+  /* ---------- sections ---------- */
+  section{padding:clamp(44px,6vw,80px) 0}
+  .sec-head{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end;margin-bottom:32px;border-top:1px solid var(--ink);padding-top:14px}
+  .sec-head h2{font-family:var(--display);font-weight:400;font-size:clamp(1.7rem,3.4vw,2.7rem);line-height:1.05;letter-spacing:-.02em;margin:0}
+  .sec-head p{margin:0;max-width:38ch;color:var(--ink-soft);font-size:.92rem}
+  .num{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.72rem;color:var(--oxblood);letter-spacing:.1em}
+
+  /* books */
+  .books{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(16px,2.4vw,30px)}
+  .book{text-decoration:none;display:block}
+  .cover{position:relative;aspect-ratio:3/4.1;overflow:hidden;border:1px solid rgba(0,0,0,.25);box-shadow:5px 5px 0 var(--rule);transition:transform .18s ease,box-shadow .18s ease}
+  .book:hover .cover{transform:translateY(-4px) rotate(-.6deg);box-shadow:8px 9px 0 var(--rule)}
+  .cover svg{position:absolute;inset:0;width:100%;height:100%}
+  .cover-text{position:absolute;inset:0;padding:16px;display:flex;flex-direction:column;justify-content:space-between;color:#fff}
+  .cover-top{font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;opacity:.85}
+  .cover-title{font-family:var(--display);font-size:clamp(1rem,1.5vw,1.25rem);line-height:1.1;letter-spacing:-.01em}
+  .cover-author{font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;opacity:.9}
+  .book-meta{padding:12px 2px 0}
+  .book-meta b{display:block;font-size:.92rem;font-weight:600}
+  .book-meta span{font-size:.78rem;color:var(--ink-soft)}
+  .book-meta em{display:inline-block;font-style:normal;margin-top:8px;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--oxblood);border:1px solid currentColor;padding:2px 6px}
+
+  /* events table */
+  .events{border-top:1px solid var(--ink)}
+  .event{display:grid;grid-template-columns:120px 1fr 150px 130px;gap:18px;align-items:center;padding:18px 6px;border-bottom:1px solid var(--rule);text-decoration:none;transition:background .15s ease,padding .15s ease}
+  .event:hover{background:var(--paper-2);padding-left:14px}
+  .event .date{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.76rem;letter-spacing:.04em;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+  .event .date b{color:var(--ink);font-weight:600}
+  .event .title{font-family:var(--display);font-size:1.12rem;line-height:1.2}
+  .event .title span{display:block;font-family:var(--sans);font-size:.78rem;color:var(--ink-soft);margin-top:3px}
+  .event .time{font-size:.8rem;font-variant-numeric:tabular-nums;color:var(--ink-soft)}
+  .event .tag{justify-self:start;font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--rule);padding:4px 8px;background:var(--paper)}
+  .event .tag.hot{border-color:var(--oxblood);color:var(--oxblood)}
+
+  /* services */
+  .services{background:var(--paper-2);border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+  .service-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--rule)}
+  .service{padding:26px 24px 30px 0;border-right:1px solid var(--rule)}
+  .service:last-child{border-right:0;padding-right:0}
+  .service h3{font-family:var(--display);font-size:1.3rem;font-weight:400;margin:18px 0 8px}
+  .service p{margin:0;font-size:.86rem;color:var(--ink-soft);max-width:30ch}
+  .service .num{display:block;margin-bottom:24px}
+  .service a{display:inline-block;margin-top:14px;font-size:.78rem;text-decoration:none;border-bottom:1px solid var(--ink)}
+  .service a:hover{color:var(--oxblood);border-color:var(--oxblood)}
+
+  /* visit */
+  .visit-split{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(28px,5vw,80px);align-items:stretch}
+  @media(max-width:960px){.visit-split{grid-template-columns:1fr}}
+
+  /* footer */
+  footer.site{background:var(--ink);color:var(--paper);padding:clamp(44px,6vw,72px) 0 24px}
+  .foot-grid{display:grid;grid-template-columns:1.3fr .8fr 1fr;gap:clamp(28px,5vw,70px);padding-bottom:48px}
+  footer .brand-name{color:var(--paper);font-size:1.6rem}
+  footer .brand-name em{color:#d8a79c}
+  footer p{color:#bfb7a5;font-size:.88rem;max-width:34ch}
+  footer h4{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:#d8a79c;margin:0 0 16px;font-weight:500}
+  .foot-hours{display:grid;grid-template-columns:1fr auto;gap:8px 18px;font-size:.84rem;color:#bfb7a5;font-variant-numeric:tabular-nums}
+  .foot-hours b{color:var(--paper);font-weight:500}
+  .letter{display:flex;gap:0;margin-top:14px;border-bottom:1px solid #6a6252;max-width:320px}
+  .letter input{flex:1;background:transparent;border:0;color:var(--paper);padding:10px 0;font:inherit;font-size:.86rem;min-width:0}
+  .letter input::placeholder{color:#8a8271}
+  .letter button{background:transparent;border:0;color:var(--paper);font:inherit;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;padding:10px 0 10px 12px}
+  .letter button:hover{color:#d8a79c}
+  .foot-bottom{border-top:1px solid #38332a;padding-top:20px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:.72rem;color:#8a8271}
+  .foot-bottom a{color:#bfb7a5;text-decoration:none}
+  .foot-bottom a:hover{color:var(--paper)}
+
+  @media(max-width:960px){
+    .hero-grid{grid-template-columns:1fr}
+    .card{max-width:480px}
+    .books{grid-template-columns:repeat(2,1fr)}
+    .service-grid{grid-template-columns:repeat(2,1fr)}
+    .service:nth-child(2){border-right:0}
+    .service:nth-child(-n+2){border-bottom:1px solid var(--rule);margin-bottom:24px}
+    .event{grid-template-columns:96px 1fr auto;row-gap:6px}
+    .event .time{grid-column:2}
+    .event .tag{grid-column:3;grid-row:1}
+    .foot-grid{grid-template-columns:1fr 1fr}
+  }
+  @media(max-width:620px){
+    nav.main{gap:14px}
+    nav.main a:not(.btn){display:none}
+    .topbar .wrap{justify-content:flex-start}
+    .books{grid-template-columns:1fr 1fr;gap:14px}
+    .event{grid-template-columns:1fr auto;padding:16px 2px}
+    .event .date{grid-column:1;font-size:.7rem}
+    .event .title{grid-column:1;grid-row:2}
+    .event .time{grid-column:1;grid-row:3}
+    .event .tag{grid-column:2;grid-row:1 / span 2;align-self:start}
+    .service-grid{grid-template-columns:1fr}
+    .service{border-right:0;border-bottom:1px solid var(--rule);padding:22px 0}
+    .service:last-child{border-bottom:0}
+    .service:nth-child(-n+2){margin-bottom:0}
+    .sec-head{grid-template-columns:1fr}
+    .foot-grid{grid-template-columns:1fr}
+    .hero-meta{gap:18px}
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="topbar">
+  <div class="wrap">
+    <span><strong>Mercer Street Public Library</strong> · est. 1911</span>
+    <span><span class="hours-dot">●</span> Open today until 8pm · <strong>14 Mercer Street</strong></span>
+  </div>
+</div>
+
+<header class="site">
+  <div class="wrap masthead">
+    <a class="brand" href="#main" aria-label="Mercer Street Public Library home">
+      <svg width="46" height="46" viewBox="0 0 46 46" fill="none" aria-hidden="true">
+        <rect x="1" y="1" width="44" height="44" stroke="#17130d"/>
+        <path d="M11 12h10c2.2 0 4 1.8 4 4v18c0-2.2-1.8-4-4-4H11V12Z" stroke="#8b2f26" stroke-width="1.3"/>
+        <path d="M35 12H25c-2.2 0-4 1.8-4 4v18c0-2.2 1.8-4 4-4h10V12Z" stroke="#8b2f26" stroke-width="1.3"/>
+        <path d="M14 17h7M14 21h7M25 17h7M25 21h7" stroke="#17130d" stroke-width="1"/>
+      </svg>
+      <span class="brand-name">Mercer Street<br><em>Public Library</em><span class="brand-sub">Books · Rooms · People</span></span>
+    </a>
+    <nav class="main" aria-label="Main">
+      <a href="#shelves">New books</a>
+      <a href="#events">Events</a>
+      <a href="#services">Services</a>
+      <a href="#visit">Visit</a>
+      <a class="btn" href="#visit">Get a library card</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="kicker mono">Autumn programme · 2026</div>
+        <h1>A quiet building<br>with <em>loud</em> ideas.</h1>
+        <p class="hero-lede">Books, records, tools, seeds, and a warm place to sit. Everyone in the neighbourhood is already a member. You probably are too.</p>
+        <div class="hero-actions">
+          <a class="btn" href="#shelves">Browse the new shelves</a>
+          <a class="btn ghost" href="#events">What's on this week</a>
+        </div>
+        <div class="hero-meta">
+          <div><b>84,200</b><span>Books &amp; media</span></div>
+          <div><b>12,410</b><span>Members</span></div>
+          <div><b>1911</b><span>On this corner since</span></div>
+          <div><b>1</b><span>Resident reading dog</span></div>
+        </div>
+      </div>
+
+      <aside class="card" aria-label="Today's events">
+        <div class="card-head">
+          <b>Today at Mercer</b>
+          <span class="mono">Thu 23 Oct</span>
+        </div>
+        <ol class="today-list">
+          <li><time>10:30</time><div><b>Baby &amp; caregiver story hour</b><span>Children's room · drop in</span></div></li>
+          <li><time>16:00</time><div><b>Teen zine lab</b><span>Maker space · ages 13–18</span></div></li>
+          <li><time>18:30</time><div><b>Ada Mensah on archive fever</b><span>Reading hall · free, seats left</span></div></li>
+        </ol>
+        <a class="card-link" href="#events">Full calendar for October</a>
+        <div class="stamp" aria-hidden="true">Open<br><b>late</b>Thursdays</div>
+      </aside>
+    </div>
+  </section>
+
+  <div class="ribbon" aria-hidden="true">
+    <div class="wrap">
+      <span>No late fees</span>
+      <span>Free wifi</span>
+      <span>Home delivery</span>
+      <span>Seed library</span>
+      <span>Print &amp; scan</span>
+      <span>Quiet room</span>
+      <span>Study help</span>
+    </div>
+  </div>
+
+  <section id="shelves">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>New on the shelves</h2>
+        <p>Four books our staff have been pressing into people's hands this month. Ask for them at the second-floor desk.</p>
+      </div>
+      <div class="books">
+        <a class="book" href="#visit">
+          <div class="cover">
+            <svg viewBox="0 0 300 410" preserveAspectRatio="none" aria-hidden="true">
+              <rect width="300" height="410" fill="#20362e"/>
+              <circle cx="150" cy="150" r="86" fill="none" stroke="#d9c9a3" stroke-width="1.4"/>
+              <circle cx="150" cy="150" r="62" fill="none" stroke="#d9c9a3" stroke-width="1.4"/>
+              <path d="M150 64v172M64 150h172" stroke="#d9c9a3" stroke-width="1.4"/>
+              <path d="M40 330c50-30 80-10 110-28s70-8 110 10" fill="none" stroke="#a8b9a5" stroke-width="1.2"/>
+            </svg>
+            <div class="cover-text">
+              <span class="cover-top">Fiction · first edition</span>
+              <div><div class="cover-title">The Orchard<br>at Night</div><div class="cover-author">Ines Duarte</div></div>
+            </div>
+          </div>
+          <div class="book-meta"><b>The Orchard at Night</b><span>Ines Duarte · 2026</span><em>New</em></div>
+        </a>
+
+        <a class="book" href="#visit">
+          <div class="cover">
+            <svg viewBox="0 0 300 410" preserveAspectRatio="none" aria-hidden="true">
+              <rect width="300" height="410" fill="#e8dcc4"/>
+              <rect x="34" y="34" width="232" height="342" fill="none" stroke="#8b2f26" stroke-width="1.2"/>
+              <path d="M70 120h160M70 150h160M70 180h160M70 210h160" stroke="#17130d" stroke-width="1"/>
+              <path d="M70 260h100M70 286h70" stroke="#8b2f26" stroke-width="1.4"/>
+              <rect x="70" y="330" width="40" height="20" fill="#17130d"/>
+            </svg>
+            <div class="cover-text" style="color:#17130d">
+              <span class="cover-top">Essays · 2025</span>
+              <div><div class="cover-title">Small<br>Machines</div><div class="cover-author">Theo Park</div></div>
+            </div>
+          </div>
+          <div class="book-meta"><b>Small Machines</b><span>Theo Park · 2025</span><em>Staff pick</em></div>
+        </a>
+
+        <a class="book" href="#visit">
+          <div class="cover">
+            <svg viewBox="0 0 300 410" preserveAspectRatio="none" aria-hidden="true">
+              <rect width="300" height="410" fill="#d8c3a5"/>
+              <path d="M0 300c60-50 120-20 160-60s80-90 140-60v230H0Z" fill="#8b2f26"/>
+              <path d="M0 330c60-40 110-10 160-40s80-50 140-20v140H0Z" fill="#17130d" opacity=".85"/>
+              <path d="M30 90h240M30 108h180" stroke="#17130d" stroke-width="1"/>
+            </svg>
+            <div class="cover-text">
+              <span class="cover-top">Natural history</span>
+              <div><div class="cover-title">Field Notes<br>from the<br>Shallows</div><div class="cover-author">Mara Quinn</div></div>
+            </div>
+          </div>
+          <div class="book-meta"><b>Field Notes from the Shallows</b><span>Mara Quinn · 2026</span><em>New</em></div>
+        </a>
+
+        <a class="book" href="#visit">
+          <div class="cover">
+            <svg viewBox="0 0 300 410" preserveAspectRatio="none" aria-hidden="true">
+              <rect width="300" height="410" fill="#3b4d63"/>
+              <path d="M30 380V80h40v300M110 380V80h40v300M190 380V80h40v300M270 380V80h40v300" stroke="#c9d4df" stroke-width="1.2"/>
+              <path d="M0 240h300" stroke="#e2b04a" stroke-width="2"/>
+              <circle cx="150" cy="140" r="34" fill="#e2b04a"/>
+            </svg>
+            <div class="cover-text">
+              <span class="cover-top">A memoir in objects</span>
+              <div><div class="cover-title">The Long<br>Remodel</div><div class="cover-author">Sam Okoye</div></div>
+            </div>
+          </div>
+          <div class="book-meta"><b>The Long Remodel</b><span>Sam Okoye · 2024</span><em>Book club</em></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="events" style="background:var(--paper-2);border-top:1px solid var(--ink)">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>The week ahead</h2>
+        <p>Everything below is free unless marked. No tickets for the Thursday talk, but the room only holds sixty.</p>
+      </div>
+      <div class="events">
+        <a class="event" href="#visit">
+          <div class="date">THU <b>23</b> OCT</div>
+          <div class="title">Ada Mensah on archive fever<span>A conversation about what cities keep and what they lose.</span></div>
+          <div class="time">18:30 – 20:00</div>
+          <div class="tag hot">Nearly full</div>
+        </a>
+        <a class="event" href="#visit">
+          <div class="date">FRI <b>24</b> OCT</div>
+          <div class="title">Friday film: The Salt of the Earth<span>Introduced by the film society. Popcorn provided.</span></div>
+          <div class="time">19:00 – 21:10</div>
+          <div class="tag">Reading hall</div>
+        </a>
+        <a class="event" href="#visit">
+          <div class="date">SAT <b>25</b> OCT</div>
+          <div class="title">Repair café — bring one broken thing<span>Lamps, toasters, hems, and small wooden furniture.</span></div>
+          <div class="time">10:00 – 13:00</div>
+          <div class="tag">Workshop</div>
+        </a>
+        <a class="event" href="#visit">
+          <div class="date">SUN <b>26</b> OCT</div>
+          <div class="title">Sunday reading circle<span>This month: Small Machines. Newcomers welcome.</span></div>
+          <div class="time">15:00 – 16:30</div>
+          <div class="tag">Book club</div>
+        </a>
+        <a class="event" href="#visit">
+          <div class="date">WED <b>29</b> OCT</div>
+          <div class="title">Local history drop-in<span>Bring photographs, letters, and questions.</span></div>
+          <div class="time">14:00 – 17:00</div>
+          <div class="tag">Archive</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="services" class="services">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>More than books</h2>
+        <p>Your card gets you all of this. If something here is new to you, ask at the front desk and we'll walk you through it.</p>
+      </div>
+      <div class="service-grid">
+        <div class="service">
+          <span class="num">01</span>
+          <svg width="34" height="34" viewBox="0 0 34 34" fill="none" aria-hidden="true">
+            <rect x="3" y="7" width="28" height="20" stroke="#17130d" stroke-width="1.3"/>
+            <path d="M3 7l14 11L31 7M3 27l10-9M31 27l-10-9" stroke="#8b2f26" stroke-width="1.3"/>
+          </svg>
+          <h3>Meeting rooms</h3>
+          <p>Three rooms, free for community groups. Projector, kettle, and a table that seats twelve.</p>
+          <a href="#visit">Check availability</a>
+        </div>
+        <div class="service">
+          <span class="num">02</span>
+          <svg width="34" height="34" viewBox="0 0 34 34" fill="none" aria-hidden="true">
+            <path d="M17 4v26M4 17h26" stroke="#17130d" stroke-width="1.3"/>
+            <circle cx="17" cy="17" r="9" stroke="#8b2f26" stroke-width="1.3"/>
+            <circle cx="17" cy="17" r="2.4" fill="#8b2f26"/>
+          </svg>
+          <h3>Homework help</h3>
+          <p>Volunteer tutors on Tuesdays and Thursdays after school. All ages, all subjects.</p>
+          <a href="#visit">See the timetable</a>
+        </div>
+        <div class="service">
+          <span class="num">03</span>
+          <svg width="34" height="34" viewBox="0 0 34 34" fill="none" aria-hidden="true">
+            <path d="M10 27V13l7-7 7 7v14" stroke="#17130d" stroke-width="1.3"/>
+            <path d="M5 27h24M14 27v-7h6v7" stroke="#8b2f26" stroke-width="1.3"/>
+          </svg>
+          <h3>Tool &amp; seed library</h3>
+          <p>Borrow a drill, a ladder, or a packet of tomato seeds. Return what you don't use.</p>
+          <a href="#visit">Browse the catalogue</a>
+        </div>
+        <div class="service">
+          <span class="num">04</span>
+          <svg width="34" height="34" viewBox="0 0 34 34" fill="none" aria-hidden="true">
+            <path d="M7 24c0-8 4-14 10-17 6 3 10 9 10 17" stroke="#17130d" stroke-width="1.3"/>
+            <path d="M17 7v20M5 27h24" stroke="#8b2f26" stroke-width="1.3"/>
+            <path d="M11 19c2-3 4-4 6-4s4 1 6 4" stroke="#17130d" stroke-width="1.3"/>
+          </svg>
+          <h3>Home delivery</h3>
+          <p>Can't get to us? We bring books to your door once a month, anywhere in the ward.</p>
+          <a href="#visit">Request a delivery</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="visit">
+    <div class="wrap visit-split">
+      <div>
+        <div class="sec-head" style="margin-bottom:24px">
+          <h2>Come in,<br>stay a while.</h2>
+          <p>Two blocks from the tram, on the corner with the plane trees. Step-free entrance on Ash Lane.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px">
+          <div>
+            <h4 class="mono" style="color:var(--oxblood);margin:0 0 12px;font-weight:400">Opening hours</h4>
+            <div class="foot-hours" style="color:var(--ink-soft);font-size:.9rem">
+              <span>Mon – Thu</span><b style="color:var(--ink)">9am – 8pm</b>
+              <span>Friday</span><b style="color:var(--ink)">9am – 6pm</b>
+              <span>Saturday</span><b style="color:var(--ink)">9am – 6pm</b>
+              <span>Sunday</span><b style="color:var(--ink)">12pm – 5pm</b>
+            </div>
+          </div>
+          <div>
+            <h4 class="mono" style="color:var(--oxblood);margin:0 0 12px;font-weight:400">Find us</h4>
+            <p style="margin:0;font-size:.9rem;color:var(--ink-soft)">14 Mercer Street<br>Northfield, NF1 4QA<br><br><a href="#main" style="border-bottom:1px solid var(--ink);text-decoration:none">hello@mercerlibrary.org</a><br>+44 20 7946 0114</p>
+          </div>
+        </div>
+      </div>
+      <div style="border:1px solid var(--ink);background:var(--paper-2);padding:22px;display:flex;flex-direction:column;justify-content:space-between">
+        <div>
+          <span class="mono" style="color:var(--oxblood)">The monthly letter</span>
+          <h3 style="font-family:var(--display);font-weight:400;font-size:1.7rem;line-height:1.15;margin:10px 0 8px">New books, local history, and the occasional overdue confession.</h3>
+          <p style="font-size:.86rem;color:var(--ink-soft);margin:0 0 18px">One email a month. No tracking pixels, no urgency.</p>
+        </div>
+        <form onsubmit="return false" style="display:flex;flex-direction:column;gap:10px">
+          <label for="email" class="mono" style="font-size:.64rem">Email address</label>
+          <div style="display:flex;gap:0;border-bottom:1px solid var(--ink)">
+            <input id="email" type="email" placeholder="you@example.com" style="flex:1;background:transparent;border:0;padding:8px 0;font:inherit;font-size:.9rem;min-width:0">
+            <button type="submit" style="background:var(--ink);color:var(--paper);border:0;padding:0 16px;font:inherit;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer">Join</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="brand-name">Mercer Street<br><em>Public Library</em></div>
+        <p style="margin-top:18px">A free public library on the corner of Mercer and Ash since 1911. Funded by the city, run by neighbours.</p>
+      </div>
+      <div>
+        <h4>Opening hours</h4>
+        <div class="foot-hours">
+          <span>Mon – Thu</span><b>9 – 8</b>
+          <span>Fri – Sat</span><b>9 – 6</b>
+          <span>Sunday</span><b>12 – 5</b>
+        </div>
+      </div>
+      <div>
+        <h4>Stay in touch</h4>
+        <p style="margin-top:0">14 Mercer Street, Northfield<br>+44 20 7946 0114</p>
+        <div class="letter">
+          <input type="email" placeholder="Email for the monthly letter" aria-label="Email for the monthly letter">
+          <button type="button">Send</button>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Mercer Street Public Library · A city-run library</span>
+      <span><a href="#main">Accessibility</a> · <a href="#main">Privacy</a> · <a href="#main">Donate</a></span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

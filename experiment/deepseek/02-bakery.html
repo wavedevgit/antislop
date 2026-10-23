@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lark Street Bakery — Northfield</title>
+<style>
+  :root{
+    --cream:#fbf5e9;
+    --dough:#f1e3cb;
+    --shell:#e6d2b0;
+    --ink:#2b1a10;
+    --soft:#6f5741;
+    --brick:#b0472c;
+    --brick-dark:#8d3520;
+    --butter:#eeb84b;
+    --crust:#7a4626;
+    --display:"Iowan Old Style","Palatino Linotype","Book Antiqua",Palatino,Georgia,serif;
+    --sans:"Avenir Next","Segoe UI",Helvetica,Arial,sans-serif;
+    --pad:clamp(20px,4.5vw,60px);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--brick);outline-offset:3px}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 var(--pad)}
+  .skip{position:absolute;left:-9999px;background:var(--ink);color:var(--cream);padding:10px 16px;z-index:30}
+  .skip:focus{left:12px;top:12px}
+  .smallcaps{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;font-weight:600}
+
+  /* announcer */
+  .announce{background:var(--brick);color:var(--cream);text-align:center;padding:9px var(--pad);font-size:.74rem;letter-spacing:.1em;text-transform:uppercase}
+  .announce b{font-weight:700;letter-spacing:.14em}
+
+  /* header */
+  header{background:rgba(251,245,233,.94);border-bottom:1px solid var(--shell);position:sticky;top:0;z-index:12;backdrop-filter:blur(8px)}
+  .head{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 0}
+  .logo{display:flex;align-items:center;gap:13px;text-decoration:none}
+  .logo-mark{width:50px;height:50px;border:1.5px solid var(--ink);border-radius:50%;display:grid;place-items:center;background:var(--butter)}
+  .logo-text{font-family:var(--display);font-size:1.45rem;line-height:1;letter-spacing:-.02em}
+  .logo-text i{font-style:italic;color:var(--brick)}
+  .logo-text small{display:block;font-family:var(--sans);font-size:.57rem;letter-spacing:.24em;text-transform:uppercase;color:var(--soft);margin-top:5px}
+  nav{display:flex;align-items:center;gap:clamp(14px,2.4vw,30px);flex-wrap:wrap;justify-content:flex-end}
+  nav a{font-size:.84rem;text-decoration:none;padding:5px 0;border-bottom:1px solid transparent}
+  nav a:hover{border-color:var(--ink)}
+  .btn{display:inline-block;background:var(--ink);color:var(--cream);text-decoration:none;border:1.5px solid var(--ink);padding:12px 20px;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+  .btn:hover{background:var(--brick);border-color:var(--brick)}
+  .btn.line{background:transparent;color:var(--ink)}
+  .btn.line:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+
+  /* hero */
+  .hero{padding:clamp(38px,6vw,74px) 0 clamp(44px,6vw,80px);position:relative;overflow:hidden}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(30px,6vw,80px);align-items:center}
+  .hero-copy .smallcaps{color:var(--brick);display:flex;align-items:center;gap:12px}
+  .hero-copy .smallcaps::before{content:"";width:34px;height:1px;background:var(--brick)}
+  h1{font-family:var(--display);font-weight:400;font-size:clamp(2.7rem,7vw,5.5rem);line-height:.93;letter-spacing:-.035em;margin:20px 0 24px}
+  h1 i{font-style:italic;color:var(--brick)}
+  .lede{max-width:38ch;font-size:clamp(1rem,1.3vw,1.12rem);color:var(--soft);margin:0 0 30px}
+  .hero-actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+  .hero-note{margin-top:34px;padding-top:16px;border-top:1px dashed var(--shell);display:flex;gap:10px 26px;flex-wrap:wrap;font-size:.78rem;color:var(--soft)}
+  .hero-note b{color:var(--ink);font-weight:600}
+
+  .arch-wrap{position:relative;max-width:440px;justify-self:end;width:100%}
+  .arch{background:var(--brick);border-radius:230px 230px 10px 10px;padding:clamp(24px,3vw,38px) clamp(20px,3vw,32px) 0;overflow:hidden;box-shadow:0 26px 50px -30px rgba(60,30,10,.55)}
+  .arch svg{display:block;width:100%;height:auto}
+  .arch-caption{color:var(--cream);border-top:1px solid rgba(251,245,233,.35);margin-top:6px;padding:12px 0 16px;display:flex;justify-content:space-between;gap:12px;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase}
+  .badge{position:absolute;left:-26px;bottom:48px;width:118px;height:118px;filter:drop-shadow(0 8px 18px rgba(60,30,10,.2))}
+  .badge svg{width:100%;height:100%;animation:spin 26s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @media(prefers-reduced-motion:reduce){.badge svg{animation:none}}
+
+  /* ticker */
+  .ticker{background:var(--dough);border-top:1px solid var(--shell);border-bottom:1px solid var(--shell);overflow:hidden}
+  .ticker .wrap{display:flex;align-items:center;gap:clamp(20px,4vw,46px);padding-top:12px;padding-bottom:12px;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  .ticker span{font-family:var(--display);font-size:.95rem;font-style:italic;display:flex;align-items:center;gap:14px;color:var(--crust)}
+  .ticker span::after{content:"✳";font-style:normal;font-size:.7rem;color:var(--brick)}
+
+  /* generic section */
+  section{padding:clamp(50px,7vw,92px) 0}
+  .section-tag{display:flex;align-items:center;gap:12px;color:var(--brick);margin-bottom:14px}
+  .section-tag::after{content:"";height:1px;flex:1;background:var(--shell)}
+  h2{font-family:var(--display);font-weight:400;font-size:clamp(2rem,4.6vw,3.6rem);line-height:1;letter-spacing:-.03em;margin:0 0 18px}
+  h2 i{color:var(--brick);font-style:italic}
+
+  /* menu */
+  .menu-grid{display:grid;grid-template-columns:.82fr 1.18fr;gap:clamp(32px,6vw,90px);align-items:start}
+  .menu-intro p{color:var(--soft);font-size:.95rem;max-width:32ch}
+  .menu-intro .open-note{margin-top:30px;border:1.5px solid var(--ink);padding:16px 18px;background:var(--dough)}
+  .menu-intro .open-note b{display:block;font-family:var(--display);font-size:1.15rem;font-weight:400;margin-bottom:4px}
+  .menu-intro .open-note span{font-size:.8rem;color:var(--soft)}
+  .menu-group{margin-bottom:34px}
+  .menu-group:last-child{margin-bottom:0}
+  .menu-group h3{font-family:var(--display);font-size:1.3rem;font-weight:400;margin:0 0 4px;display:flex;align-items:baseline;gap:12px}
+  .menu-group h3 em{font-family:var(--sans);font-style:normal;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--soft)}
+  .menu-list{list-style:none;margin:0;padding:0}
+  .menu-list li{display:grid;grid-template-columns:1fr auto;gap:4px 20px;padding:14px 0;border-bottom:1px solid var(--shell);align-items:baseline}
+  .dish{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;grid-column:1;grid-row:1}
+  .dish b{font-weight:600;font-size:.98rem}
+  .dish .tag{font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--brick);border:1px solid var(--brick);padding:1px 5px;border-radius:2px}
+  .dish .tag.off{color:#9b8a75;border-color:#cbbba3}
+  .desc{grid-column:1 / -1;grid-row:2;font-size:.82rem;color:var(--soft);margin:0}
+  .price{grid-column:2;grid-row:1;align-self:center;font-family:var(--display);font-size:1.05rem;font-variant-numeric:tabular-nums;text-align:right}
+
+  /* 36 hours */
+  .process{background:var(--ink);color:var(--cream);position:relative;overflow:hidden}
+  .process::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 80% 0%,rgba(238,184,75,.14),transparent 55%);pointer-events:none}
+  .process .wrap{position:relative}
+  .process .section-tag{color:var(--butter)}
+  .process .section-tag::after{background:rgba(251,245,233,.22)}
+  .process h2{color:var(--cream)}
+  .process h2 i{color:var(--butter)}
+  .process-head{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:end;margin-bottom:50px}
+  .process-head p{color:#c9b8a2;font-size:.95rem;margin:0;max-width:40ch}
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid rgba(251,245,233,.22)}
+  .step{padding:26px 22px 10px 0;border-right:1px solid rgba(251,245,233,.16);position:relative}
+  .step:last-child{border-right:0}
+  .step .clock{font-family:var(--display);font-size:2.4rem;font-weight:400;color:var(--butter);line-height:1;display:flex;align-items:baseline;gap:4px}
+  .step .clock span{font-family:var(--sans);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:#a9947c}
+  .step h3{font-family:var(--display);font-size:1.18rem;font-weight:400;margin:18px 0 6px}
+  .step p{font-size:.82rem;color:#bcab94;margin:0;max-width:24ch}
+  .step .dot{position:absolute;top:-5px;left:0;width:9px;height:9px;background:var(--butter);border-radius:50%}
+  .process-foot{margin-top:44px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:.76rem;color:#a9947c;border-top:1px solid rgba(251,245,233,.16);padding-top:18px}
+  .process-foot b{color:var(--cream);font-weight:500}
+
+  /* visit */
+  .visit-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,6vw,80px);align-items:center}
+  .storefront{border:1.5px solid var(--ink);background:var(--dough);padding:clamp(16px,2vw,24px);position:relative}
+  .storefront svg{display:block;width:100%;height:auto}
+  .storefront .caption{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--ink);padding-top:10px;margin-top:14px;font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--soft)}
+  .info-block{display:grid;grid-template-columns:1fr 1fr;gap:24px 34px;margin-top:30px}
+  .info-block h3{font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;margin:0 0 10px;color:var(--brick)}
+  .info-block p,.info-block address{font-style:normal;font-size:.9rem;color:var(--soft);margin:0;line-height:1.7}
+  .info-block a{text-decoration:none;border-bottom:1px solid var(--shell)}
+  .info-block a:hover{border-color:var(--ink)}
+  .hours-list{display:grid;grid-template-columns:1fr auto;gap:6px 18px;font-size:.9rem;color:var(--soft);font-variant-numeric:tabular-nums}
+  .hours-list b{color:var(--ink);font-weight:600}
+  .hours-list .closed{color:#a08e78}
+
+  /* subscription */
+  .sub{padding-bottom:clamp(50px,7vw,96px)}
+  .sub-panel{background:var(--butter);border:1.5px solid var(--ink);display:grid;grid-template-columns:1.25fr .75fr;gap:clamp(26px,5vw,60px);padding:clamp(26px,4.5vw,54px);position:relative;overflow:hidden}
+  .sub-panel::after{content:"";position:absolute;right:-70px;top:-70px;width:250px;height:250px;border:1.5px solid rgba(43,26,16,.28);border-radius:50%;pointer-events:none}
+  .sub-panel h2{margin-bottom:12px;font-size:clamp(1.9rem,3.6vw,3rem)}
+  .sub-panel p{max-width:42ch;margin:0;font-size:.94rem;color:#5b432e}
+  .sub-price{display:flex;align-items:baseline;gap:8px;margin-top:22px}
+  .sub-price b{font-family:var(--display);font-size:2.6rem;font-weight:400;line-height:1}
+  .sub-price span{font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;color:#5b432e}
+  .sub-form{position:relative;z-index:1;align-self:center;border-top:1.5px solid var(--ink);padding-top:20px}
+  .sub-form label{display:block;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;margin-bottom:4px}
+  .sub-form .field{display:flex;border-bottom:1.5px solid var(--ink);margin-bottom:16px}
+  .sub-form input{background:transparent;border:0;font:inherit;font-size:.9rem;padding:9px 0;flex:1;min-width:0}
+  .sub-form input::placeholder{color:#7c633f}
+  .sub-form button{border:0;background:var(--ink);color:var(--cream);font:inherit;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;padding:0 18px;cursor:pointer}
+  .sub-form button:hover{background:var(--brick)}
+  .sub-form .fine{font-size:.7rem;color:#6f5636;margin:0}
+
+  /* footer */
+  footer{background:var(--crust);color:var(--dough);padding:clamp(44px,6vw,70px) 0 22px}
+  .foot{display:grid;grid-template-columns:1.4fr .8fr .8fr;gap:clamp(28px,5vw,70px);padding-bottom:44px}
+  .foot .logo-text{font-size:1.5rem;color:var(--cream)}
+  .foot .logo-text i{color:var(--butter)}
+  .foot p{color:#e0c9ad;font-size:.86rem;max-width:32ch}
+  .foot h4{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--butter);margin:0 0 14px;font-weight:600}
+  .foot ul{list-style:none;padding:0;margin:0;font-size:.86rem;color:#e0c9ad}
+  .foot li{margin-bottom:8px}
+  .foot a{text-decoration:none}
+  .foot a:hover{color:var(--cream);text-decoration:underline;text-underline-offset:3px}
+  .foot-bottom{border-top:1px solid rgba(241,227,203,.25);padding-top:18px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:.72rem;color:#c5a989}
+  .foot-bottom span:last-child{font-family:var(--display);font-style:italic}
+
+  @media(max-width:980px){
+    .hero-grid{grid-template-columns:1fr}
+    .arch-wrap{justify-self:start;max-width:420px;margin-top:6px}
+    .menu-grid{grid-template-columns:1fr;gap:34px}
+    .process-head{grid-template-columns:1fr;gap:18px}
+    .steps{grid-template-columns:1fr 1fr}
+    .step{border-bottom:1px solid rgba(251,245,233,.16);padding-bottom:24px;margin-bottom:8px}
+    .step:nth-child(2){border-right:0}
+    .visit-grid{grid-template-columns:1fr}
+    .sub-panel{grid-template-columns:1fr}
+    .foot{grid-template-columns:1fr 1fr}
+  }
+  @media(max-width:620px){
+    nav a:not(.btn){display:none}
+    h1{font-size:clamp(2.6rem,13vw,4rem)}
+    .badge{width:92px;height:92px;left:-12px;bottom:34px}
+    .steps{grid-template-columns:1fr}
+    .step{border-right:0}
+    .menu-grid{gap:26px}
+    .info-block{grid-template-columns:1fr}
+    .sub-form{margin-top:4px}
+    .foot{grid-template-columns:1fr}
+    .foot-bottom{flex-direction:column}
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="announce"><b>Fresh loaves at 7am</b> · Wednesday to Sunday · until we sell out</div>
+
+<header>
+  <div class="wrap head">
+    <a class="logo" href="#main" aria-label="Lark Street Bakery home">
+      <span class="logo-mark" aria-hidden="true">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <path d="M14 24V7" stroke="#2b1a10" stroke-width="1.4"/>
+          <path d="M14 13c-3 0-5-2-5-5 3 0 5 2 5 5ZM14 13c3 0 5-2 5-5-3 0-5 2-5 5ZM14 19c-3 0-5-2-5-5 3 0 5 2 5 5ZM14 19c3 0 5-2 5-5-3 0-5 2-5 5Z" stroke="#2b1a10" stroke-width="1.2"/>
+        </svg>
+      </span>
+      <span class="logo-text">Lark Street <i>Bakery</i><small>Northfield · since 2014</small></span>
+    </a>
+    <nav aria-label="Main">
+      <a href="#menu">Today's bake</a>
+      <a href="#process">How we bake</a>
+      <a href="#visit">Visit</a>
+      <a class="btn" href="#sub">Order for Saturday</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <span class="smallcaps">A neighbourhood bakery</span>
+        <h1>Bread is a<br><i>slow</i><br>conversation.</h1>
+        <p class="lede">Flour, water, salt, and a starter we've kept alive since the shop opened. We bake in small batches, twice a day, and stop when the shelves are empty.</p>
+        <div class="hero-actions">
+          <a class="btn" href="#menu">See today's bake</a>
+          <a class="btn line" href="#visit">Find the shop</a>
+        </div>
+        <div class="hero-note">
+          <span><b>Wed–Sun</b> 7am – 2pm</span>
+          <span><b>8 Lark Street</b> two doors from the tram</span>
+          <span><b>Cash &amp; card</b> no queues, we promise</span>
+        </div>
+      </div>
+
+      <div class="arch-wrap">
+        <div class="arch">
+          <svg viewBox="0 0 420 540" role="img" aria-label="Line drawing of a scored sourdough loaf with wheat stalks">
+            <g stroke="#fbf5e9" stroke-width="1.6" fill="none" stroke-linecap="round">
+              <path d="M150 92c-12-18 12-28 0-46M210 84c-12-18 12-28 0-46M270 92c-12-18 12-28 0-46" opacity=".5"/>
+              <path d="M70 468c0-106 62-158 140-158s140 52 140 158c0 22-57 34-140 34s-140-12-140-34Z"/>
+              <path d="M112 444c22-16 52-24 98-24s76 8 98 24" opacity=".75"/>
+              <path d="M132 380c22-18 46-26 78-26M210 352c32 0 56 8 78 26" opacity=".5"/>
+              <path d="M156 364c10 26 22 40 38 46M210 356c0 28 8 46 22 54M264 364c-10 26-22 40-38 46" stroke-width="2.2"/>
+              <path d="M70 468h280" opacity=".6"/>
+              <path d="M96 502h228" opacity=".4"/>
+              <path d="M44 300c-16 22-26 50-28 84M376 300c16 22 26 50 28 84" opacity=".55"/>
+              <path d="M44 300c-4 16-4 30 0 44 8-10 12-24 10-40M376 300c4 16 4 30 0 44-8-10-12-24-10-40" opacity=".55"/>
+            </g>
+            <g fill="#fbf5e9" opacity=".92">
+              <circle cx="70" cy="250" r="2.4"/><circle cx="350" cy="250" r="2.4"/><circle cx="70" cy="286" r="2.4"/><circle cx="350" cy="286" r="2.4"/>
+            </g>
+            <text x="210" y="522" text-anchor="middle" fill="#fbf5e9" font-family="Georgia,serif" font-size="14" letter-spacing="3">COUNTRY SOURDOUGH</text>
+          </svg>
+          <div class="arch-caption"><span>36-hour ferment</span><span>1 kg</span></div>
+        </div>
+        <div class="badge" aria-hidden="true">
+          <svg viewBox="0 0 120 120">
+            <defs><path id="circlePath" d="M60,60 m-44,0 a44,44 0 1,1 88,0 a44,44 0 1,1 -88,0"/></defs>
+            <circle cx="60" cy="60" r="58" fill="#fbf5e9"/>
+            <circle cx="60" cy="60" r="50" fill="none" stroke="#b0472c" stroke-width="1"/>
+            <text fill="#b0472c" font-family="Arial,sans-serif" font-size="9.2" letter-spacing="2.6">
+              <textPath href="#circlePath">BAKED FRESH · WEDNESDAY TO SUNDAY ·</textPath>
+            </text>
+            <g transform="translate(60 62)" stroke="#2b1a10" stroke-width="1.3" fill="none">
+              <path d="M0 12V-9"/>
+              <path d="M0-2c-4 0-6-3-6-6 4 0 6 3 6 6ZM0-2c4 0 6-3 6-6-4 0-6 3-6 6ZM0 5c-4 0-6-3-6-6 4 0 6 3 6 6ZM0 5c4 0 6-3 6-6-4 0-6 3-6 6Z"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ticker" aria-hidden="true">
+    <div class="wrap">
+      <span>Country sourdough</span>
+      <span>Seeded rye</span>
+      <span>Butter croissants</span>
+      <span>Cardamom knots</span>
+      <span>Ham &amp; gruyère</span>
+      <span>Olive &amp; rosemary</span>
+      <span>Morning buns</span>
+    </div>
+  </div>
+
+  <section id="menu">
+    <div class="wrap menu-grid">
+      <div class="menu-intro">
+        <div class="section-tag smallcaps">On the shelves today</div>
+        <h2>The daily <i>bake</i></h2>
+        <p>Everything is made here, by six people, on two decks. If you see an empty basket, it has probably been empty since ten.</p>
+        <div class="open-note">
+          <b>Still warm at 7am</b>
+          <span>Second bake comes out at 11.30. Ask for the heel; we'll cut it for you.</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="menu-group">
+          <h3>Loaves <em>whole or sliced</em></h3>
+          <ul class="menu-list">
+            <li>
+              <div class="dish"><b>Country sourdough</b><span class="tag">Daily</span></div>
+              <span class="price">$9.00</span>
+              <p class="desc">36-hour ferment, sesame crust, a proper open crumb.</p>
+            </li>
+            <li>
+              <div class="dish"><b>Seeded rye</b></div>
+              <span class="price">$8.50</span>
+              <p class="desc">Caraway, sunflower, and a little dark malt. Keeps for a week.</p>
+            </li>
+            <li>
+              <div class="dish"><b>Olive &amp; rosemary</b><span class="tag">Thursday</span></div>
+              <span class="price">$10.00</span>
+              <p class="desc">Green olives, good oil, rosemary from the window box.</p>
+            </li>
+            <li>
+              <div class="dish"><b>Milk bun loaf</b></div>
+              <span class="price">$7.00</span>
+              <p class="desc">Soft, brushed with butter, tears into six. Good for sandwiches.</p>
+            </li>
+          </ul>
+        </div>
+
+        <div class="menu-group">
+          <h3>Pastries <em>before 11</em></h3>
+          <ul class="menu-list">
+            <li>
+              <div class="dish"><b>Butter croissant</b></div>
+              <span class="price">$4.50</span>
+              <p class="desc">Laminated over three days. Shatters, as it should.</p>
+            </li>
+            <li>
+              <div class="dish"><b>Cardamom knot</b><span class="tag off">Sold out</span></div>
+              <span class="price">$5.00</span>
+              <p class="desc">Pearl sugar, twice-baked, more cardamom than is sensible.</p>
+            </li>
+            <li>
+              <div class="dish"><b>Morning bun</b></div>
+              <span class="price">$4.75</span>
+              <p class="desc">Orange zest and cinnamon, rolled tight, baked in a muffin tin.</p>
+            </li>
+            <li>
+              <div class="dish"><b>Ham &amp; gruyère croissant</b><span class="tag">Fri–Sun</span></div>
+              <span class="price">$7.50</span>
+              <p class="desc">Made with the rye offcuts and a lot of black pepper.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="process" class="process">
+    <div class="wrap">
+      <div class="process-head">
+        <div>
+          <div class="section-tag smallcaps">From Tuesday night to Wednesday morning</div>
+          <h2>Thirty-six hours,<br><i>mostly waiting.</i></h2>
+        </div>
+        <p>There is no shortcut worth taking. The starter does the work; we just keep it warm and pay attention. Every loaf is mixed, folded, and shaped by hand.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <span class="dot"></span>
+          <div class="clock">0<span>hours</span></div>
+          <h3>Mix &amp; rest</h3>
+          <p>Stoneground flour, water, salt, starter. Nothing else, nothing rushed.</p>
+        </div>
+        <div class="step">
+          <span class="dot"></span>
+          <div class="clock">6<span>hours</span></div>
+          <h3>Fold</h3>
+          <p>Four sets, an hour apart. The dough tells you when it's ready.</p>
+        </div>
+        <div class="step">
+          <span class="dot"></span>
+          <div class="clock">24<span>hours</span></div>
+          <h3>Shape &amp; chill</h3>
+          <p>Overnight in the cold room. This is where the flavour comes from.</p>
+        </div>
+        <div class="step">
+          <span class="dot"></span>
+          <div class="clock">36<span>hours</span></div>
+          <h3>Bake</h3>
+          <p>250°C, plenty of steam, twenty-five minutes. Then a long rest.</p>
+        </div>
+      </div>
+      <div class="process-foot">
+        <span>Starter name: <b>Doreen</b> · born 2014</span>
+        <span>Flour from <b>Wren Mill</b>, forty miles north</span>
+        <span>Waste bread goes to <b>the community fridge</b></span>
+      </div>
+    </div>
+  </section>
+
+  <section id="visit">
+    <div class="wrap visit-grid">
+      <div>
+        <div class="section-tag smallcaps">Come by</div>
+        <h2>On the corner,<br>under the <i>awning.</i></h2>
+        <p style="color:var(--soft);max-width:38ch;margin:0">We are a small shop with a big window. If the bread sign is out, we are still open; if the baskets are empty, we are not.</p>
+        <div class="info-block">
+          <div>
+            <h3>Find us</h3>
+            <address>8 Lark Street<br>Northfield, NF2 7AB<br><br><a href="tel:+15550142208">+1 555 014 2208</a><br><a href="mailto:hello@larkstreetbakery.com">hello@larkstreetbakery.com</a></address>
+          </div>
+          <div>
+            <h3>Opening hours</h3>
+            <div class="hours-list">
+              <span>Wednesday – Friday</span><b>7 – 2</b>
+              <span>Saturday – Sunday</span><b>7 – 2</b>
+              <span class="closed">Monday – Tuesday</span><b class="closed">Closed</b>
+            </div>
+            <p style="margin-top:12px;font-size:.78rem;color:#9a8670">or until sold out, whichever comes first</p>
+          </div>
+        </div>
+        <a class="btn line" href="#sub" style="margin-top:28px">Reserve a Saturday loaf</a>
+      </div>
+
+      <div class="storefront">
+        <svg viewBox="0 0 520 400" role="img" aria-label="Illustration of the bakery storefront with a striped awning">
+          <rect width="520" height="400" fill="#f1e3cb"/>
+          <rect x="0" y="330" width="520" height="70" fill="#e6d2b0"/>
+          <rect x="40" y="70" width="440" height="270" fill="#fbf5e9" stroke="#2b1a10" stroke-width="1.6"/>
+          <rect x="56" y="86" width="408" height="42" fill="#2b1a10"/>
+          <text x="260" y="114" text-anchor="middle" fill="#f1e3cb" font-family="Georgia,serif" font-size="21" letter-spacing="6">LARK STREET BAKERY</text>
+          <g>
+            <rect x="30" y="140" width="460" height="42" fill="#b0472c"/>
+            <g fill="#fbf5e9">
+              <rect x="30" y="140" width="46" height="42"/><rect x="122" y="140" width="46" height="42"/><rect x="214" y="140" width="46" height="42"/><rect x="306" y="140" width="46" height="42"/><rect x="398" y="140" width="46" height="42"/>
+            </g>
+            <path d="M30 182c10 14 36 14 46 0s36-14 46 0 36 14 46 0 36-14 46 0 36 14 46 0 36-14 46 0 36 14 46 0 36-14 46 0 36 14 46 0" fill="none" stroke="#2b1a10" stroke-width="1.6"/>
+          </g>
+          <rect x="70" y="212" width="160" height="128" fill="#fbf5e9" stroke="#2b1a10" stroke-width="1.6"/>
+          <path d="M70 276h160M150 212v128" stroke="#2b1a10" stroke-width="1.2"/>
+          <g fill="#b0472c">
+            <circle cx="110" cy="248" r="11"/><circle cx="132" cy="244" r="8"/><circle cx="178" cy="250" r="9"/>
+          </g>
+          <path d="M96 300h106M96 312h82" stroke="#c2ab8d" stroke-width="2"/>
+          <rect x="296" y="212" width="112" height="148" fill="#2b1a10"/>
+          <rect x="308" y="224" width="88" height="76" fill="#7a4626"/>
+          <circle cx="388" cy="300" r="4" fill="#eeb84b"/>
+          <path d="M96 340h328" stroke="#2b1a10" stroke-width="1.6"/>
+          <g stroke="#2b1a10" stroke-width="1.4" fill="none">
+            <path d="M440 330V250M426 264l14-14 14 14"/>
+            <path d="M40 250v80M28 274l12-24 12 24"/>
+          </g>
+          <path d="M40 330h-6M446 330h6" stroke="#2b1a10" stroke-width="1.6"/>
+        </svg>
+        <div class="caption"><span>No. 8, Lark Street</span><span>Est. 2014</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="sub" class="sub">
+    <div class="wrap">
+      <div class="sub-panel">
+        <div>
+          <div class="smallcaps" style="margin-bottom:12px">The Saturday loaf</div>
+          <h2>A standing order,<br>for people who <i>plan.</i></h2>
+          <p>One loaf and two pastries, boxed and kept behind the counter until noon. Skip any week with a note by Thursday. No app, no account, no nonsense.</p>
+          <div class="sub-price"><b>$26</b><span>per week · cancel anytime</span></div>
+        </div>
+        <form class="sub-form" onsubmit="return false">
+          <label for="sub-email">Email address</label>
+          <div class="field">
+            <input id="sub-email" type="email" placeholder="you@example.com" required>
+            <button type="submit">Start</button>
+          </div>
+          <p class="fine">We'll reply with this week's bread and the pickup window. First loaf is on us.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <div class="logo-text">Lark Street <i>Bakery</i></div>
+        <p>Small-batch bread, pastries, and coffee on the corner of Lark and Ash. Baked by neighbours, for neighbours.</p>
+      </div>
+      <div>
+        <h4>Find us</h4>
+        <ul>
+          <li>8 Lark Street, Northfield</li>
+          <li>+1 555 014 2208</li>
+          <li><a href="mailto:hello@larkstreetbakery.com">hello@larkstreetbakery.com</a></li>
+          <li><a href="#visit">Getting here</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Hours</h4>
+        <ul>
+          <li>Wed – Sun · 7am – 2pm</li>
+          <li>or until sold out</li>
+          <li>Closed Monday &amp; Tuesday</li>
+          <li><a href="#sub">Saturday standing order</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Lark Street Bakery · Northfield</span>
+      <span>Baked on the corner since 2014</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Halcyon Marine Research Station</title>
+<style>
+  :root{
+    --abyss:#04171c;
+    --deep:#07232a;
+    --panel:#0a2b33;
+    --line:#16414a;
+    --line-soft:#10333b;
+    --foam:#dff1ee;
+    --mist:#8aacab;
+    --teal:#5fe0c6;
+    --teal-dim:#2f8f83;
+    --coral:#ff7d5c;
+    --sans:"Avenir Next","Segoe UI",Helvetica,Arial,sans-serif;
+    --data:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+    --pad:clamp(20px,4.5vw,64px);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--abyss);color:var(--foam);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 var(--pad)}
+  .skip{position:absolute;left:-9999px;top:0;background:var(--teal);color:var(--abyss);padding:10px 16px;z-index:30}
+  .skip:focus{left:12px;top:12px}
+  .label{font-family:var(--data);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--teal)}
+  .muted{color:var(--mist)}
+
+  /* coordinates bar */
+  .coordbar{border-bottom:1px solid var(--line-soft);font-family:var(--data);font-size:.66rem;letter-spacing:.08em;color:var(--mist)}
+  .coordbar .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:9px;padding-bottom:9px}
+  .coordbar b{color:var(--teal);font-weight:400}
+
+  /* header */
+  header{position:sticky;top:0;z-index:12;background:rgba(4,23,28,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .head{display:flex;align-items:center;justify-content:space-between;gap:22px;padding:16px 0}
+  .brand{display:flex;align-items:center;gap:13px;text-decoration:none}
+  .brand-mark{width:44px;height:44px;border:1px solid var(--line);display:grid;place-items:center;background:var(--deep)}
+  .brand-name{font-size:1.02rem;font-weight:600;line-height:1.1;letter-spacing:.01em}
+  .brand-name span{display:block;font-family:var(--data);font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mist);font-weight:400;margin-top:5px}
+  nav{display:flex;align-items:center;gap:clamp(14px,2.4vw,30px);flex-wrap:wrap;justify-content:flex-end}
+  nav a{font-size:.82rem;text-decoration:none;color:#c3d6d3;padding:5px 0;border-bottom:1px solid transparent}
+  nav a:hover{color:var(--foam);border-color:var(--teal)}
+  .btn{display:inline-flex;align-items:center;gap:9px;background:var(--teal);color:#042024;text-decoration:none;padding:11px 18px;font-size:.78rem;font-weight:600;letter-spacing:.02em;border:1px solid var(--teal)}
+  .btn:hover{background:#8af0da}
+  .btn.ghost{background:transparent;color:var(--foam);border-color:var(--line)}
+  .btn.ghost:hover{border-color:var(--teal);color:var(--teal)}
+
+  /* hero */
+  .hero{padding:clamp(40px,6vw,84px) 0 clamp(36px,5vw,64px);position:relative;overflow:hidden}
+  .hero::before{content:"";position:absolute;width:520px;height:520px;right:-160px;top:-140px;border:1px solid var(--line-soft);border-radius:50%;opacity:.55;pointer-events:none}
+  .hero::after{content:"";position:absolute;width:720px;height:720px;right:-260px;top:-240px;border:1px solid var(--line-soft);border-radius:50%;opacity:.35;pointer-events:none}
+  .hero-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:clamp(32px,5vw,72px);align-items:center;position:relative;z-index:1}
+  .status{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--deep);padding:6px 10px;font-family:var(--data);font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:#bfd8d4;margin-bottom:26px}
+  .status i{width:6px;height:6px;background:var(--teal);border-radius:50%;box-shadow:0 0 0 3px rgba(95,224,198,.15)}
+  h1{font-size:clamp(2.8rem,6.6vw,5.4rem);line-height:.96;letter-spacing:-.045em;font-weight:500;margin:0 0 24px}
+  h1 em{font-style:normal;color:var(--teal)}
+  .hero-lede{max-width:40ch;color:#a9c4c1;font-size:clamp(1rem,1.3vw,1.1rem);margin:0 0 30px}
+  .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+  .hero-facts{display:grid;grid-template-columns:repeat(2,1fr);gap:20px 30px;margin-top:44px;padding-top:18px;border-top:1px solid var(--line-soft)}
+  .hero-facts b{display:block;font-family:var(--data);font-size:1.25rem;font-weight:400;color:var(--foam);line-height:1.2}
+  .hero-facts span{font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mist)}
+
+  /* depth panel */
+  .depth{border:1px solid var(--line);background:var(--panel);position:relative}
+  .depth-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid var(--line);font-family:var(--data);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mist)}
+  .depth-head b{color:var(--teal);font-weight:400}
+  .depth svg{display:block;width:100%;height:auto}
+  .depth-foot{display:flex;justify-content:space-between;gap:14px;border-top:1px solid var(--line);padding:9px 14px;font-family:var(--data);font-size:.6rem;color:var(--mist);letter-spacing:.08em;flex-wrap:wrap}
+
+  /* stats strip */
+  .stats{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--deep)}
+  .stats .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:0;padding-top:0;padding-bottom:0}
+  .stat{padding:22px 24px;border-right:1px solid var(--line);display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .stat:first-child{padding-left:0}
+  .stat:last-child{border-right:0}
+  .stat b{font-family:var(--data);font-size:1.55rem;font-weight:400;color:var(--teal)}
+  .stat span{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mist)}
+
+  /* sections */
+  section{padding:clamp(52px,7vw,96px) 0}
+  .sec-head{display:grid;grid-template-columns:1fr auto;gap:26px;align-items:end;margin-bottom:40px}
+  .sec-head h2{font-size:clamp(1.9rem,3.8vw,3rem);line-height:1.02;letter-spacing:-.03em;font-weight:500;margin:10px 0 0}
+  .sec-head p{max-width:38ch;margin:0;font-size:.9rem;color:var(--mist)}
+
+  /* programme cards */
+  .programmes{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .programme{border:1px solid var(--line);background:var(--deep);padding:26px 24px 24px;display:flex;flex-direction:column;min-height:320px;position:relative;transition:border-color .2s,transform .2s}
+  .programme:hover{border-color:var(--teal-dim);transform:translateY(-3px)}
+  .programme .pnum{font-family:var(--data);font-size:.64rem;color:var(--teal);letter-spacing:.14em}
+  .programme .icon{margin:26px 0 20px}
+  .programme h3{font-size:1.32rem;font-weight:500;letter-spacing:-.01em;margin:0 0 8px}
+  .programme p{font-size:.86rem;color:#a2bcb9;margin:0 0 24px}
+  .programme .metric{margin-top:auto;padding-top:14px;border-top:1px solid var(--line-soft);font-family:var(--data);font-size:.68rem;color:var(--teal);letter-spacing:.05em}
+  .programme .metric span{display:block;color:var(--mist);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;margin-top:4px}
+
+  /* data section */
+  .data{border-top:1px solid var(--line);background:linear-gradient(180deg,var(--deep),var(--abyss) 70%)}
+  .data-grid{display:grid;grid-template-columns:1.18fr .82fr;gap:18px}
+  .panel{border:1px solid var(--line);background:rgba(10,43,51,.55)}
+  .panel-head{display:flex;justify-content:space-between;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line);font-family:var(--data);font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mist);flex-wrap:wrap}
+  .panel-head b{color:var(--foam);font-weight:400}
+  .chart{padding:16px}
+  .chart svg{display:block;width:100%;height:auto}
+  .chart-legend{display:flex;justify-content:space-between;gap:14px;padding:0 16px 14px;font-family:var(--data);font-size:.62rem;color:var(--mist);flex-wrap:wrap}
+  .chart-legend b{color:var(--teal);font-weight:400}
+  .readings{width:100%;border-collapse:collapse;font-family:var(--data);font-size:.76rem}
+  .readings th{text-align:left;font-weight:400;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mist);padding:12px 16px;border-bottom:1px solid var(--line)}
+  .readings td{padding:12px 16px;border-bottom:1px solid var(--line-soft);color:#c8dcda}
+  .readings tr:last-child td{border-bottom:0}
+  .readings .val{color:var(--foam)}
+  .readings .unit{color:var(--mist);font-size:.66rem}
+  .readings .ok{color:var(--teal);font-size:.66rem;letter-spacing:.06em}
+  .readings .ok::before{content:"●";font-size:.5rem;margin-right:6px;vertical-align:2px}
+  .data-note{margin-top:16px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-family:var(--data);font-size:.64rem;color:var(--mist);letter-spacing:.04em}
+  .data-note b{color:var(--teal);font-weight:400}
+
+  /* expedition */
+  .expedition{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--deep)}
+  .exp-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(30px,5vw,70px);align-items:center}
+  .exp-grid h2{font-size:clamp(1.9rem,3.6vw,3rem);line-height:1.05;letter-spacing:-.03em;font-weight:500;margin:10px 0 18px}
+  .exp-grid p{color:#a2bcb9;max-width:44ch;margin:0 0 26px}
+  .dive-list{border-top:1px solid var(--line)}
+  .dive{display:grid;grid-template-columns:86px 1fr auto;gap:14px;padding:13px 0;border-bottom:1px solid var(--line-soft);align-items:baseline;font-size:.84rem}
+  .dive .date{font-family:var(--data);font-size:.66rem;color:var(--teal);letter-spacing:.06em}
+  .dive b{font-weight:500}
+  .dive span{font-size:.7rem;color:var(--mist);text-align:right}
+  .vessel{border:1px solid var(--line);background:var(--panel);padding:24px}
+  .vessel svg{display:block;width:100%;height:auto;margin-bottom:18px}
+  .vessel h3{font-size:1.1rem;font-weight:500;margin:0 0 4px}
+  .vessel p{font-size:.82rem;color:var(--mist);margin:0 0 16px}
+  .vessel dl{display:grid;grid-template-columns:1fr auto;gap:7px 16px;margin:0;padding-top:14px;border-top:1px solid var(--line);font-family:var(--data);font-size:.68rem}
+  .vessel dt{color:var(--mist)}
+  .vessel dd{margin:0;color:var(--foam)}
+
+  /* notes */
+  .notes{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .note{border-top:1px solid var(--line);padding-top:16px;text-decoration:none;display:block}
+  .note .date{font-family:var(--data);font-size:.62rem;color:var(--mist);letter-spacing:.08em}
+  .note h3{font-size:1.05rem;font-weight:500;line-height:1.35;margin:10px 0 8px;max-width:30ch}
+  .note p{font-size:.8rem;color:var(--mist);margin:0}
+  .note:hover h3{color:var(--teal)}
+
+  /* visit */
+  .visit{background:var(--deep);border-top:1px solid var(--line)}
+  .visit-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,5vw,70px)}
+  .visit h2{font-size:clamp(1.9rem,3.6vw,3rem);line-height:1.03;letter-spacing:-.03em;font-weight:500;margin:10px 0 18px}
+  .visit p{color:#a2bcb9;max-width:42ch;margin:0 0 24px}
+  .tour-table{width:100%;border-collapse:collapse;font-size:.84rem}
+  .tour-table td{padding:12px 0;border-bottom:1px solid var(--line-soft)}
+  .tour-table td:last-child{text-align:right;font-family:var(--data);font-size:.68rem;color:var(--teal)}
+  .tour-table tr:first-child td{padding-top:0}
+  .visit-card{border:1px solid var(--line);background:var(--panel);padding:clamp(24px,3vw,34px)}
+  .visit-card h3{font-size:1.2rem;font-weight:500;margin:0 0 16px}
+  .visit-card dl{display:grid;grid-template-columns:auto 1fr;gap:10px 20px;margin:0 0 22px;font-size:.84rem}
+  .visit-card dt{color:var(--mist);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;padding-top:3px}
+  .visit-card dd{margin:0;color:var(--foam)}
+  .visit-card a{color:var(--teal);text-decoration:none;border-bottom:1px solid var(--teal-dim)}
+  .visit-card .callout{border-top:1px solid var(--line);padding-top:16px;font-size:.8rem;color:var(--mist)}
+
+  /* footer */
+  footer{border-top:1px solid var(--line);padding:clamp(40px,6vw,64px) 0 22px;background:var(--abyss)}
+  .foot{display:grid;grid-template-columns:1.3fr .7fr .7fr 1fr;gap:clamp(24px,4vw,56px);padding-bottom:40px}
+  .foot .brand-name{font-size:1rem}
+  .foot p{font-size:.82rem;color:var(--mist);max-width:30ch}
+  .foot h4{font-family:var(--data);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 14px;font-weight:400}
+  .foot ul{list-style:none;margin:0;padding:0;font-size:.8rem;color:#a9c4c1}
+  .foot li{margin-bottom:8px}
+  .foot a{text-decoration:none}
+  .foot a:hover{color:var(--teal)}
+  .foot .field{display:flex;border-bottom:1px solid var(--line);margin-top:12px}
+  .foot input{flex:1;background:transparent;border:0;color:var(--foam);font:inherit;font-size:.8rem;padding:8px 0;min-width:0}
+  .foot input::placeholder{color:#5f7d7a}
+  .foot button{background:transparent;border:0;color:var(--teal);font:inherit;font-family:var(--data);font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;padding-left:12px}
+  .foot-bottom{border-top:1px solid var(--line-soft);padding-top:18px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-family:var(--data);font-size:.62rem;color:#5f7d7a;letter-spacing:.05em}
+
+  @media(max-width:1020px){
+    .hero-grid{grid-template-columns:1fr}
+    .depth{max-width:560px}
+    .programmes{grid-template-columns:1fr}
+    .programme{min-height:0}
+    .data-grid{grid-template-columns:1fr}
+    .exp-grid{grid-template-columns:1fr}
+    .notes{grid-template-columns:1fr}
+    .note{padding-top:18px}
+    .visit-grid{grid-template-columns:1fr}
+    .foot{grid-template-columns:1fr 1fr}
+    .stats .wrap{grid-template-columns:1fr 1fr}
+    .stat{border-bottom:1px solid var(--line)}
+    .stat:nth-child(2n){border-right:0}
+    .stat:first-child{padding-left:24px}
+  }
+  @media(max-width:640px){
+    nav a:not(.btn){display:none}
+    h1{font-size:clamp(2.7rem,12vw,4rem)}
+    .sec-head{grid-template-columns:1fr;gap:14px}
+    .stats .wrap{grid-template-columns:1fr}
+    .stat{border-right:0;padding-left:0!important}
+    .dive{grid-template-columns:70px 1fr;row-gap:2px}
+    .dive span{grid-column:2;text-align:left}
+    .foot{grid-template-columns:1fr}
+    .foot-bottom{flex-direction:column}
+    .hero-facts{grid-template-columns:repeat(2,1fr);gap:18px 24px}
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="coordbar">
+  <div class="wrap">
+    <span>47°12′41″N · 122°54′08″W</span>
+    <span>Strait of Juan de Fuca · <b>Water 11.8°C</b> · <b>Visibility 9m</b></span>
+  </div>
+</div>
+
+<header>
+  <div class="wrap head">
+    <a class="brand" href="#main" aria-label="Halcyon Marine Research Station home">
+      <span class="brand-mark" aria-hidden="true">
+        <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+          <path d="M2 16c3-4 6-4 9 0s6 4 9 0 4-2 4-2" stroke="#5fe0c6" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M2 21c3-4 6-4 9 0s6 4 9 0 4-2 4-2" stroke="#5fe0c6" stroke-width="1.5" stroke-linecap="round" opacity=".5"/>
+          <circle cx="18" cy="8" r="3" stroke="#dff1ee" stroke-width="1.3"/>
+        </svg>
+      </span>
+      <span class="brand-name">Halcyon Marine<span>Research Station · Est. 1978</span></span>
+    </a>
+    <nav aria-label="Main">
+      <a href="#research">Research</a>
+      <a href="#data">Live data</a>
+      <a href="#expedition">At sea</a>
+      <a href="#notes">Field notes</a>
+      <a class="btn" href="#visit">Plan a visit</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="status"><i></i> Station HAL-04 · transmitting</span>
+        <h1>We listen<br>to the <em>water.</em></h1>
+        <p class="hero-lede">A small research station on the outer coast, measuring what changes in the Sound and explaining why. Our data is open, our dock is public, and our kettle is usually on.</p>
+        <div class="hero-actions">
+          <a class="btn" href="#data">See live readings</a>
+          <a class="btn ghost" href="#expedition">Join an expedition</a>
+        </div>
+        <div class="hero-facts">
+          <div><b>14</b><span>Moored buoys</span></div>
+          <div><b>2.3M</b><span>Observations</span></div>
+          <div><b>38</b><span>Species monitored</span></div>
+          <div><b>48</b><span>Years on the coast</span></div>
+        </div>
+      </div>
+
+      <div class="depth">
+        <div class="depth-head"><span>Depth profile · Station HAL-04</span><b>300 m cast</b></div>
+        <svg viewBox="0 0 480 545" role="img" aria-label="Illustrated water column showing sampling depths and marine life">
+          <defs>
+            <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#1d606b"/>
+              <stop offset=".45" stop-color="#0c3842"/>
+              <stop offset="1" stop-color="#03141a"/>
+            </linearGradient>
+            <linearGradient id="glow" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#5fe0c6" stop-opacity=".35"/>
+              <stop offset="1" stop-color="#5fe0c6" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <rect width="480" height="545" fill="url(#water)"/>
+          <g stroke="#9ac9c4" stroke-opacity=".22" stroke-width="1">
+            <path d="M0 42h480M0 118h480M0 230h480M0 382h480M0 470h480"/>
+            <path d="M0 70h480M0 160h480M0 290h480M0 420h480" stroke-dasharray="2 7" stroke-opacity=".13"/>
+          </g>
+          <g font-family="monospace" font-size="10" fill="#b8d8d4" fill-opacity=".65" letter-spacing="1">
+            <text x="14" y="38">0 m</text>
+            <text x="14" y="114">50</text>
+            <text x="14" y="226">100</text>
+            <text x="14" y="378">200</text>
+            <text x="14" y="466">300</text>
+          </g>
+          <rect x="360" y="0" width="120" height="300" fill="url(#glow)" opacity=".5"/>
+          <g fill="#dff1ee" opacity=".85">
+            <path d="M120 86c14-9 34-7 46 2 8 6 16 7 24 4l-8 7 16 2-18 5c-6 9-20 14-34 11-16-3-26-16-26-31Z"/>
+            <path d="M88 250c12-6 26-3 32 6 4 6 10 8 16 7l-6 5 13 2-14 4c-6 7-17 10-26 7-12-4-18-16-15-31Z" opacity=".6"/>
+          </g>
+          <g stroke="#dff1ee" stroke-opacity=".55" fill="none" stroke-width="1.2">
+            <path d="M270 160c-8-16 16-26 24-13 7 11-4 20-14 19-14-2-20 12-10 24 8 10 22 8 26-2"/>
+            <path d="M280 178v52M274 190c-6 14-12 24-18 32M288 190c6 14 10 24 14 34M278 210c-4 14-6 24-4 34M285 210c4 12 8 22 10 30" stroke-opacity=".4"/>
+          </g>
+          <g stroke="#9fded1" stroke-width="1" opacity=".3">
+            <path d="M64 22v500" stroke-dasharray="2 10"/>
+          </g>
+          <g fill="#9fded1" opacity=".5">
+            <circle cx="98" cy="340" r="1.4"/><circle cx="124" cy="392" r="1.1"/>
+            <circle cx="86" cy="438" r="1.3"/><circle cx="140" cy="466" r="1"/><circle cx="112" cy="500" r="1.2"/>
+          </g>
+          <g transform="translate(318 372)" stroke="#5fe0c6" fill="none" stroke-width="1.4">
+            <rect x="-30" y="-12" width="60" height="24" rx="7" fill="#0a2b33"/>
+            <path d="M-30 0h-12l-7 8M30 0h12l7 8M0-12V-24M-10 12v8M10 12v8"/>
+            <circle cx="0" cy="0" r="4" fill="#5fe0c6" stroke="none"/>
+          </g>
+          <path d="M0 500c46 0 46-14 92-8s58 20 104 12 52-24 96-22 54 18 94 14 58-10 94-4v53H0Z" fill="#031017"/>
+          <path d="M0 508c52-6 84 6 128 2s66-14 112-10 62 16 110 12 84-10 130-4" stroke="#2c5a58" stroke-width="1.2" fill="none" opacity=".7"/>
+          <g font-family="monospace" font-size="9" fill="#9fded1" letter-spacing="1.4">
+            <text x="330" y="352">GLIDER · 230 m</text>
+            <text x="156" y="132">JELLY · 90 m</text>
+            <text x="206" y="90">SALMON · 30 m</text>
+          </g>
+          <g stroke="#9fded1" stroke-opacity=".5" stroke-width="1">
+            <path d="M300 368h18M238 136l14 10M202 86h-10"/>
+          </g>
+        </svg>
+        <div class="depth-foot"><span>Last cast 14:20 PDT</span><span>CTD · 0.5 m resolution</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="stats">
+    <div class="wrap">
+      <div class="stat"><b>11.8°C</b><span>Surface temp</span></div>
+      <div class="stat"><b>29.4</b><span>Salinity PSU</span></div>
+      <div class="stat"><b>7.2</b><span>Oxygen mg/L</span></div>
+      <div class="stat"><b>3.1</b><span>Chlorophyll µg/L</span></div>
+    </div>
+  </div>
+
+  <section id="research">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="label">What we're learning</div>
+          <h2>Three questions,<br>one stretch of coast.</h2>
+        </div>
+        <p>Long-term monitoring is unglamorous and essential. These are the threads our team is pulling right now, with partners up and down the Sound.</p>
+      </div>
+      <div class="programmes">
+        <article class="programme">
+          <span class="pnum">PROGRAMME 01</span>
+          <div class="icon" aria-hidden="true">
+            <svg width="42" height="42" viewBox="0 0 42 42" fill="none">
+              <path d="M21 38V14" stroke="#5fe0c6" stroke-width="1.4"/>
+              <path d="M21 26c-8 0-12-5-12-11 8 0 12 5 12 11ZM21 22c8 0 12-5 12-11-8 0-12 5-12 11ZM21 32c-6 0-9-4-9-9 6 0 9 4 9 9Z" stroke="#5fe0c6" stroke-width="1.4"/>
+              <path d="M7 38h28" stroke="#5fe0c6" stroke-width="1.2" opacity=".4"/>
+            </svg>
+          </div>
+          <h3>Kelp recovery</h3>
+          <p>Bull kelp has thinned by nearly two thirds since 2015. We are mapping the surviving beds, growing local stock, and testing small replantings with the dive team.</p>
+          <div class="metric">−62% since 2015 <span>Canopy extent, 14 survey sites</span></div>
+        </article>
+        <article class="programme">
+          <span class="pnum">PROGRAMME 02</span>
+          <div class="icon" aria-hidden="true">
+            <svg width="42" height="42" viewBox="0 0 42 42" fill="none">
+              <path d="M6 15c6 0 6 4 12 4s6-4 12-4 6 4 6 4M6 25c6 0 6 4 12 4s6-4 12-4 6 4 6 4" stroke="#5fe0c6" stroke-width="1.4"/>
+              <circle cx="14" cy="10" r="3" stroke="#5fe0c6" stroke-width="1.4"/>
+              <path d="M14 13v5M34 35v-7" stroke="#5fe0c6" stroke-width="1.4" opacity=".5"/>
+            </svg>
+          </div>
+          <h3>Orca acoustics</h3>
+          <p>Six hydrophones listen around the clock. We publish call detections within the hour so ferry captains and whale-watch crews can slow down where it matters.</p>
+          <div class="metric">6 hydrophones · 24/7 <span>1,140 calls identified this year</span></div>
+        </article>
+        <article class="programme">
+          <span class="pnum">PROGRAMME 03</span>
+          <div class="icon" aria-hidden="true">
+            <svg width="42" height="42" viewBox="0 0 42 42" fill="none">
+              <path d="M21 5l9 9-9 9-9-9 9-9Z" stroke="#5fe0c6" stroke-width="1.4"/>
+              <path d="M21 15l5 5-5 5-5-5 5-5Z" stroke="#5fe0c6" stroke-width="1.2"/>
+              <path d="M9 30h24M13 35h16" stroke="#5fe0c6" stroke-width="1.4" opacity=".6"/>
+            </svg>
+          </div>
+          <h3>Microplastics</h3>
+          <p>From surface slicks to mussel beds, we are counting what shouldn't be there. The first five years of samples are now open for other labs to reuse.</p>
+          <div class="metric">1,200 samples <span>Open dataset · updated quarterly</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="data" class="data">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="label">Open data</div>
+          <h2>Live from the buoy.</h2>
+        </div>
+        <p>Every reading from the mooring is public the moment it arrives. No login, no licence fee, no delay.</p>
+      </div>
+      <div class="data-grid">
+        <div class="panel">
+          <div class="panel-head"><span>HAL-04 · Surface temperature · 24 h</span><b>°C</b></div>
+          <div class="chart">
+            <svg viewBox="0 0 640 270" role="img" aria-label="Line chart of surface water temperature over the last 24 hours, ranging from 11.2 to 12.0 degrees Celsius">
+              <g stroke="#16414a" stroke-width="1">
+                <path d="M44 30H620M44 88H620M44 146H620M44 204H620"/>
+              </g>
+              <g stroke="#10333b" stroke-width="1" stroke-dasharray="2 6">
+                <path d="M44 59H620M44 117H620M44 175H620M44 233H620"/>
+              </g>
+              <g font-family="monospace" font-size="10" fill="#8aacab">
+                <text x="6" y="34">12.0</text>
+                <text x="6" y="92">11.6</text>
+                <text x="6" y="150">11.2</text>
+                <text x="6" y="208">10.8</text>
+                <text x="44" y="256">00:00</text>
+                <text x="180" y="256">06:00</text>
+                <text x="326" y="256">12:00</text>
+                <text x="472" y="256">18:00</text>
+                <text x="596" y="256">now</text>
+              </g>
+              <path d="M44 176C70 168 88 150 112 146S158 154 182 140 216 108 246 104 290 118 316 100 348 72 380 76 414 96 444 90 478 66 512 70 552 84 584 74 606 58 620 56V233H44Z" fill="#5fe0c6" fill-opacity=".08"/>
+              <path d="M44 176C70 168 88 150 112 146S158 154 182 140 216 108 246 104 290 118 316 100 348 72 380 76 414 96 444 90 478 66 512 70 552 84 584 74 606 58 620 56" fill="none" stroke="#5fe0c6" stroke-width="2"/>
+              <g fill="#04171c" stroke="#5fe0c6" stroke-width="2">
+                <circle cx="620" cy="56" r="4"/>
+              </g>
+              <g stroke="#5fe0c6" stroke-opacity=".35" stroke-width="1" stroke-dasharray="2 4">
+                <path d="M380 76V233"/>
+              </g>
+              <text x="390" y="66" font-family="monospace" font-size="9" fill="#5fe0c6" letter-spacing="1">06:42 · 11.92°C</text>
+            </svg>
+          </div>
+          <div class="chart-legend"><span>Min <b>10.9</b> · Max <b>11.9</b> · Mean <b>11.5</b></span><span>Sensor 2 · 0.5 m depth</span></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><span>Station readings</span><b>14:20 PDT</b></div>
+          <table class="readings">
+            <thead><tr><th scope="col">Parameter</th><th scope="col">Value</th><th scope="col">Status</th></tr></thead>
+            <tbody>
+              <tr><td>Water temp</td><td class="val">11.8 <span class="unit">°C</span></td><td class="ok">Nominal</td></tr>
+              <tr><td>Salinity</td><td class="val">29.4 <span class="unit">PSU</span></td><td class="ok">Nominal</td></tr>
+              <tr><td>Dissolved O₂</td><td class="val">7.2 <span class="unit">mg/L</span></td><td class="ok">Nominal</td></tr>
+              <tr><td>Chlorophyll a</td><td class="val">3.1 <span class="unit">µg/L</span></td><td class="ok">Nominal</td></tr>
+              <tr><td>Turbidity</td><td class="val">1.4 <span class="unit">NTU</span></td><td class="ok">Nominal</td></tr>
+              <tr><td>Current · 10 m</td><td class="val">0.3 <span class="unit">m/s</span></td><td class="ok">Nominal</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="data-note">
+        <span>Last transmission <b>6 minutes ago</b> · battery 78% · next service 12 Nov</span>
+        <span><a href="#data" style="color:var(--teal);text-decoration:none">Download the full CSV (2019–2026)</a></span>
+      </div>
+    </div>
+  </section>
+
+  <section id="expedition" class="expedition">
+    <div class="wrap exp-grid">
+      <div>
+        <div class="label">At sea</div>
+        <h2>The Petrel goes<br>out on the tide.</h2>
+        <p>A 14-metre converted fishing boat, crew of four, bunks for six. We run day trips for volunteers and week-long transects for visiting researchers. No experience needed, sea legs helpful.</p>
+        <div class="dive-list">
+          <div class="dive"><span class="date">25 OCT</span><b>Kelp bed survey · Sooke Point</b><span>Day trip · 4 places</span></div>
+          <div class="dive"><span class="date">02 NOV</span><b>Hydrophone service · West Race</b><span>Day trip · waitlist</span></div>
+          <div class="dive"><span class="date">09–15 NOV</span><b>Autumn transect · applied science</b><span>Residential · 2 places</span></div>
+          <div class="dive"><span class="date">23 NOV</span><b>Shoreline plastics survey</b><span>Land-based · drop in</span></div>
+        </div>
+      </div>
+      <div class="vessel">
+        <svg viewBox="0 0 360 150" role="img" aria-label="Side profile drawing of the research vessel Petrel">
+          <path d="M10 100h340" stroke="#16414a" stroke-width="1"/>
+          <path d="M40 104c0 16 20 26 48 26h180c30 0 50-10 56-26" fill="#0a2b33" stroke="#5fe0c6" stroke-width="1.4"/>
+          <path d="M60 104h270l-14 20H82Z" fill="none" stroke="#5fe0c6" stroke-width="1.4"/>
+          <path d="M150 104V64h58v40M160 64V48h38v16" fill="none" stroke="#5fe0c6" stroke-width="1.4"/>
+          <path d="M150 84h58M179 48V28M179 28l-18 10M179 28l18 10" fill="none" stroke="#5fe0c6" stroke-width="1.4"/>
+          <path d="M226 104V86h22v18M58 124h284M118 138v-8M262 138v-8" stroke="#5fe0c6" stroke-width="1.2" opacity=".55"/>
+          <g fill="#5fe0c6"><circle cx="179" cy="28" r="2"/><circle cx="248" cy="86" r="1.6"/></g>
+        </svg>
+        <h3>R/V Petrel</h3>
+        <p>Built 1972, refitted 2021. Steel hull, shallow draught, excellent kettle.</p>
+        <dl>
+          <dt>Length</dt><dd>14.2 m</dd>
+          <dt>Range</dt><dd>180 nm</dd>
+          <dt>Crew</dt><dd>4 + 6</dd>
+          <dt>Berth</dt><dd>Float 3, Halcyon dock</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section id="notes">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="label">Field notes</div>
+          <h2>Written from the dock.</h2>
+        </div>
+        <p>Short reports from the team, published when there is something worth saying rather than on a schedule.</p>
+      </div>
+      <div class="notes">
+        <a class="note" href="#notes">
+          <span class="date">18 OCT 2026 · 6 MIN READ</span>
+          <h3>What a quiet hydrophone can tell you</h3>
+          <p>Three weeks of silence at West Race, and the maintenance trip that followed.</p>
+        </a>
+        <a class="note" href="#notes">
+          <span class="date">07 OCT 2026 · 4 MIN READ</span>
+          <h3>The mussels are eating our samples</h3>
+          <p>A note on cages, tides, and the difficulty of measuring plastic in a living filter.</p>
+        </a>
+        <a class="note" href="#notes">
+          <span class="date">29 SEP 2026 · 9 MIN READ</span>
+          <h3>Six years of kelp, in one chart</h3>
+          <p>What the survey flights show, and what they cannot see from the air.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="visit" class="visit">
+    <div class="wrap visit-grid">
+      <div>
+        <div class="label">Public access</div>
+        <h2>Come ashore.<br>The door is open.</h2>
+        <p>The visitor centre has a touch tank, a wall of charts, and the best view of the water on this coast. School groups and curious adults equally welcome.</p>
+        <table class="tour-table">
+          <tbody>
+            <tr><td>Visitor centre · self-guided</td><td>Wed–Sun · 10–4</td></tr>
+            <tr><td>Touch tank talk</td><td>11:00 &amp; 14:00</td></tr>
+            <tr><td>Station tour · 45 minutes</td><td>Sat · 13:00</td></tr>
+            <tr><td>Shoreline survey · meet at the gate</td><td>Last Sun · 9:00</td></tr>
+            <tr><td>School groups · booking required</td><td>Tue–Thu</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <aside class="visit-card">
+        <h3>Halcyon Marine Research Station</h3>
+        <dl>
+          <dt>Address</dt><dd>1 Breakwater Lane<br>Halcyon Bay, WA 98362</dd>
+          <dt>Phone</dt><dd>+1 360 555 0178</dd>
+          <dt>Email</dt><dd><a href="mailto:station@halcyonmarine.org">station@halcyonmarine.org</a></dd>
+          <dt>Dock</dt><dd>Float 3 · call ahead for deliveries</dd>
+        </dl>
+        <div class="callout">Free entry. The path from the car park is gravel and steep in places; a drop-off point is marked at the gate. Dogs on leads are welcome on the shore, not in the labs.</div>
+        <a class="btn" href="#visit" style="margin-top:20px">Book a station tour</a>
+      </aside>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <div class="brand-name">Halcyon Marine<span>Research Station</span></div>
+        <p style="margin-top:14px">Independent, publicly funded, and stubbornly patient. Working on the outer coast since 1978.</p>
+      </div>
+      <div>
+        <h4>Visit</h4>
+        <ul>
+          <li>1 Breakwater Lane</li>
+          <li>Halcyon Bay, WA</li>
+          <li>Wed–Sun · 10–4</li>
+          <li><a href="#visit">Directions</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Data</h4>
+        <ul>
+          <li><a href="#data">Buoy HAL-04</a></li>
+          <li><a href="#data">Open datasets</a></li>
+          <li><a href="#notes">Field notes</a></li>
+          <li><a href="#expedition">Ship schedule</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>The monthly sounding</h4>
+        <p style="margin-top:0">One email, first Monday. Observations, not announcements.</p>
+        <div class="field">
+          <input type="email" placeholder="Email address" aria-label="Email address">
+          <button type="button">Join</button>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Halcyon Marine Research Station · 47°12′41″N 122°54′08″W</span>
+      <span>Funded by the Coastal Trust &amp; public donations</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

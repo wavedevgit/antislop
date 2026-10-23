@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Root &amp; Rooter — Urban Gardening Club</title>
+<style>
+  :root {
+    --leaf: #2f6b3c;
+    --leaf-dark: #1d4526;
+    --soil: #4a3527;
+    --sun: #e8b33a;
+    --paper: #ffffff;
+    --mist: #eef3ec;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    color: #23281f;
+    background: var(--paper);
+    line-height: 1.6;
+  }
+  h1, h2, h3 { font-weight: normal; line-height: 1.15; margin: 0 0 .5em; }
+  h1 { font-size: 3.4rem; }
+  h2 { font-size: 2rem; color: var(--leaf-dark); }
+  h3 { font-size: 1.2rem; }
+  p { margin: 0 0 1em; }
+  a { color: var(--leaf); }
+  .sans { font-family: "Helvetica Neue", Arial, sans-serif; }
+
+  header {
+    background: var(--leaf-dark);
+    color: #f4f7f1;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  header .mark { display: flex; align-items: center; gap: .6rem; font-size: 1.15rem; letter-spacing: .04em; }
+  nav { margin-left: auto; font-family: "Helvetica Neue", Arial, sans-serif; font-size: .9rem; }
+  nav a { color: #d8e6d3; text-decoration: none; margin-left: 1.2rem; }
+  nav a:hover { color: #fff; text-decoration: underline; }
+
+  .hero {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    min-height: 420px;
+  }
+  .hero-copy { padding: 3.5rem 3rem; background: var(--mist); }
+  .hero-copy .kicker {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: .78rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--soil);
+    margin-bottom: 1rem;
+  }
+  .hero-copy .lede { font-size: 1.15rem; max-width: 34rem; }
+  .btn {
+    display: inline-block;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    background: var(--leaf);
+    color: #fff;
+    padding: .8rem 1.6rem;
+    text-decoration: none;
+    margin-top: .8rem;
+  }
+  .btn:hover { background: var(--leaf-dark); }
+  .hero-art { background: #cfe0c7; position: relative; overflow: hidden; }
+  .hero-art svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+  main { max-width: 1080px; margin: 0 auto; padding: 3rem 2rem; }
+  section { margin-bottom: 3.5rem; }
+
+  .plots {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+  .plot { border-top: 4px solid var(--leaf); padding-top: 1rem; }
+  .plot .num { font-family: "Helvetica Neue", Arial, sans-serif; font-size: .8rem; color: var(--soil); letter-spacing: .1em; }
+
+  table { border-collapse: collapse; width: 100%; font-family: "Helvetica Neue", Arial, sans-serif; font-size: .95rem; }
+  th { text-align: left; font-weight: 600; background: var(--mist); }
+  th, td { padding: .7rem .9rem; border-bottom: 1px solid #d6e0d1; }
+  tr:hover td { background: #f6f9f4; }
+
+  .quote {
+    border-left: 5px solid var(--sun);
+    padding: .4rem 0 .4rem 1.4rem;
+    font-size: 1.25rem;
+    font-style: italic;
+    margin: 0 0 .6rem;
+  }
+  .quote cite { display: block; font-size: .9rem; font-style: normal; font-family: "Helvetica Neue", Arial, sans-serif; color: #5c6356; margin-top: .4rem; }
+
+  footer {
+    background: var(--soil);
+    color: #e8ded2;
+    padding: 2.5rem 2rem;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: .9rem;
+  }
+  footer .inner { max-width: 1080px; margin: 0 auto; display: flex; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+
+  @media (max-width: 760px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-art { min-height: 260px; }
+    .plots { grid-template-columns: 1fr; }
+    h1 { font-size: 2.4rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="mark">
+    <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true">
+      <path d="M14 26C14 18 8 14 3 13c0 8 5 12 11 13Z" fill="#8fc47f"/>
+      <path d="M14 26C14 16 20 10 25 9c0 10-5 16-11 17Z" fill="#e8b33a"/>
+      <path d="M14 26V14" stroke="#f4f7f1" stroke-width="1.6"/>
+    </svg>
+    Root &amp; Rooter
+  </span>
+  <nav>
+    <a href="#plots">The Plots</a>
+    <a href="#calendar">Calendar</a>
+    <a href="#join">Join</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <div class="hero-copy">
+    <div class="kicker">Est. 2011 &middot; Millbrook Neighbourhood</div>
+    <h1>Twelve garden beds, one very muddy community.</h1>
+    <p class="lede">We are a volunteer-run club tending shared plots on a reclaimed
+    corner lot between the tram depot and Kestrel Creek. Tomatoes, arguments about
+    compost, and a shed with a questionable padlock since 2011.</p>
+    <a class="btn" href="#join">Become a member</a>
+  </div>
+  <div class="hero-art" aria-hidden="true">
+    <svg viewBox="0 0 400 420" preserveAspectRatio="xMidYMax slice">
+      <rect width="400" height="420" fill="#cfe0c7"/>
+      <circle cx="320" cy="80" r="46" fill="#e8b33a"/>
+      <!-- fence -->
+      <g stroke="#7a5c3e" stroke-width="6">
+        <line x1="20" y1="330" x2="20" y2="420"/>
+        <line x1="80" y1="330" x2="80" y2="420"/>
+        <line x1="140" y1="330" x2="140" y2="420"/>
+        <line x1="200" y1="330" x2="200" y2="420"/>
+        <line x1="260" y1="330" x2="260" y2="420"/>
+        <line x1="320" y1="330" x2="320" y2="420"/>
+        <line x1="380" y1="330" x2="380" y2="420"/>
+      </g>
+      <!-- raised beds -->
+      <rect x="0" y="300" width="400" height="40" fill="#4a3527"/>
+      <!-- plants -->
+      <g>
+        <path d="M60 300c0-30 14-48 30-52-4 26-12 42-30 52Z" fill="#2f6b3c"/>
+        <path d="M150 300c0-40 20-62 40-66-6 34-16 54-40 66Z" fill="#3e8a4d"/>
+        <path d="M250 300c0-34 16-54 34-58-5 29-14 48-34 58Z" fill="#2f6b3c"/>
+        <path d="M330 300c0-26 12-42 26-46-4 23-11 37-26 46Z" fill="#3e8a4d"/>
+        <circle cx="196" cy="238" r="8" fill="#c0392b"/>
+        <circle cx="282" cy="248" r="7" fill="#c0392b"/>
+        <circle cx="88" cy="252" r="6" fill="#e8b33a"/>
+      </g>
+      <!-- watering can -->
+      <g transform="translate(20 350)">
+        <rect x="0" y="10" width="46" height="34" fill="#7ea6b8"/>
+        <path d="M46 18 74 6l4 8-28 14Z" fill="#7ea6b8"/>
+        <rect x="8" y="0" width="30" height="8" fill="#5f8799"/>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<main>
+  <section id="plots">
+    <h2>What's growing where</h2>
+    <p>The lot is divided into twelve plots plus a communal herb spiral and a
+    pollinator strip along the creek side. Each plot is allocated by ballot
+    every March.</p>
+    <div class="plots">
+      <div class="plot">
+        <div class="num">PLOTS 1&ndash;4</div>
+        <h3>Brassica row</h3>
+        <p>Kale, savoy cabbage, and the cauliflower that always wins
+        the September show. Watered by hose from the depot standpipe.</p>
+      </div>
+      <div class="plot">
+        <div class="num">PLOTS 5&ndash;8</div>
+        <h3>Tomato houses</h3>
+        <p>Two polytunnels held together with tape and optimism. Members share
+        the harvest rota; nobody may take more than four fruit per week.</p>
+      </div>
+      <div class="plot">
+        <div class="num">PLOTS 9&ndash;12</div>
+        <h3>Orchard &amp; soft fruit</h3>
+        <p>Three dwarf apples, a quince, and an aggressive blackberry that has
+        eaten the west fence twice.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="calendar">
+    <h2>Club calendar</h2>
+    <table>
+      <thead>
+        <tr><th>When</th><th>What</th><th>Where</th><th>Bring</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Sat 9am</td><td>Working bee &amp; bed turning</td><td>Main gate</td><td>Gloves</td></tr>
+        <tr><td>Wed 6pm</td><td>Seed swapping &amp; tea</td><td>The shed</td><td>Seeds, mug</td></tr>
+        <tr><td>Sun 11am</td><td>Kids&rsquo; worm talk</td><td>Herb spiral</td><td>Nothing</td></tr>
+        <tr><td>First Fri</td><td>Compost committee</td><td>Depot canteen</td><td>Patience</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>From the beds</h2>
+    <blockquote class="quote">
+      I joined to grow tomatoes. Nine years later I mostly come for the
+      arguments about pH.
+      <cite>&mdash; Devi R., plot 6</cite>
+    </blockquote>
+    <blockquote class="quote">
+      The blackberry is winning, but we believe in the long game.
+      <cite>&mdash; Tomás L., fence committee</cite>
+    </blockquote>
+  </section>
+
+  <section id="join">
+    <h2>Join the club</h2>
+    <p>Membership is 18&thinsp;&euro; a year, which covers water, seed bulk buys,
+    and the annual plot supper. No experience required; enthusiasm and
+    closed-toe shoes are.</p>
+    <a class="btn" href="mailto:hello@rootandrooter.example">Email the committee</a>
+  </section>
+</main>
+
+<footer>
+  <div class="inner">
+    <div>
+      <strong>Root &amp; Rooter Gardening Club</strong><br>
+      Corner of Depot Lane &amp; Kestrel Creek Path
+    </div>
+    <div>
+      Committee meets first Friday<br>
+      shed key held by three people, badly
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

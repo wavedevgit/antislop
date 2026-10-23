@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Lantern Theatre — 2026 Season</title>
+<style>
+  :root{
+    --black:#0c090d;
+    --plum:#1b0f16;
+    --plum-2:#25141d;
+    --wine:#5b1c2d;
+    --wine-deep:#3d1220;
+    --gold:#e6b055;
+    --gold-soft:#f0cd8f;
+    --cream:#f1e4d0;
+    --cream-2:#e7d7bf;
+    --ink:#1c1218;
+    --muted:#a79484;
+    --line:#3a2530;
+    --serif:"Bodoni MT","Didot","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --body:"Iowan Old Style","Palatino Linotype","Book Antiqua",Palatino,Georgia,serif;
+    --sans:"Avenir Next","Segoe UI",Helvetica,Arial,sans-serif;
+    --pad:clamp(20px,4.5vw,60px);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--black);color:var(--cream);font-family:var(--body);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 var(--pad)}
+  .skip{position:absolute;left:-9999px;background:var(--gold);color:var(--black);padding:10px 16px;z-index:40;font-family:var(--sans);font-size:.8rem}
+  .skip:focus{left:12px;top:12px}
+  .smallcaps{font-family:var(--sans);font-size:.62rem;letter-spacing:.22em;text-transform:uppercase}
+
+  /* top strip */
+  .topstrip{border-bottom:1px solid var(--line);background:#080608;font-family:var(--sans);font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;color:#9b8879}
+  .topstrip .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:9px;padding-bottom:9px}
+  .topstrip b{color:var(--gold);font-weight:500}
+
+  /* header */
+  header{position:sticky;top:0;z-index:12;background:rgba(12,9,13,.93);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .head{display:flex;align-items:center;justify-content:space-between;gap:22px;padding:15px 0}
+  .brand{display:flex;align-items:center;gap:14px;text-decoration:none}
+  .brand-mark{width:42px;height:52px;flex:none;display:grid;place-items:center}
+  .brand-name{font-family:var(--serif);font-size:1.55rem;line-height:.9;letter-spacing:.01em}
+  .brand-name span{display:block;font-family:var(--sans);font-size:.54rem;letter-spacing:.26em;text-transform:uppercase;color:var(--muted);margin-top:7px}
+  nav{display:flex;align-items:center;gap:clamp(14px,2.4vw,30px);flex-wrap:wrap;justify-content:flex-end}
+  nav a{font-family:var(--sans);font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;color:#cbbbaa;padding:5px 0;border-bottom:1px solid transparent}
+  nav a:hover{color:var(--cream);border-color:var(--gold)}
+  .btn{display:inline-block;background:var(--gold);color:var(--black);text-decoration:none;font-family:var(--sans);font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:13px 22px;border:1px solid var(--gold);transition:background .18s,color .18s}
+  .btn:hover{background:var(--gold-soft)}
+  .btn.ghost{background:transparent;color:var(--cream);border-color:#6a4a3c}
+  .btn.ghost:hover{border-color:var(--gold);color:var(--gold)}
+
+  /* hero */
+  .hero{position:relative;overflow:hidden;padding:clamp(56px,9vw,110px) 0 clamp(40px,6vw,70px);border-bottom:1px solid var(--line)}
+  .hero-bg{position:absolute;inset:0;pointer-events:none}
+  .hero-bg svg{width:100%;height:100%;display:block}
+  .hero .wrap{position:relative;z-index:1}
+  .hero-kicker{display:flex;align-items:center;gap:14px;color:var(--gold);margin-bottom:28px}
+  .hero-kicker::before{content:"";width:40px;height:1px;background:var(--gold)}
+  h1{font-family:var(--serif);font-weight:400;font-size:clamp(3.2rem,9.2vw,7.6rem);line-height:.9;letter-spacing:-.03em;margin:0 0 30px;max-width:14ch}
+  h1 em{font-style:italic;color:var(--gold)}
+  .hero-copy{display:grid;grid-template-columns:1.2fr .8fr;gap:clamp(26px,5vw,80px);align-items:end}
+  .hero-lede{max-width:34ch;font-size:clamp(1rem,1.3vw,1.14rem);color:#c0ae9d;margin:0 0 30px}
+  .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+  .now-strip{margin-top:clamp(40px,6vw,70px);border-top:1px solid var(--line);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:clamp(18px,4vw,54px);padding:16px 0;flex-wrap:wrap}
+  .now-strip .label{font-family:var(--sans);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+  .now-strip b{font-family:var(--serif);font-size:1.3rem;font-weight:400;font-style:italic}
+  .now-strip span{font-family:var(--sans);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:#a79484}
+  .now-strip a{margin-left:auto;font-family:var(--sans);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);text-decoration:none;border-bottom:1px solid var(--wine)}
+  .now-strip a:hover{border-color:var(--gold)}
+
+  /* sections */
+  section{padding:clamp(54px,7vw,96px) 0}
+  .sec-head{display:grid;grid-template-columns:1fr auto;gap:26px;align-items:end;margin-bottom:40px}
+  .sec-head h2{font-family:var(--serif);font-weight:400;font-size:clamp(2.1rem,4.4vw,3.5rem);line-height:1;letter-spacing:-.02em;margin:10px 0 0}
+  .sec-head h2 em{color:var(--gold);font-style:italic}
+  .sec-head p{max-width:36ch;margin:0;font-size:.92rem;color:#b5a392;font-family:var(--sans)}
+  .sec-head .smallcaps{color:var(--gold)}
+
+  /* now playing */
+  .now{background:var(--plum);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .now-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(34px,5vw,76px);align-items:center}
+  .poster-main{border:1px solid #6a4a3c;padding:10px;background:#120a10;position:relative}
+  .poster-main::after{content:"";position:absolute;inset:4px;border:1px solid rgba(230,176,85,.25);pointer-events:none}
+  .poster-main svg{display:block;width:100%;height:auto}
+  .poster-caption{display:flex;justify-content:space-between;gap:12px;padding:10px 4px 2px;font-family:var(--sans);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:#a79484}
+  .now-copy .smallcaps{color:var(--gold)}
+  .now-copy h2{font-family:var(--serif);font-size:clamp(2.6rem,5vw,4.3rem);font-weight:400;font-style:italic;line-height:.95;letter-spacing:-.02em;margin:10px 0 4px}
+  .now-copy .byline{font-family:var(--sans);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:#a79484;margin-bottom:22px}
+  .now-copy p{font-size:1rem;color:#c8b6a4;max-width:44ch;margin:0 0 24px}
+  .now-meta{display:grid;grid-template-columns:1fr 1fr;gap:14px 26px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:18px 0;margin-bottom:26px;font-family:var(--sans)}
+  .now-meta dt{font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:3px}
+  .now-meta dd{margin:0;font-size:.82rem;color:#d3c3b2}
+  .now-copy .actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+  .now-copy .note{font-family:var(--sans);font-size:.66rem;color:#9b8879;margin-top:16px;letter-spacing:.02em}
+
+  /* season */
+  .season-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:clamp(12px,1.6vw,20px)}
+  .show{text-decoration:none;display:block}
+  .show-poster{position:relative;aspect-ratio:2/3;overflow:hidden;border:1px solid #4a3340;transition:transform .22s ease,border-color .22s ease}
+  .show:hover .show-poster{transform:translateY(-6px);border-color:var(--gold)}
+  .show-poster svg{position:absolute;inset:0;width:100%;height:100%}
+  .show-type{position:absolute;inset:0;padding:16px 14px;display:flex;flex-direction:column;justify-content:space-between}
+  .show-type .top{font-family:var(--sans);font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;opacity:.8}
+  .show-type .title{font-family:var(--serif);font-size:clamp(1.1rem,1.75vw,1.5rem);line-height:.98;letter-spacing:-.01em}
+  .show-type .date{font-family:var(--sans);font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;opacity:.85}
+  .show-meta{padding-top:11px}
+  .show-meta b{display:block;font-family:var(--serif);font-size:.98rem;font-weight:400;font-style:italic;line-height:1.25}
+  .show-meta span{display:block;font-family:var(--sans);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:#9b8879;margin-top:4px}
+  .show:hover .show-meta b{color:var(--gold)}
+  .season-foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:36px;padding-top:16px;border-top:1px solid var(--line);font-family:var(--sans);font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:#9b8879}
+  .season-foot b{color:var(--gold);font-weight:400}
+
+  /* building - cream */
+  .building{background:var(--cream);color:var(--ink);border-top:6px solid var(--wine);border-bottom:6px solid var(--wine)}
+  .building .sec-head{border-color:#c9b69c}
+  .building .sec-head h2{color:var(--ink)}
+  .building .sec-head h2 em{color:var(--wine)}
+  .building .sec-head p{color:#6c5a49}
+  .building .smallcaps{color:var(--wine)}
+  .build-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,72px);align-items:center}
+  .build-copy p{color:#584838;max-width:46ch}
+  .build-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:30px;border-top:1px solid #c9b69c;padding-top:20px}
+  .build-stat{padding-right:18px;border-right:1px solid #d6c4ab}
+  .build-stat:last-child{border-right:0;padding-left:18px}
+  .build-stat:first-child{padding-left:0}
+  .build-stat b{display:block;font-family:var(--serif);font-size:2.1rem;font-weight:400;line-height:1;color:var(--wine)}
+  .build-stat span{font-family:var(--sans);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:#6c5a49}
+  .build-art{border:1px solid #b9a488;background:var(--cream-2);padding:clamp(14px,2vw,22px);position:relative}
+  .build-art svg{display:block;width:100%;height:auto}
+  .build-art .caption{display:flex;justify-content:space-between;gap:12px;padding-top:10px;margin-top:10px;border-top:1px solid #b9a488;font-family:var(--sans);font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:#6c5a49}
+
+  /* tickets */
+  .tickets{background:var(--plum-2);border-top:1px solid var(--line)}
+  .tix-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(32px,5vw,70px);align-items:start}
+  .price-table{width:100%;border-collapse:collapse;font-family:var(--sans)}
+  .price-table th{text-align:left;font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:500;padding:0 0 10px;border-bottom:1px solid var(--line)}
+  .price-table th:last-child{text-align:right}
+  .price-table td{padding:14px 0;border-bottom:1px solid var(--line);font-size:.86rem;color:#cbbbaa}
+  .price-table td:first-child{color:var(--cream)}
+  .price-table td:last-child{text-align:right;font-family:var(--serif);font-size:1.1rem;color:var(--gold-soft);font-variant-numeric:tabular-nums}
+  .price-table td .sub{display:block;font-family:var(--sans);font-size:.66rem;color:#9b8879;margin-top:2px}
+  .tix-note{font-family:var(--sans);font-size:.72rem;color:#9b8879;margin:16px 0 0;max-width:44ch}
+  .boxoffice{border:1px solid var(--line);background:#170d13;padding:clamp(24px,3vw,34px)}
+  .boxoffice h3{font-family:var(--serif);font-size:1.5rem;font-weight:400;font-style:italic;margin:8px 0 16px}
+  .boxoffice dl{display:grid;grid-template-columns:auto 1fr;gap:10px 20px;margin:0 0 20px;font-family:var(--sans);font-size:.82rem}
+  .boxoffice dt{font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);padding-top:3px}
+  .boxoffice dd{margin:0;color:#d0c0af}
+  .boxoffice a{color:var(--gold-soft);text-decoration:none;border-bottom:1px solid #6a4a3c}
+  .boxoffice .access{border-top:1px solid var(--line);padding-top:16px;font-family:var(--sans);font-size:.74rem;color:#9b8879;line-height:1.65}
+  .boxoffice .access b{color:#cbbbaa;font-weight:500}
+
+  /* marquee */
+  .marquee{background:var(--wine);color:var(--cream);border-top:1px solid #7a3044;border-bottom:1px solid #7a3044;overflow:hidden;padding:12px 0}
+  .marquee-track{display:flex;gap:0;width:max-content;animation:slide 38s linear infinite}
+  .marquee span{font-family:var(--serif);font-style:italic;font-size:1.05rem;white-space:nowrap;padding:0 26px;display:flex;align-items:center;gap:26px}
+  .marquee span::after{content:"✦";font-style:normal;font-size:.7rem;color:var(--gold-soft)}
+  @keyframes slide{to{transform:translateX(-50%)}}
+  @media(prefers-reduced-motion:reduce){.marquee-track{animation:none}.show-poster{transition:none}}
+
+  /* footer */
+  footer{background:#080608;padding:clamp(44px,6vw,68px) 0 22px;border-top:1px solid var(--line)}
+  .foot{display:grid;grid-template-columns:1.4fr .8fr .7fr 1fr;gap:clamp(24px,4vw,56px);padding-bottom:40px}
+  .foot .brand-name{font-size:1.5rem}
+  .foot p{font-size:.84rem;color:#9b8879;max-width:30ch;font-family:var(--sans)}
+  .foot h4{font-family:var(--sans);font-size:.56rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin:0 0 14px;font-weight:500}
+  .foot ul{list-style:none;padding:0;margin:0;font-family:var(--sans);font-size:.8rem;color:#b5a392}
+  .foot li{margin-bottom:8px}
+  .foot a{text-decoration:none}
+  .foot a:hover{color:var(--gold-soft)}
+  .foot .field{display:flex;border-bottom:1px solid #4a3340;margin-top:10px}
+  .foot input{flex:1;background:transparent;border:0;color:var(--cream);font:inherit;font-family:var(--sans);font-size:.8rem;padding:8px 0;min-width:0}
+  .foot input::placeholder{color:#7b6a5e}
+  .foot button{background:transparent;border:0;color:var(--gold);font:inherit;font-family:var(--sans);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;padding-left:12px}
+  .foot-bottom{border-top:1px solid var(--line);padding-top:18px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-family:var(--sans);font-size:.6rem;letter-spacing:.08em;color:#7b6a5e}
+  .foot-bottom a{color:#9b8879;text-decoration:none}
+
+  @media(max-width:1020px){
+    .hero-copy{grid-template-columns:1fr;gap:26px}
+    .now-grid{grid-template-columns:1fr;gap:34px}
+    .poster-main{max-width:460px}
+    .season-grid{grid-template-columns:repeat(3,1fr);gap:18px}
+    .show:last-child{grid-column:auto}
+    .build-grid{grid-template-columns:1fr}
+    .tix-grid{grid-template-columns:1fr}
+    .foot{grid-template-columns:1fr 1fr}
+  }
+  @media(max-width:700px){
+    nav a:not(.btn){display:none}
+    h1{font-size:clamp(3rem,14vw,5rem)}
+    .season-grid{grid-template-columns:repeat(2,1fr)}
+    .sec-head{grid-template-columns:1fr;gap:12px}
+    .now-strip{gap:12px 20px}
+    .now-strip a{margin-left:0}
+    .now-meta{grid-template-columns:1fr}
+    .build-stats{gap:14px 0}
+    .foot{grid-template-columns:1fr}
+    .foot-bottom{flex-direction:column}
+    .price-table td{font-size:.8rem}
+  }
+  @media(max-width:440px){
+    .season-grid{grid-template-columns:1fr}
+    .show-poster{aspect-ratio:3/2.6}
+    .show-type .title{font-size:1.6rem}
+    .build-stats{grid-template-columns:1fr}
+    .build-stat{border-right:0;border-bottom:1px solid #d6c4ab;padding:12px 0!important}
+    .build-stat:last-child{border-bottom:0}
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="topstrip">
+  <div class="wrap">
+    <span>Box office · Wed–Sat 12–6</span>
+    <span><b>214 Ash Street</b> · Northfield · +1 555 018 2244</span>
+  </div>
+</div>
+
+<header>
+  <div class="wrap head">
+    <a class="brand" href="#main" aria-label="The Lantern Theatre home">
+      <span class="brand-mark" aria-hidden="true">
+        <svg width="34" height="46" viewBox="0 0 34 46" fill="none">
+          <path d="M17 2v6M11 12h12v6H11zM9 18h16l4 18H5l4-18Z" stroke="#e6b055" stroke-width="1.3"/>
+          <path d="M11 40h12M13 44h8" stroke="#e6b055" stroke-width="1.3"/>
+          <path d="M17 22v10M13 26h8" stroke="#f1e4d0" stroke-width="1.1"/>
+          <path d="M2 36h4M28 36h4" stroke="#5b1c2d" stroke-width="1.3"/>
+        </svg>
+      </span>
+      <span class="brand-name">The Lantern<span>Theatre · Northfield</span></span>
+    </a>
+    <nav aria-label="Main">
+      <a href="#now">Now playing</a>
+      <a href="#season">Season</a>
+      <a href="#building">The building</a>
+      <a href="#tickets">Tickets</a>
+      <a class="btn" href="#tickets">Book seats</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <div class="hero-bg" aria-hidden="true">
+      <svg viewBox="0 0 1440 760" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <radialGradient id="spot1" cx="50%" cy="50%" r="50%">
+            <stop offset="0" stop-color="#e6b055" stop-opacity=".26"/>
+            <stop offset=".55" stop-color="#e6b055" stop-opacity=".07"/>
+            <stop offset="1" stop-color="#e6b055" stop-opacity="0"/>
+          </radialGradient>
+          <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#e6b055" stop-opacity=".22"/>
+            <stop offset="1" stop-color="#e6b055" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <ellipse cx="880" cy="620" rx="520" ry="300" fill="url(#spot1)"/>
+        <path d="M548 0h64L440 700H304L548 0Z" fill="url(#beam)" opacity=".5"/>
+        <path d="M828 0h50L1080 700h-70L828 0Z" fill="url(#beam)" opacity=".35"/>
+        <g stroke="#e6b055" stroke-opacity=".2" stroke-width="1">
+          <path d="M0 620h1440M0 660h1440"/>
+        </g>
+        <g fill="#e6b055" fill-opacity=".5">
+          <circle cx="209" cy="148" r="1.4"/><circle cx="1204" cy="94" r="1.1"/><circle cx="1310" cy="260" r="1.5"/>
+          <circle cx="1108" cy="182" r="1"/><circle cx="392" cy="92" r="1.2"/><circle cx="1260" cy="430" r="1.2"/>
+        </g>
+        <g stroke="#5b1c2d" stroke-width="1.2" fill="none" opacity=".6">
+          <path d="M0 700c180-22 300 20 480 0s320-30 480-4 300 24 480 4"/>
+          <path d="M0 724c180-22 300 20 480 0s320-30 480-4 300 24 480 4"/>
+        </g>
+      </svg>
+    </div>
+    <div class="wrap">
+      <div class="hero-kicker smallcaps">The 2026 season · October – March</div>
+      <div class="hero-copy">
+        <div>
+          <h1>A season<br>in the <em>dark.</em></h1>
+        </div>
+        <div>
+          <p class="hero-lede">Five plays about people standing at the edge of something. A converted cinema, 220 seats, and not a bad sightline in the house.</p>
+          <div class="hero-actions">
+            <a class="btn" href="#season">See the season</a>
+            <a class="btn ghost" href="#tickets">Box office &amp; access</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="now-strip">
+        <span class="label">Now playing</span>
+        <b>The Salt House</b>
+        <span>Through 8 November</span>
+        <span>Wed–Sat 7.30pm · Sun 3pm</span>
+        <a href="#now">Read about the production</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="now" class="now">
+    <div class="wrap">
+      <div class="now-grid">
+        <div>
+          <div class="poster-main">
+            <svg viewBox="0 0 500 620" role="img" aria-label="Poster art for The Salt House: a lit window over a dark sea">
+              <rect width="500" height="620" fill="#4d1727"/>
+              <rect x="26" y="26" width="448" height="568" fill="none" stroke="#e6b055" stroke-opacity=".35"/>
+              <circle cx="250" cy="176" r="92" fill="#e6b055" opacity=".13"/>
+              <circle cx="250" cy="176" r="58" fill="#f0cd8f" opacity=".55"/>
+              <path d="M0 430c60-26 110 14 170-8s90 22 160 0 110-18 170 6v192H0Z" fill="#220b13"/>
+              <path d="M0 462c60-22 108 16 168-6s92 20 162-2 108-14 170 8" fill="none" stroke="#e6b055" stroke-opacity=".4"/>
+              <path d="M0 496c60-20 108 18 168-4s92 18 162-4 108-12 170 10" fill="none" stroke="#e6b055" stroke-opacity=".22"/>
+              <g stroke="#f1e4d0" stroke-width="2" fill="none">
+                <path d="M168 355v119h164V355"/>
+                <path d="M150 355h200M168 412h164M250 355v119"/>
+                <path d="M210 474v-38h26v38M276 474v-44h26v44" stroke-width="1.4" opacity=".8"/>
+                <path d="M286 306V262h18v44" stroke-width="1.2" opacity=".6"/>
+              </g>
+              <g fill="#f0cd8f" opacity=".65">
+                <rect x="180" y="366" width="60" height="34" opacity=".2"/>
+                <rect x="260" y="366" width="60" height="34" opacity=".1"/>
+                <rect x="180" y="424" width="60" height="34" opacity=".12"/>
+              </g>
+              <path d="M140 520h220" stroke="#e6b055" stroke-opacity=".45"/>
+              <g font-family="Georgia,serif" fill="#f1e4d0">
+                <text x="250" y="566" text-anchor="middle" font-size="15" letter-spacing="6">THE SALT HOUSE</text>
+                <text x="250" y="587" text-anchor="middle" font-family="Arial,sans-serif" font-size="8" letter-spacing="3" fill="#e6b055">A PLAY BY NORA VANCE</text>
+              </g>
+              <g font-family="Arial,sans-serif" font-size="7" letter-spacing="2" fill="#f1e4d0" opacity=".5">
+                <text x="42" y="48">THE LANTERN THEATRE</text>
+                <text x="458" y="586" text-anchor="end">2026</text>
+              </g>
+            </svg>
+          </div>
+          <div class="poster-caption"><span>Main house · 95 minutes</span><span>No interval</span></div>
+        </div>
+
+        <div class="now-copy">
+          <span class="smallcaps">Now playing · main house</span>
+          <h2>The Salt<br>House</h2>
+          <div class="byline">By Nora Vance · Directed by Imani Cole</div>
+          <p>A lighthouse keeper has kept the same light for thirty-one years. The night before the station is decommissioned, her sister arrives with a suitcase and a question neither of them has been willing to ask. A play about inheritance, weather, and the things we keep lit out of habit.</p>
+          <dl class="now-meta">
+            <div><dt>Running</dt><dd>17 October – 8 November</dd></div>
+            <div><dt>Performances</dt><dd>Wed–Sat 7.30pm · Sun 3pm</dd></div>
+            <div><dt>Cast</dt><dd>Ruth Osei, Lila Hart, Tomás Reyes</dd></div>
+            <div><dt>Content note</dt><dd>Grief, coastal flooding, one loud storm</dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="#tickets">Book seats · from $18</a>
+            <a class="btn ghost" href="#season">Full season</a>
+          </div>
+          <p class="note">Audio description 24 Oct · captioned performance 31 Oct · post-show talkback 25 Oct</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="season">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="smallcaps">The full season</span>
+          <h2>Five plays, <em>one room.</em></h2>
+        </div>
+        <p>Every production runs three weeks. Tickets go on sale six weeks ahead; members book first and pay less.</p>
+      </div>
+
+      <div class="season-grid">
+        <a class="show" href="#tickets">
+          <div class="show-poster">
+            <svg viewBox="0 0 300 450" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <rect width="300" height="450" fill="#4d1727"/>
+              <circle cx="150" cy="180" r="80" fill="none" stroke="#e6b055" stroke-opacity=".45"/>
+              <path d="M60 340c40-24 80 18 120-4s60 20 110-2v116H60Z" fill="#220b13"/>
+              <path d="M60 358c40-20 80 16 120-4s60 18 110-2" fill="none" stroke="#e6b055" stroke-opacity=".4"/>
+              <path d="M98 340v-10M298 340v-10" stroke="none"/>
+            </svg>
+            <div class="show-type">
+              <span class="top">17 Oct – 8 Nov · Main house</span>
+              <div class="title">The<br>Salt<br>House</div>
+              <span class="date">Nora Vance</span>
+            </div>
+          </div>
+          <div class="show-meta"><b>The Salt House</b><span>17 Oct – 8 Nov · from $18</span></div>
+        </a>
+
+        <a class="show" href="#tickets">
+          <div class="show-poster">
+            <svg viewBox="0 0 300 450" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <rect width="300" height="450" fill="#0b0b10"/>
+              <circle cx="200" cy="120" r="66" fill="#e6b055" opacity=".85"/>
+              <circle cx="176" cy="104" r="66" fill="#0b0b10"/>
+              <g fill="#e6b055" opacity=".5">
+                <circle cx="54" cy="72" r="1.7"/><circle cx="104" cy="150" r="1.4"/><circle cx="250" cy="230" r="1.8"/><circle cx="60" cy="250" r="1.2"/>
+              </g>
+              <path d="M40 330c22 0 34-16 52-8 16 8 12 22 30 22 20 0 26-18 44-18 14 0 18 10 30 10" fill="none" stroke="#f1e4d0" stroke-opacity=".35"/>
+              <path d="M0 400h300" stroke="#3a2530"/>
+            </svg>
+            <div class="show-type">
+              <span class="top">14 Nov – 6 Dec · Main house</span>
+              <div class="title">Night<br>jar</div>
+              <span class="date">J. Mbeki</span>
+            </div>
+          </div>
+          <div class="show-meta"><b>Nightjar</b><span>14 Nov – 6 Dec · from $18</span></div>
+        </a>
+
+        <a class="show" href="#tickets">
+          <div class="show-poster">
+            <svg viewBox="0 0 300 450" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <rect width="300" height="450" fill="#153a38"/>
+              <circle cx="150" cy="200" r="92" fill="none" stroke="#e6b055" stroke-width="1.4" stroke-opacity=".6"/>
+              <circle cx="150" cy="200" r="68" fill="none" stroke="#f1e4d0" stroke-width="1" stroke-opacity=".25"/>
+              <g stroke="#f1e4d0" stroke-opacity=".5" stroke-width="1">
+                <path d="M150 108v18M150 274v18M58 200h18M224 200h18M86 136l12 12M214 252l12 12M214 136l-12 12M86 252l-12 12"/>
+              </g>
+              <path d="M150 200V148M150 200l30 20" stroke="#e6b055" stroke-width="2"/>
+              <circle cx="150" cy="200" r="4" fill="#e6b055"/>
+            </svg>
+            <div class="show-type">
+              <span class="top">12 Dec – 3 Jan · Studio</span>
+              <div class="title">A Small<br>Hour</div>
+              <span class="date">E. Sørensen</span>
+            </div>
+          </div>
+          <div class="show-meta"><b>A Small Hour</b><span>12 Dec – 3 Jan · from $15</span></div>
+        </a>
+
+        <a class="show" href="#tickets">
+          <div class="show-poster">
+            <svg viewBox="0 0 300 450" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <rect width="300" height="450" fill="#39412a"/>
+              <g fill="none" stroke="#e6b055" stroke-opacity=".55" stroke-width="1">
+                <path d="M-30 90c80-40 180 40 260 0s100-20 110-10"/>
+                <path d="M-30 130c80-40 180 40 260 0s100-20 110-10"/>
+                <path d="M-30 170c80-40 180 40 260 0s100-20 110-10"/>
+                <path d="M-30 300c80-40 180 40 260 0s100-20 110-10"/>
+                <path d="M-30 340c80-40 180 40 260 0s100-20 110-10"/>
+              </g>
+              <path d="M150 196v96M126 228l24-32 24 32" stroke="#f1e4d0" stroke-width="1.6" fill="none"/>
+              <circle cx="150" cy="244" r="30" fill="none" stroke="#f1e4d0" stroke-width=".8" opacity=".5"/>
+            </svg>
+            <div class="show-type">
+              <span class="top">9 – 31 Jan · Main house</span>
+              <div class="title">The<br>Cartographer's<br>Daughter</div>
+              <span class="date">H. Adeyemi</span>
+            </div>
+          </div>
+          <div class="show-meta"><b>The Cartographer's Daughter</b><span>9 – 31 Jan · from $18</span></div>
+        </a>
+
+        <a class="show" href="#tickets">
+          <div class="show-poster">
+            <svg viewBox="0 0 300 450" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <rect width="300" height="450" fill="#ebdcc4"/>
+              <path d="M0 0h300v96c-50 28-98-22-150 6S48 70 0 96Z" fill="#5b1c2d"/>
+              <path d="M0 0h300v42c-46 20-92-16-144 4S52 30 0 44Z" fill="#3d1220"/>
+              <circle cx="228" cy="300" r="34" fill="none" stroke="#5b1c2d" stroke-width="1.4"/>
+              <path d="M228 274v52M202 300h52" stroke="#5b1c2d" stroke-width="1" opacity=".5"/>
+              <path d="M0 380h300" stroke="#5b1c2d" stroke-opacity=".3"/>
+            </svg>
+            <div class="show-type" style="color:#1c1218">
+              <span class="top" style="color:#6c5a49">6 – 28 Feb · Studio</span>
+              <div class="title">Winter<br>Understudy</div>
+              <span class="date" style="color:#6c5a49">P. Nakamura</span>
+            </div>
+          </div>
+          <div class="show-meta"><b>Winter Understudy</b><span>6 – 28 Feb · from $15</span></div>
+        </a>
+      </div>
+
+      <div class="season-foot">
+        <span>Members book two weeks early · <b>from $12 a month</b></span>
+        <span>All tickets · no booking fee · exchanges free up to 24 h</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="building" class="building">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="smallcaps">The building</span>
+          <h2>A cinema that forgot<br>to show <em>films.</em></h2>
+        </div>
+        <p>Built in 1924, dark by 1979, reopened as a theatre in 1988. The projection booth is now the lighting box.</p>
+      </div>
+      <div class="build-grid">
+        <div class="build-copy">
+          <p>The Ash Street Picture House opened with 480 seats and a Wurlitzer. By the late seventies the balcony was closed and the roof was leaking, so the last projectionist turned off the carbon arc and locked the door. Nine years later a group of actors persuaded the city to let them put on a play in the lobby.</p>
+          <p>We took out every second row, widened the stage, and kept the original ceiling roses. The seats are refurbished from the 1962 refit; the bar is in what used to be the ticket booth. On quiet afternoons you can still find the old reel boxes under the stairs.</p>
+          <div class="build-stats">
+            <div class="build-stat"><b>1924</b><span>Opened as a cinema</span></div>
+            <div class="build-stat"><b>220</b><span>Seats in the main house</span></div>
+            <div class="build-stat"><b>34</b><span>World premieres</span></div>
+          </div>
+        </div>
+        <div class="build-art">
+          <svg viewBox="0 0 560 380" role="img" aria-label="Line drawing of the theatre proscenium with curtains and empty seats">
+            <rect width="560" height="380" fill="#e7d7bf"/>
+            <g stroke="#5b1c2d" fill="none" stroke-width="1.4">
+              <path d="M60 340V120c0-40 32-72 72-72h296c40 0 72 32 72 72v220"/>
+              <path d="M78 340V128c0-34 26-60 60-60h284c34 0 60 26 60 60v212"/>
+              <path d="M96 340V150h368v190"/>
+              <path d="M96 150c44 8 74 60 74 118v72M464 150c-44 8-74 60-74 118v72"/>
+              <path d="M118 150c34 18 46 62 46 96v94M442 150c-34 18-46 62-46 96v94"/>
+              <path d="M96 340h368"/>
+            </g>
+            <g fill="#5b1c2d" opacity=".14">
+              <path d="M96 150c44 8 74 60 74 118v72H96Z"/>
+              <path d="M464 150c-44 8-74 60-74 118v72h74Z"/>
+            </g>
+            <g stroke="#5b1c2d" stroke-width="1.1" fill="none" opacity=".7">
+              <path d="M250 302c0-18 12-30 30-30s30 12 30 30"/>
+              <path d="M232 340v-22h96v22M244 318v-12M316 318v-12"/>
+              <path d="M140 340v-20h44v20M184 320v-10M140 330h44" opacity=".5"/>
+              <path d="M388 340v-20h44v20M432 320v-10M388 330h44" opacity=".5"/>
+            </g>
+            <g stroke="#5b1c2d" stroke-width="1.2">
+              <path d="M280 48v26M266 60h28"/>
+              <circle cx="280" cy="92" r="18" fill="#e6b055" stroke="none" opacity=".6"/>
+              <circle cx="280" cy="92" r="18" fill="none"/>
+            </g>
+            <g font-family="Arial,sans-serif" font-size="7" letter-spacing="2.4" fill="#5b1c2d" opacity=".7">
+              <text x="96" y="368">MAIN HOUSE · 220 SEATS</text>
+              <text x="464" y="368" text-anchor="end">PROSCENIUM · 1988</text>
+            </g>
+          </svg>
+          <div class="caption"><span>The auditorium, looking up</span><span>Ash Street, Northfield</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tickets" class="tickets">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="smallcaps">Tickets &amp; times</span>
+          <h2>No bad <em>seats.</em></h2>
+        </div>
+        <p>All seats are reserved. Prices are the same wherever you sit, because the room is small enough that it doesn't matter.</p>
+      </div>
+      <div class="tix-grid">
+        <div>
+          <table class="price-table">
+            <thead><tr><th scope="col">Ticket</th><th scope="col">Price</th></tr></thead>
+            <tbody>
+              <tr><td>Preview<span class="sub">First two performances of each production</span></td><td>$18</td></tr>
+              <tr><td>Standard<span class="sub">Wed–Thu and Sunday matinees</span></td><td>$32</td></tr>
+              <tr><td>Weekend<span class="sub">Fri–Sat evenings</span></td><td>$38</td></tr>
+              <tr><td>Under 30<span class="sub">Any performance, ID at the door</span></td><td>$15</td></tr>
+              <tr><td>Pay what you can<span class="sub">First Thursday of every run · cash or card</span></td><td>From $5</td></tr>
+              <tr><td>Access<span class="sub">Companion ticket free · step-free route from Ash Lane</span></td><td>$20</td></tr>
+            </tbody>
+          </table>
+          <p class="tix-note">No booking fee online. Exchanges are free up to 24 hours before curtain. If cost is the only thing keeping you away, email the box office; we keep a small fund for exactly that.</p>
+        </div>
+
+        <aside class="boxoffice">
+          <span class="smallcaps" style="color:var(--gold)">The box office</span>
+          <h3>Come and knock.</h3>
+          <dl>
+            <dt>Address</dt><dd>214 Ash Street<br>Northfield, NF4 6RT</dd>
+            <dt>Phone</dt><dd>+1 555 018 2244</dd>
+            <dt>Email</dt><dd><a href="mailto:boxoffice@lanterntheatre.org">boxoffice@lanterntheatre.org</a></dd>
+            <dt>Hours</dt><dd>Wed–Sat · 12pm–6pm<br>and 90 minutes before curtain</dd>
+            <dt>Getting here</dt><dd>Tram 4 to Ash &amp; 3rd · bike racks on the corner</dd>
+          </dl>
+          <div class="access"><b>Access:</b> step-free entrance on Ash Lane, lift to all levels, two wheelchair spaces and companion seats in the main house. Captioned performances on the second Saturday of each run; audio description on the third. Large-print programmes at the desk. <b>Relaxed performance</b> of A Small Hour on 2 January, 2pm.</div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>The Salt House · through 8 November</span>
+    <span>Nightjar · 14 November</span>
+    <span>A Small Hour · 12 December</span>
+    <span>The Cartographer's Daughter · 9 January</span>
+    <span>Winter Understudy · 6 February</span>
+    <span>The Salt House · through 8 November</span>
+    <span>Nightjar · 14 November</span>
+    <span>A Small Hour · 12 December</span>
+    <span>The Cartographer's Daughter · 9 January</span>
+    <span>Winter Understudy · 6 February</span>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <div class="brand-name">The Lantern<span style="font-family:var(--sans);font-size:.54rem;letter-spacing:.26em;text-transform:uppercase;color:#9b8879;margin-top:7px">Theatre · Northfield</span></div>
+        <p style="margin-top:16px">A 220-seat theatre in a 1924 cinema. New plays, old radiators, and a bar in the ticket booth.</p>
+      </div>
+      <div>
+        <h4>Visit</h4>
+        <ul>
+          <li>214 Ash Street</li>
+          <li>Northfield, NF4 6RT</li>
+          <li>+1 555 018 2244</li>
+          <li><a href="#tickets">Box office hours</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>The season</h4>
+        <ul>
+          <li><a href="#now">The Salt House</a></li>
+          <li><a href="#season">All five productions</a></li>
+          <li><a href="#tickets">Tickets &amp; access</a></li>
+          <li><a href="#building">The building</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Keep in touch</h4>
+        <p style="margin-top:0">Casting calls, cheap seats, and the occasional lobby notice.</p>
+        <div class="field">
+          <input type="email" placeholder="Email address" aria-label="Email address">
+          <button type="button">Join</button>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 The Lantern Theatre · 214 Ash Street, Northfield</span>
+      <span><a href="#main">Access</a> · <a href="#main">Privacy</a> · <a href="#main">Support us</a></span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

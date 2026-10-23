@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WCRK 91.3 — Kestrel Valley Community Radio</title>
+<style>
+  :root {
+    --ink: #141414;
+    --paper: #ffffff;
+    --signal: #e5231b;
+    --acid: #f5e663;
+    --fog: #eceae4;
+    --steel: #6b6b66;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.45;
+  }
+  h1, h2, h3 { margin: 0 0 .4rem; line-height: 1; }
+  h1 { font-size: clamp(2.6rem, 8vw, 6rem); text-transform: uppercase; font-weight: bold; letter-spacing: -.02em; }
+  h2 { font-size: 2.1rem; text-transform: uppercase; }
+  p { margin: 0 0 1em; }
+  a { color: var(--signal); }
+  .wrap { max-width: 1060px; margin: 0 auto; padding: 0 1.4rem; }
+
+  header { background: var(--ink); color: #fff; }
+  .bar { display: flex; align-items: center; gap: 1rem; padding: .7rem 1.4rem; max-width: 1060px; margin: 0 auto; flex-wrap: wrap; }
+  .logo { display: flex; align-items: center; gap: .5rem; font-weight: bold; font-size: 1.3rem; letter-spacing: .02em; }
+  .onair { background: var(--signal); color: #fff; font-weight: bold; padding: .25rem .6rem; font-size: .8rem; letter-spacing: .1em; }
+  nav { margin-left: auto; }
+  nav a { color: #cfcfca; text-decoration: none; margin-left: 1.1rem; font-size: .9rem; text-transform: uppercase; letter-spacing: .05em; }
+  nav a:hover { color: #fff; }
+
+  .hero { background: var(--acid); border-bottom: 6px solid var(--ink); }
+  .hero .grid { display: grid; grid-template-columns: 1.3fr .9fr; gap: 2rem; align-items: center; padding: 3rem 0; }
+  .hero .freq { font-size: 5.5rem; font-weight: bold; line-height: .9; }
+  .hero .tag { font-size: 1.15rem; max-width: 32rem; }
+  .hero .wave { border: 4px solid var(--ink); background: #fff; }
+
+  .ticker {
+    background: var(--signal); color: #fff;
+    padding: .5rem 0; overflow: hidden; white-space: nowrap;
+    font-weight: bold; text-transform: uppercase; letter-spacing: .06em;
+  }
+  .ticker span { display: inline-block; padding-right: 3rem; }
+
+  main { padding: 2.5rem 0; }
+  section { margin-bottom: 3rem; }
+
+  .schedule { width: 100%; border-collapse: collapse; }
+  .schedule th { text-align: left; text-transform: uppercase; font-size: .75rem; letter-spacing: .12em; color: var(--steel); padding: .5rem .6rem; border-bottom: 4px solid var(--ink); }
+  .schedule td { padding: .75rem .6rem; border-bottom: 2px solid var(--ink); vertical-align: top; }
+  .schedule tr.now td { background: var(--acid); }
+  .schedule .time { font-weight: bold; white-space: nowrap; }
+  .schedule .host { color: var(--steel); font-size: .88rem; }
+
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
+  .card { border: 4px solid var(--ink); padding: 1.1rem; background: var(--paper); }
+  .card h3 { text-transform: uppercase; font-size: 1.05rem; }
+  .card .tag { display: inline-block; background: var(--ink); color: #fff; font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; padding: .15rem .5rem; margin-bottom: .6rem; }
+
+  .loud { background: var(--ink); color: #fff; padding: 2.5rem 0; }
+  .loud h2 { color: var(--acid); }
+  .loud a { color: var(--acid); }
+  .loud .cols { display: grid; grid-template-columns: 1.2fr 1fr; gap: 2.5rem; }
+  .loud .big { font-size: 2rem; font-weight: bold; text-transform: uppercase; }
+
+  .form { display: flex; gap: .6rem; flex-wrap: wrap; margin-top: 1rem; }
+  .form input {
+    flex: 1 1 220px;
+    padding: .8rem;
+    border: 3px solid var(--ink);
+    font: inherit;
+  }
+  .form button {
+    background: var(--signal); color: #fff; border: none;
+    padding: .8rem 1.4rem; font: inherit; font-weight: bold;
+    text-transform: uppercase; letter-spacing: .06em; cursor: pointer;
+  }
+  .form button:hover { background: #b81a13; }
+
+  footer { border-top: 6px solid var(--ink); padding: 1.6rem 0; font-size: .88rem; color: var(--steel); }
+  footer .cols { display: flex; gap: 2rem; flex-wrap: wrap; justify-content: space-between; }
+
+  @media (max-width: 780px) {
+    .hero .grid, .loud .cols { grid-template-columns: 1fr; }
+    .cards { grid-template-columns: 1fr; }
+    .hero .freq { font-size: 4rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="bar">
+    <span class="logo">
+      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+        <rect width="30" height="30" fill="#e5231b"/>
+        <circle cx="15" cy="19" r="4" fill="#fff"/>
+        <path d="M8 13a10 10 0 0 1 14 0" fill="none" stroke="#fff" stroke-width="2"/>
+        <path d="M5 10a14 14 0 0 1 20 0" fill="none" stroke="#fff" stroke-width="2" opacity=".6"/>
+      </svg>
+      WCRK 91.3
+    </span>
+    <span class="onair">On air</span>
+    <nav>
+      <a href="#schedule">Schedule</a>
+      <a href="#shows">Shows</a>
+      <a href="#join">Volunteer</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap grid">
+    <div>
+      <h1>Kestrel Valley<br>Community Radio</h1>
+      <div class="freq">91.3 FM</div>
+      <p class="tag">Small station, big transmitter, opinions about the level
+      crossing. Broadcasting from the old post office on Mill Street since
+      2004, staffed by whoever shows up.</p>
+    </div>
+    <div class="wave">
+      <svg viewBox="0 0 400 260" role="img" aria-label="Stylised radio dial">
+        <rect width="400" height="260" fill="#ffffff"/>
+        <line x1="30" y1="130" x2="370" y2="130" stroke="#141414" stroke-width="4"/>
+        <g stroke="#141414" stroke-width="3">
+          <line x1="50" y1="112" x2="50" y2="148"/>
+          <line x1="110" y1="118" x2="110" y2="142"/>
+          <line x1="170" y1="112" x2="170" y2="148"/>
+          <line x1="230" y1="118" x2="230" y2="142"/>
+          <line x1="290" y1="112" x2="290" y2="148"/>
+          <line x1="350" y1="118" x2="350" y2="142"/>
+        </g>
+        <text x="150" y="100" font-family="Arial" font-size="20" fill="#6b6b66">88</text>
+        <text x="255" y="100" font-family="Arial" font-size="20" fill="#6b6b66">104</text>
+        <rect x="196" y="60" width="10" height="140" fill="#e5231b"/>
+        <circle cx="201" cy="200" r="26" fill="#141414"/>
+        <circle cx="201" cy="200" r="10" fill="#f5e663"/>
+        <text x="245" y="212" font-family="Arial" font-size="26" font-weight="bold" fill="#141414">91.3</text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<div class="ticker" aria-hidden="true">
+  <span>Now: Night Bus with Petra /// Flood warning for the lower mill road until 18:00 /// Record fair in the church hall Saturday /// Send us your demos, we do mean it ///</span>
+</div>
+
+<main>
+  <div class="wrap">
+
+    <section id="schedule">
+      <h2>Today&rsquo;s schedule</h2>
+      <table class="schedule">
+        <thead>
+          <tr><th>Time</th><th>Programme</th><th>Host</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="time">07:00</td><td><strong>Valley Breakfast</strong></td><td class="host">Ola &amp; Ren</td><td>Travel, weather, letters</td></tr>
+          <tr><td class="time">10:00</td><td><strong>Second Hand Hour</strong></td><td class="host">Maurice</td><td>Vinyl only, no requests</td></tr>
+          <tr><td class="time">12:00</td><td><strong>The Level Crossing</strong></td><td class="host">Jules P.</td><td>Local news, council watch</td></tr>
+          <tr class="now"><td class="time">14:00</td><td><strong>Night Bus</strong></td><td class="host">Petra</td><td>Dub, post-punk, low energy</td></tr>
+          <tr><td class="time">16:00</td><td><strong>Half Two Rock</strong></td><td class="host">Dez</td><td>Loud, on purpose</td></tr>
+          <tr><td class="time">18:00</td><td><strong>Request Line</strong></td><td class="host">Rotating</td><td>Phone opens at 17:30</td></tr>
+          <tr><td class="time">21:00</td><td><strong>Static Hour</strong></td><td class="host">Automated</td><td>Transmitter test &amp; quiet bits</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="shows">
+      <h2>Regulars</h2>
+      <div class="cards">
+        <div class="card">
+          <span class="tag">Fridays</span>
+          <h3>Night Bus</h3>
+          <p>Petra has run the Friday dub slot since 2011 and has never once
+          explained the name. Two decks, one couch, no adverts.</p>
+        </div>
+        <div class="card">
+          <span class="tag">Weekdays</span>
+          <h3>The Level Crossing</h3>
+          <p>Forty minutes of parish notices, planning disputes, and one
+          aggressively researched obituary. The station&rsquo;s most
+          complained-about and most listened-to show.</p>
+        </div>
+        <div class="card">
+          <span class="tag">Sundays</span>
+          <h3>Second Hand Hour</h3>
+          <p>Maurice plays whatever came into the shop that week. Requests
+          are accepted only if the record is in the crate.</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <section class="loud">
+    <div class="wrap cols">
+      <div>
+        <h2>Volunteer with us</h2>
+        <p class="big">No experience. No pay. Excellent chair.</p>
+        <p>Training runs on the first Saturday of the month in the old post
+        office studio. You will learn the desk, the playlist rules, and how
+        to fix the transmitter when it does the thing again.</p>
+        <p><a href="mailto:desk@wcrk.example">desk@wcrk.example</a> &middot;
+        Mill Street, Kestrel Valley</p>
+      </div>
+      <div id="join">
+        <h2>Station list</h2>
+        <p>One email a month: schedule changes, fund week, and the occasional
+        apology.</p>
+        <form class="form" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Subscribed';">
+          <input type="email" required placeholder="your@email" aria-label="Email address">
+          <button type="submit">Join</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap cols">
+    <div>WCRK 91.3 FM &middot; Licensed community radio, Kestrel Valley</div>
+    <div>Studio line answered during shows. Text line for the rest.</div>
+    <div>Transmitter on Carr Hill. Wind over 60&nbsp;mph: expect gaps.</div>
+  </div>
+</footer>
+
+</body>
+</html>
