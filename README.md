@@ -85,6 +85,7 @@ References identify the matching file position during source scans or the exact 
 - Everything in one HTML file
 - Oversized CTA headings
 - Divided list rows
+- Excessive letter spacing
 
 ## Development
 

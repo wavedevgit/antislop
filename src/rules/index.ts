@@ -3,6 +3,7 @@ import type { Rule } from "../api/index.ts";
 import bullets from "./bullets/index.ts";
 import cardInCard from "./card-in-card/index.ts";
 import creamColors from "./cream-colors/index.ts";
+import excessiveLetterSpacing from "./excessive-letter-spacing/index.ts";
 import eyebrowOverAllTitles from "./eyebrow-over-all-titles/index.ts";
 import fakeLogo from "./fake-logo/index.ts";
 import gradients from "./gradients/index.ts";
@@ -25,6 +26,7 @@ export const rules: Rule[] = [
   gradients,
   patternedBackground,
   creamColors,
+  excessiveLetterSpacing,
   cardInCard,
   fakeLogo,
   textArrow,
