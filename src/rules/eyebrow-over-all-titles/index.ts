@@ -222,7 +222,7 @@ function countSourceEyebrows(files: Files): EyebrowCounts {
 }
 
 export default defineRule({
-  id: "eyebrow-over-all-titles",
+  id: "no-eyebrows-over-all-titles",
   title: "Eyebrows over every title",
   description: "AI-generated websites often place smaller, differently colored text above every large bold heading.",
   async match(context) {

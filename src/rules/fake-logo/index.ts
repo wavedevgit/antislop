@@ -152,7 +152,7 @@ function countSourceLogos(files: Files): number {
 }
 
 export default defineRule({
-  id: "fake-logo",
+  id: "no-fake-logo-cards",
   title: "Contrasting SVG logo card",
   description: "AI-generated websites often place a generic SVG in a logo card whose color clashes with its parent card.",
   async match(context) {

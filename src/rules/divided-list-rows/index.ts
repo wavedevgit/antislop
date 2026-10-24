@@ -28,7 +28,7 @@ function sourceReferences(files: Files): Reference[] {
 }
 
 export default defineRule({
-  id: "divided-list-rows",
+  id: "no-divided-list-rows",
   title: "Divided list rows",
   description: "AI-generated sites often present ordinary content as repeated multi-column rows separated by horizontal rules.",
   async match(context) {

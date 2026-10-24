@@ -38,7 +38,7 @@ function sourceTitleCounts(files: Files): TitleCounts {
 }
 
 export default defineRule({
-  id: "mostly-italic-titles",
+  id: "no-mostly-italic-titles",
   title: "Most titles are italic",
   description: "AI-generated websites often italicize most titles instead of building a clear typographic hierarchy.",
   async match(context) {

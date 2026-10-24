@@ -1,7 +1,7 @@
 import { defineRule } from "../../api/index.ts";
 
 export default defineRule({
-  id: "one-html-file",
+  id: "no-monolithic-html",
   title: "Everything in one HTML file",
   description: "AI-generated websites are often shipped as one HTML document with all code embedded inline.",
   async match(context) {

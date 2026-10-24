@@ -23,7 +23,7 @@ Disable rules by ID with a comma-separated list:
 ```sh
 node src/cli/index.ts \
   --folder ./path/to/site \
-  --disable gradients,neon-border
+  --disable no-visible-gradients,no-neon-borders
 ```
 
 Unknown rule IDs cause an error instead of being silently ignored.
@@ -47,7 +47,7 @@ Example output:
 [
   {
     "rule": {
-      "id": "text-arrow",
+      "id": "no-text-arrows",
       "title": "Text arrow",
       "description": "Only AI uses this arrow. Use an icon instead."
     },

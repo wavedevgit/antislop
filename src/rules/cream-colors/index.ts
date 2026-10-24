@@ -94,7 +94,7 @@ function sourceCreams(files: Files): number {
 }
 
 export default defineRule({
-  id: "cream-colors",
+  id: "no-cream-colors",
   title: "Cream colors",
   description: "Avoid cream backgrounds, especially the overused cream-and-terracotta palette.",
   async match(context) {

@@ -83,7 +83,7 @@ function sourceReferences(files: Files): Reference[] {
 }
 
 export default defineRule({
-  id: "oversized-cta-heading",
+  id: "no-oversized-cta-headings",
   title: "Oversized CTA headings",
   description: "AI-generated landing pages often pair a very large heading with a call to action.",
   async match(context) {

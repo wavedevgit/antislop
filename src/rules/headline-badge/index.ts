@@ -6,7 +6,7 @@ const badgeBeforeHeadline = /<([a-z][\w.-]*)\b([^>]*)>([^<]{1,60})<\/\1>\s*<h1\b
 const pillStyle = /(?:\b(?:badge|pill)\b|\brounded-full\b|border-radius\s*:\s*(?:50%|999\d*px))/i;
 
 export default defineRule({
-  id: "headline-badge",
+  id: "no-headline-badges",
   title: "Headline badge",
   description: "AI-generated landing pages often place a decorative pill badge directly above the main headline.",
   async match(context) {

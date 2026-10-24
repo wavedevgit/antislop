@@ -74,7 +74,7 @@ function sourceReferences(files: Files): Reference[] {
 }
 
 export default defineRule({
-  id: "oversized-navbar",
+  id: "no-oversized-navbar",
   title: "Oversized navbar",
   description: "AI-generated websites often use desktop navigation bars taller than the content requires.",
   async match(context) {

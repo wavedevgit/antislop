@@ -40,7 +40,7 @@ function sourceReferences(files: Files): Reference[] {
 }
 
 export default defineRule({
-  id: "soft-corners-everywhere",
+  id: "no-soft-corners-everywhere",
   title: "Soft corners everywhere",
   description: "AI-generated websites often apply the same soft corner radius to nearly every interface surface.",
   async match(context) {

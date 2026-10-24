@@ -82,7 +82,7 @@ function isClearGradient(value: string): boolean {
 }
 
 export default defineRule({
-  id: "gradients",
+  id: "no-visible-gradients",
   title: "Visible gradients",
   description: "AI-generated websites often overuse clearly visible gradients; subtle lighting effects are allowed.",
   async match(context) {

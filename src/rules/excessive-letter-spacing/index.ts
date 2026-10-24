@@ -56,7 +56,7 @@ function sourceReferences(files: Files): Reference[] {
 }
 
 export default defineRule({
-  id: "excessive-letter-spacing",
+  id: "no-excessive-letter-spacing",
   title: "Excessive letter spacing",
   description: "AI-generated sites often add conspicuously wide tracking to ordinary text and labels.",
   async match(context) {

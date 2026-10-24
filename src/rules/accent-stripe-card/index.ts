@@ -78,7 +78,7 @@ function sourceReferences(files: Files): Reference[] {
 }
 
 export default defineRule({
-  id: "accent-stripe-card",
+  id: "no-accent-stripe-cards",
   title: "Accent stripe cards",
   description: "AI-generated landing pages often decorate rounded cards with a thick colored stripe along the top or left edge.",
   async match(context) {

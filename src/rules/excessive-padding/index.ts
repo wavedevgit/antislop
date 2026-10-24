@@ -56,7 +56,7 @@ function sourceReferences(files: Files): Reference[] {
 }
 
 export default defineRule({
-  id: "excessive-padding",
+  id: "no-excessive-padding",
   title: "Excessive padding",
   description: "AI-generated sites often add large amounts of padding to ordinary elements without a clear layout reason.",
   async match(context) {

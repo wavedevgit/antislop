@@ -14,7 +14,7 @@ function tailwindMonospaceUses(content: string): number {
 }
 
 export default defineRule({
-  id: "monospace-font",
+  id: "no-decorative-monospace",
   title: "Monospace font",
   description: "Only use monospace for real code, not labels or decorative text. Avoid it if possible.",
   async match(context) {

@@ -2,7 +2,7 @@ import { defineRule, type Reference } from "../../api/index.ts";
 import { fileReference } from "../shared/index.ts";
 
 export default defineRule({
-  id: "no-meta-tags",
+  id: "require-meta-tags",
   title: "No meta tags",
   description: "Unfinished AI-generated pages often omit metadata entirely.",
   async match(context) {

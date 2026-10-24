@@ -2,7 +2,7 @@ import { defineRule } from "../../api/index.ts";
 import { textMatches } from "../shared/index.ts";
 
 export default defineRule({
-  id: "bullets",
+  id: "no-unicode-bullets",
   title: "Unicode bullets",
   description: "AI-generated website copy often uses the Unicode bullet character as decoration.",
   async match(context) {

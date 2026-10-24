@@ -33,7 +33,7 @@ function sourcePatterns(files: Files): number {
 }
 
 export default defineRule({
-  id: "patterned-background",
+  id: "no-patterned-backgrounds",
   title: "Dotted or grid backgrounds",
   description: "AI-generated websites often place repeating dot or grid patterns behind page content.",
   async match(context) {

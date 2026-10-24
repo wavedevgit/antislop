@@ -53,7 +53,7 @@ function declaredFonts(content: string): string[] {
 }
 
 export default defineRule({
-  id: "overused-fonts",
+  id: "no-overused-fonts",
   title: "Overused fonts",
   description: "Don't use Playfair Display or Instrument Serif. AI-generated websites overuse them.",
   async match(context) {

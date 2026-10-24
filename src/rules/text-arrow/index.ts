@@ -2,7 +2,7 @@ import { defineRule } from "../../api/index.ts";
 import { textMatches } from "../shared/index.ts";
 
 export default defineRule({
-  id: "text-arrow",
+  id: "no-text-arrows",
   title: "Text arrow",
   description: "Only AI uses this arrow. Use an icon instead.",
   async match(context) {

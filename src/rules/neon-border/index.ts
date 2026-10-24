@@ -67,7 +67,7 @@ function sourceNeonBorders(files: Files): number {
 }
 
 export default defineRule({
-  id: "neon-border",
+  id: "no-neon-borders",
   title: "Neon borders",
   description: "AI-generated websites often pair saturated borders with matching colored glows.",
   async match(context) {

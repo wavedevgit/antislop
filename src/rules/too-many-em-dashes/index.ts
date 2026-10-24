@@ -2,7 +2,7 @@ import { defineRule } from "../../api/index.ts";
 import { textMatches } from "../shared/index.ts";
 
 export default defineRule({
-  id: "too-many-em-dashes",
+  id: "limit-em-dashes",
   title: "Too many em dashes",
   description: "AI-generated website copy often overuses em dashes.",
   async match(context) {

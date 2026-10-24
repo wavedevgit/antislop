@@ -49,7 +49,7 @@ function countNestedSourceCards(files: Files): number {
 }
 
 export default defineRule({
-  id: "card-in-card",
+  id: "no-nested-cards",
   title: "Cards inside cards",
   description: "AI-generated websites often nest rounded, filled containers inside each other, creating unnecessary visual layers.",
   async match(context) {
