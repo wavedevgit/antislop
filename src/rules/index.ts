@@ -5,9 +5,12 @@ import bullets from "./bullets/index.ts";
 import cardInCard from "./card-in-card/index.ts";
 import creamColors from "./cream-colors/index.ts";
 import excessiveLetterSpacing from "./excessive-letter-spacing/index.ts";
+import extremeCardRadius from "./extreme-card-radius/index.ts";
 import eyebrowOverAllTitles from "./eyebrow-over-all-titles/index.ts";
 import fakeLogo from "./fake-logo/index.ts";
+import glassmorphismEverywhere from "./glassmorphism-everywhere/index.ts";
 import gradients from "./gradients/index.ts";
+import ghostCard from "./ghost-card/index.ts";
 import headlineBadge from "./headline-badge/index.ts";
 import monospaceFont from "./monospace-font/index.ts";
 import mostlyItalicTitles from "./mostly-italic-titles/index.ts";
@@ -23,6 +26,7 @@ import patternedBackground from "./patterned-background/index.ts";
 import softCornersEverywhere from "./soft-corners-everywhere/index.ts";
 import dividedListRows from "./divided-list-rows/index.ts";
 import textArrow from "./text-arrow/index.ts";
+import thickColoredCardBorder from "./thick-colored-card-border/index.ts";
 import tooManyEmDashes from "./too-many-em-dashes/index.ts";
 import tooManyEmojis from "./too-many-emojis/index.ts";
 
@@ -35,9 +39,13 @@ export const rules: Rule[] = [
   patternedBackground,
   creamColors,
   excessiveLetterSpacing,
+  extremeCardRadius,
   cardInCard,
   fakeLogo,
+  glassmorphismEverywhere,
+  ghostCard,
   textArrow,
+  thickColoredCardBorder,
   monospaceFont,
   overusedFonts,
   mostlyItalicTitles,
