@@ -24,6 +24,7 @@ import excessivePadding from "./excessive-padding/index.ts";
 import oversizedCtaHeading from "./oversized-cta-heading/index.ts";
 import overusedFonts from "./overused-fonts/index.ts";
 import patternedBackground from "./patterned-background/index.ts";
+import pillButtons from "./pill-buttons/index.ts";
 import softCornersEverywhere from "./soft-corners-everywhere/index.ts";
 import dividedListRows from "./divided-list-rows/index.ts";
 import textArrow from "./text-arrow/index.ts";
@@ -39,6 +40,7 @@ export const rules: Rule[] = [
   gradients,
   headlineBadge,
   patternedBackground,
+  pillButtons,
   creamColors,
   excessiveLetterSpacing,
   extremeCardRadius,
