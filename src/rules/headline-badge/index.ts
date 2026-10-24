@@ -24,36 +24,40 @@ export default defineRule({
       }
     } else {
       references = await context.page.$$eval("h1", (headings) => headings.flatMap((heading) => {
-        const badge = heading.previousElementSibling;
+        const previous = heading.previousElementSibling;
 
-        if (!badge || !badge.textContent?.trim() || badge.textContent.trim().length > 60) {
-          return [];
-        }
+        if (!previous) return [];
 
-        const style = getComputedStyle(badge);
-        const badgeBox = badge.getBoundingClientRect();
         const headingBox = heading.getBoundingClientRect();
-        const radius = Number.parseFloat(style.borderTopLeftRadius);
-        const pill = radius >= badgeBox.height / 2 - 1 || /\b(?:badge|pill)\b/i.test(badge.className);
+        const candidates = [previous, ...previous.querySelectorAll("*")];
 
-        if (!pill || badgeBox.width >= headingBox.width || badgeBox.bottom > headingBox.top + 2 || badgeBox.width === 0) {
-          return [];
-        }
+        return candidates.flatMap((badge) => {
+          const text = badge.textContent?.trim();
 
-        const path: string[] = [];
-        let current: Element | null = badge;
+          if (!text || text.length > 60) return [];
 
-        while (current) {
-          const siblings = current.parentElement ? Array.from(current.parentElement.children).filter((sibling) => sibling.tagName === current?.tagName) : [];
-          path.unshift(`${current.tagName.toLowerCase()}${siblings.length > 1 ? `[${siblings.indexOf(current) + 1}]` : ""}`);
-          current = current.parentElement;
-        }
+          const style = getComputedStyle(badge);
+          const badgeBox = badge.getBoundingClientRect();
+          const radius = Number.parseFloat(style.borderTopLeftRadius);
+          const pill = radius >= badgeBox.height / 2 - 1 || /\b(?:badge|pill)\b/i.test(badge.className);
 
-        return [{
-          type: "element" as const,
-          selector: badge.id ? `#${CSS.escape(badge.id)}` : `xpath=/${path.join("/")}`,
-          source: badge.outerHTML.slice(0, 200),
-        }];
+          if (!pill || badgeBox.width >= headingBox.width || badgeBox.bottom > headingBox.top + 2 || badgeBox.width === 0) return [];
+
+          const path: string[] = [];
+          let current: Element | null = badge;
+
+          while (current) {
+            const siblings = current.parentElement ? Array.from(current.parentElement.children).filter((sibling) => sibling.tagName === current?.tagName) : [];
+            path.unshift(`${current.tagName.toLowerCase()}${siblings.length > 1 ? `[${siblings.indexOf(current) + 1}]` : ""}`);
+            current = current.parentElement;
+          }
+
+          return [{
+            type: "element" as const,
+            selector: badge.id ? `#${CSS.escape(badge.id)}` : `xpath=/${path.join("/")}`,
+            source: badge.outerHTML.slice(0, 200),
+          }];
+        });
       }));
     }
 

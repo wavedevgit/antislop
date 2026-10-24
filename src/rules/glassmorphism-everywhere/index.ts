@@ -4,6 +4,8 @@ import { cssRules } from "../shared/styles.ts";
 
 const minimumSurfaces = 3;
 
+const glassName = /(?:^|[-_])glass(?:$|[-_])/i;
+
 function hasBackdropBlur(value: string): boolean {
   return /(?:-webkit-)?backdrop-filter\s*:\s*[^;]*blur\s*\(/i.test(value)
     || /\bbackdrop-blur(?!-none)(?:-[^\s"']+)?\b/.test(value);
@@ -31,7 +33,7 @@ function sourceReferences(files: Files): Reference[] {
     for (const tag of file.content.matchAll(/<([A-Za-z][\w.-]*)([^>]*)>/g)) {
       const attributes = tag[2] ?? "";
       const names = attributes.match(/(?:class|className)\s*=\s*["']([^"']*)["']/)?.[1]?.split(/\s+/) ?? [];
-      const glass = hasBackdropBlur(attributes) || names.some((name) => classes.has(name));
+      const glass = hasBackdropBlur(attributes) || names.some((name) => classes.has(name) || glassName.test(name));
 
       if (glass) {
         references.push(fileReference(file.path, file.content, tag.index ?? 0));
@@ -52,8 +54,9 @@ export default defineRule({
       : await context.page.$$eval("*", (elements) => elements.flatMap((element) => {
         const style = getComputedStyle(element);
         const backdrop = `${style.backdropFilter} ${style.getPropertyValue("-webkit-backdrop-filter")}`;
+        const namedGlass = Array.from(element.classList).some((name) => /(?:^|[-_])glass(?:$|[-_])/i.test(name));
 
-        if (!/blur\s*\(/i.test(backdrop) || element.getClientRects().length === 0) return [];
+        if ((!namedGlass && !/blur\s*\(/i.test(backdrop)) || element.getClientRects().length === 0) return [];
 
         const path: string[] = [];
         let current: Element | null = element;
@@ -68,7 +71,7 @@ export default defineRule({
       }));
 
     return references.length >= minimumSurfaces
-      ? { matches: true, explanation: `${references.length} surfaces use decorative backdrop blur.`, references }
+      ? { matches: true, explanation: `${references.length} surfaces use decorative glass styling.`, references }
       : { matches: false };
   },
 });
