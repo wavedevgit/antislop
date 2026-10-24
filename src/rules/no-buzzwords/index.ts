@@ -1,12 +1,12 @@
 import { defineRule } from "../../api/index.ts";
 import { textMatches } from "../shared/index.ts";
 
-const buzzwords = /\b(?:made\s+with\s+love|seamless|blazing)\b/gi;
+const buzzwords = /\b(?:made\s+with\s+love|seamless|blazing|next[-\s]+generation|game[-\s]+changing)\b/gi;
 
 export default defineRule({
   id: "no-buzzwords",
   title: "Buzzwords",
-  description: "Avoid clichéd marketing copy such as “made with love,” “seamless,” and “blazing.”",
+  description: "Avoid clichéd marketing copy such as “made with love,” “seamless,” “blazing,” “next-generation,” and “game-changing.”",
   async match(context) {
     const result = await textMatches(context, buzzwords);
 
