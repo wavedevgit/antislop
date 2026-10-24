@@ -12,7 +12,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "GPL-3.0-only",
   "type": "module",
   "devDependencies": {
     "@oxlint/plugins": "1.89.0",

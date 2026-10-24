@@ -45,4 +45,4 @@ npm run typecheck
 
 ## License
 
-ISC
+GPL-3.0-only
