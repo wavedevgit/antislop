@@ -1,7 +1,7 @@
 import { defineRule, type Reference } from "../../api/index.ts";
 import { markup } from "../shared/index.ts";
 
-const overusedFonts = new Set(["Playfair Display", "Instrument Serif", "Archivo"]);
+const overusedFonts = new Set(["Playfair Display", "Instrument Serif", "Archivo", "Space Grotesk", "DM Sans"]);
 
 function findOverusedFont(value: string): string | undefined {
   const normalized = value.toLowerCase().replaceAll("_", " ");
@@ -55,7 +55,7 @@ function declaredFonts(content: string): string[] {
 export default defineRule({
   id: "no-overused-fonts",
   title: "Overused fonts",
-  description: "Don't use Playfair Display, Instrument Serif, or Archivo. AI-generated websites overuse them.",
+  description: `Don't use ${Array.from(overusedFonts).join(", ")}. AI-generated websites overuse them.`,
   async match(context) {
     let detected: string[];
     let references: Reference[] = [];
