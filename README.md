@@ -1,6 +1,6 @@
 # AntiSlop
 
-Detects common AI-generated website habits in source files or rendered pages. Results are JSON with exact file or element references.
+AntiSlop is a detector for common ai slop in websites.
 
 ## Install
 
