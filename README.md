@@ -21,6 +21,12 @@ node src/cli/index.ts --folder ./path/to/site
 # Scan computed styles in Chromium
 node src/cli/index.ts --browser /usr/bin/chromium --url https://example.com
 
+# Open the page and highlight findings; close the tab when finished
+node src/cli/index.ts --browser /usr/bin/chromium --url https://example.com --visual
+
+# Save a full-page PNG with highlighted findings
+node src/cli/index.ts --browser /usr/bin/chromium --url https://example.com --screenshot result.png
+
 # Disable rules by ID
 node src/cli/index.ts --folder ./path/to/site \
   --disable no-visible-gradients,no-neon-borders

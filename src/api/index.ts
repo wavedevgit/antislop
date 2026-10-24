@@ -6,6 +6,10 @@ export { withContext } from "./context/index.ts";
 
 export { detect } from "./detector/index.ts";
 
+export type { Finding } from "./detector/index.ts";
+
+export { screenshotVisualFindings, showVisualFindings } from "./visualizer/index.ts";
+
 export { createFiles, defineRule, readFiles } from "./rules/index.ts";
 
 export type {

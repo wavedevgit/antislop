@@ -11,15 +11,22 @@ export async function withContext<T>(
     return run({ type: "files", files: await readFiles(config.folder) });
   }
 
-  const browser = await puppeteer.launch({ executablePath: config.executablePath });
+  const browser = await puppeteer.launch({
+    executablePath: config.executablePath,
+    headless: !config.visual,
+    defaultViewport: config.visual ? null : config.screenshot ? { width: 1920, height: 1080 } : undefined,
+    args: config.visual ? ["--start-maximized"] : undefined,
+  });
 
   try {
     const page = await browser.newPage();
+
+    if (config.visual || config.screenshot) await page.setBypassCSP(true);
 
     await page.goto(config.url, { waitUntil: "networkidle2" });
 
     return await run({ type: "puppeteer", page });
   } finally {
-    await browser.close();
+    if (browser.connected) await browser.close();
   }
 }
