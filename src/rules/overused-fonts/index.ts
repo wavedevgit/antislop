@@ -1,7 +1,7 @@
 import { defineRule, type Reference } from "../../api/index.ts";
 import { markup } from "../shared/index.ts";
 
-const overusedFonts = new Set(["Playfair Display", "Instrument Serif"]);
+const overusedFonts = new Set(["Playfair Display", "Instrument Serif", "Archivo"]);
 
 function findOverusedFont(value: string): string | undefined {
   const normalized = value.toLowerCase().replaceAll("_", " ");
@@ -55,7 +55,7 @@ function declaredFonts(content: string): string[] {
 export default defineRule({
   id: "no-overused-fonts",
   title: "Overused fonts",
-  description: "Don't use Playfair Display or Instrument Serif. AI-generated websites overuse them.",
+  description: "Don't use Playfair Display, Instrument Serif, or Archivo. AI-generated websites overuse them.",
   async match(context) {
     let detected: string[];
     let references: Reference[] = [];
@@ -79,7 +79,11 @@ export default defineRule({
 
         const selector = element.id ? `#${CSS.escape(element.id)}` : `xpath=/${path.join("/")}`;
 
-        return [{ family: getComputedStyle(element).fontFamily, reference: { type: "element" as const, selector, source: element.outerHTML.slice(0, 200) } }];
+        return [{
+          family: getComputedStyle(element).fontFamily,
+          parentFamily: element.parentElement ? getComputedStyle(element.parentElement).fontFamily : "",
+          reference: { type: "element" as const, selector, source: element.outerHTML.slice(0, 200) },
+        }];
       }));
 
       detected = [];
@@ -89,7 +93,8 @@ export default defineRule({
 
         if (font) {
           detected.push(font);
-          references.push(element.reference);
+
+          if (findOverusedFont(element.parentFamily) !== font) references.push(element.reference);
         }
       }
     } else {
