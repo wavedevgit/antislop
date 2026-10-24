@@ -82,6 +82,7 @@ References identify the matching file position during source scans or the exact 
 - Mostly italic titles
 - Neon borders
 - Buzzwords such as “made with love,” “seamless,” “blazing,” “next-generation,” and “game-changing”
+- HTML pages without any meta tags
 - Soft corners everywhere
 - Too many em dashes
 - Too many emojis

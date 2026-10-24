@@ -13,6 +13,7 @@ import monospaceFont from "./monospace-font/index.ts";
 import mostlyItalicTitles from "./mostly-italic-titles/index.ts";
 import neonBorder from "./neon-border/index.ts";
 import noBuzzwords from "./no-buzzwords/index.ts";
+import noMetaTags from "./no-meta-tags/index.ts";
 import oneHtmlFile from "./one-html-file/index.ts";
 import oversizedNavbar from "./oversized-navbar/index.ts";
 import excessivePadding from "./excessive-padding/index.ts";
@@ -42,6 +43,7 @@ export const rules: Rule[] = [
   mostlyItalicTitles,
   neonBorder,
   noBuzzwords,
+  noMetaTags,
   softCornersEverywhere,
   dividedListRows,
   tooManyEmDashes,
