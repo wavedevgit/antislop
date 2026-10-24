@@ -1,10 +1,10 @@
 # AntiSlop
 
-AntiSlop scans website source files or a rendered page for common AI-generated design habits. Findings are printed as JSON so the detector can be used from scripts, agents, or CI.
+Detects common AI-generated website habits in source files or rendered pages. Results are JSON with exact file or element references.
 
-## Setup
+## Install
 
-Requires a recent version of Node.js with TypeScript type stripping.
+Requires a recent Node.js version with TypeScript type stripping.
 
 ```sh
 npm install
@@ -12,86 +12,29 @@ npm install
 
 ## Usage
 
-Scan a folder of source files:
-
 ```sh
+# Scan HTML, CSS, and supported Tailwind utilities
 node src/cli/index.ts --folder ./path/to/site
-```
 
-Disable rules by ID with a comma-separated list:
+# Scan computed styles in Chromium
+node src/cli/index.ts --browser /usr/bin/chromium --url https://example.com
 
-```sh
-node src/cli/index.ts \
-  --folder ./path/to/site \
+# Disable rules by ID
+node src/cli/index.ts --folder ./path/to/site \
   --disable no-visible-gradients,no-neon-borders
 ```
 
-Unknown rule IDs cause an error instead of being silently ignored.
-
-Scan a rendered page with an installed Chromium browser:
-
-```sh
-node src/cli/index.ts \
-  --browser /usr/bin/chromium \
-  --url https://example.com
-```
-
-The two modes are complementary:
-
-- **Folder scanning** inspects HTML, CSS, and utility classes, including supported Tailwind utilities.
-- **Browser scanning** inspects visible elements and their computed styles.
-
-Example output:
-
-```json
-[
-  {
-    "rule": {
-      "id": "no-text-arrows",
-      "title": "Text arrow",
-      "description": "Only AI uses this arrow. Use an icon instead."
-    },
-    "explanation": "2 text arrows were found. Use icons instead.",
-    "references": [
-      {
-        "type": "element",
-        "selector": "#primary-cta",
-        "source": "Get started →"
-      }
-    ]
-  }
-]
-```
-
-References identify the matching file position during source scans or the exact matching element during browser scans. Browser references use an element ID when available and otherwise provide a unique XPath selector.
+Unknown rule IDs fail instead of being ignored.
 
 ## Rules
 
-- Eyebrows over every title
-- Unicode bullets
-- Visible gradients
-- Pill badges above the main headline
-- Dotted or grid backgrounds
-- Cream-colored backgrounds
-- Rounded cards with accent stripes
-- Cards inside cards
-- Contrasting SVG logo cards
-- Text arrows (`→`)
-- Decorative monospace fonts
-- Overused fonts such as Playfair Display and Instrument Serif
-- Mostly italic titles
-- Neon borders
-- Buzzwords such as “made with love,” “seamless,” “blazing,” “next-generation,” and “game-changing”
-- HTML pages without any meta tags
-- Soft corners everywhere
-- Too many em dashes
-- Too many emojis
-- Everything in one HTML file
-- Desktop navigation bars taller than 64px
-- Oversized CTA headings
-- Divided list rows
-- Excessive letter spacing
-- Excessive padding
+- **Copy:** `no-unicode-bullets`, `no-text-arrows`, `no-buzzwords`, `limit-em-dashes`, `limit-emojis`
+- **Typography:** `no-eyebrows-over-all-titles`, `no-decorative-monospace`, `no-overused-fonts`, `no-mostly-italic-titles`, `no-excessive-letter-spacing`, `no-oversized-cta-headings`
+- **Visual:** `no-visible-gradients`, `no-patterned-backgrounds`, `no-cream-colors`, `no-accent-stripe-cards`, `no-nested-cards`, `no-fake-logo-cards`, `no-neon-borders`, `no-soft-corners-everywhere`
+- **Layout:** `no-headline-badges`, `no-divided-list-rows`, `no-oversized-navbar`, `no-excessive-padding`
+- **Structure:** `no-monolithic-html`, `require-meta-tags`
+
+Rules live in `src/rules/` and are registered in `src/rules/index.ts`.
 
 ## Development
 
@@ -99,8 +42,6 @@ References identify the matching file position during source scans or the exact 
 npm run lint
 npm run typecheck
 ```
-
-Rules live in `src/rules/` and are registered in `src/rules/index.ts`.
 
 ## License
 
