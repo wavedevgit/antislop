@@ -73,7 +73,14 @@ export default defineRule({
       const padding = [style.paddingTop, style.paddingRight, style.paddingBottom, style.paddingLeft].map(Number.parseFloat);
       const text = Array.from(element.childNodes).some((node) => node.nodeType === Node.TEXT_NODE && node.textContent?.trim());
 
-      if (!text || element.getClientRects().length === 0 || ["BODY", "MAIN", "SECTION", "HEADER", "FOOTER"].includes(element.tagName) || !padding.some((value) => value >= limit)) {
+      const oversizedDisclosure = element.tagName === "DETAILS"
+        && !element.hasAttribute("open")
+        && padding[0] !== undefined
+        && padding[2] !== undefined
+        && padding[0] + padding[2] >= 32
+        && element.getBoundingClientRect().height >= 72;
+
+      if ((!text && !oversizedDisclosure) || element.getClientRects().length === 0 || ["BODY", "MAIN", "SECTION", "HEADER", "FOOTER"].includes(element.tagName) || (!oversizedDisclosure && !padding.some((value) => value >= limit))) {
         return [];
       }
 
@@ -90,7 +97,7 @@ export default defineRule({
     }), minimumPixels);
 
     return references.length >= minimumMatches
-      ? { matches: true, explanation: `${references.length} visible text elements use at least ${minimumPixels}px of padding.`, references }
+      ? { matches: true, explanation: `${references.length} visible elements use excessive padding or oversized collapsed disclosure rows.`, references }
       : { matches: false };
   },
 });
