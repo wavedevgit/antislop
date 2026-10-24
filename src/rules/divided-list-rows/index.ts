@@ -11,6 +11,8 @@ function sourceReferences(files: Files): Reference[] {
     for (const rule of cssRules({ all: () => [file], get: () => file, search: () => [] })) {
       if (!/border-(?:bottom|top)\s*:/i.test(rule.declarations)) continue;
 
+      if (/(?:^|;)\s*border\s*:|border-(?:left|right)\s*:/i.test(rule.declarations)) continue;
+
       for (const className of rule.selectors.matchAll(/\.([\w-]+)/g)) {
         const name = className[1];
         const rows = [...file.content.matchAll(new RegExp(`class\\s*=\\s*["'][^"']*\\b${name}\\b`, "g"))];
@@ -42,10 +44,20 @@ export default defineRule({
       const candidates = elements.filter((element) => {
         const style = getComputedStyle(element);
         const children = Array.from(element.children);
-        const divider = Number.parseFloat(style.borderBottomWidth) > 0 || Number.parseFloat(style.borderTopWidth) > 0;
+        const horizontalBorder = Number.parseFloat(style.borderBottomWidth) > 0 || Number.parseFloat(style.borderTopWidth) > 0;
+        const sideBorder = Number.parseFloat(style.borderLeftWidth) > 0 || Number.parseFloat(style.borderRightWidth) > 0;
+
+        const rounded = Math.max(
+          Number.parseFloat(style.borderTopLeftRadius),
+          Number.parseFloat(style.borderTopRightRadius),
+          Number.parseFloat(style.borderBottomLeftRadius),
+          Number.parseFloat(style.borderBottomRightRadius),
+        ) > 2;
 
         return element.getClientRects().length > 0
-          && divider
+          && horizontalBorder
+          && !sideBorder
+          && !rounded
           && children.filter((child) => child.textContent?.trim()).length >= 2;
       });
 

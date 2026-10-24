@@ -86,6 +86,7 @@ References identify the matching file position during source scans or the exact 
 - Too many em dashes
 - Too many emojis
 - Everything in one HTML file
+- Desktop navigation bars taller than 64px
 - Oversized CTA headings
 - Divided list rows
 - Excessive letter spacing

@@ -14,6 +14,7 @@ import mostlyItalicTitles from "./mostly-italic-titles/index.ts";
 import neonBorder from "./neon-border/index.ts";
 import noBuzzwords from "./no-buzzwords/index.ts";
 import oneHtmlFile from "./one-html-file/index.ts";
+import oversizedNavbar from "./oversized-navbar/index.ts";
 import excessivePadding from "./excessive-padding/index.ts";
 import oversizedCtaHeading from "./oversized-cta-heading/index.ts";
 import overusedFonts from "./overused-fonts/index.ts";
@@ -46,6 +47,7 @@ export const rules: Rule[] = [
   tooManyEmDashes,
   tooManyEmojis,
   oneHtmlFile,
+  oversizedNavbar,
   excessivePadding,
   oversizedCtaHeading,
 ];
