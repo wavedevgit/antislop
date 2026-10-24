@@ -1,6 +1,7 @@
 import type { Rule } from "../api/index.ts";
 
 import accentStripeCard from "./accent-stripe-card/index.ts";
+import auroraBackground from "./aurora-background/index.ts";
 import bullets from "./bullets/index.ts";
 import cardInCard from "./card-in-card/index.ts";
 import creamColors from "./cream-colors/index.ts";
@@ -32,6 +33,7 @@ import tooManyEmojis from "./too-many-emojis/index.ts";
 
 export const rules: Rule[] = [
   accentStripeCard,
+  auroraBackground,
   eyebrowOverAllTitles,
   bullets,
   gradients,
