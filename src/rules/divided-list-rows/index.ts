@@ -9,9 +9,11 @@ function sourceReferences(files: Files): Reference[] {
 
   for (const file of files.all()) {
     for (const rule of cssRules({ all: () => [file], get: () => file, search: () => [] })) {
-      if (!/border-(?:bottom|top)\s*:/i.test(rule.declarations)) continue;
+      if (!/border-top\s*:/i.test(rule.declarations)) continue;
 
       if (/(?:^|;)\s*border\s*:|border-(?:left|right)\s*:/i.test(rule.declarations)) continue;
+
+      if (!/display\s*:\s*(?:flex|grid|table-row)/i.test(rule.declarations)) continue;
 
       for (const className of rule.selectors.matchAll(/\.([\w-]+)/g)) {
         const name = className[1];
@@ -44,8 +46,9 @@ export default defineRule({
       const candidates = elements.filter((element) => {
         const style = getComputedStyle(element);
         const children = Array.from(element.children);
-        const horizontalBorder = Number.parseFloat(style.borderBottomWidth) > 0 || Number.parseFloat(style.borderTopWidth) > 0;
+        const topBorder = Number.parseFloat(style.borderTopWidth) > 0;
         const sideBorder = Number.parseFloat(style.borderLeftWidth) > 0 || Number.parseFloat(style.borderRightWidth) > 0;
+        const rowLayout = style.display === "grid" || style.display === "table-row" || (style.display === "flex" && style.flexDirection.startsWith("row"));
 
         const rounded = Math.max(
           Number.parseFloat(style.borderTopLeftRadius),
@@ -55,22 +58,27 @@ export default defineRule({
         ) > 2;
 
         return element.getClientRects().length > 0
-          && horizontalBorder
+          && topBorder
           && !sideBorder
           && !rounded
+          && rowLayout
           && children.filter((child) => child.textContent?.trim()).length >= 2;
       });
 
-      const groups = new Map<string, Element[]>();
+      const groups = new Map<Element, Map<string, Element[]>>();
 
       for (const element of candidates) {
+        if (!element.parentElement) continue;
+
         const key = `${element.tagName}:${element.className}`;
-        const group = groups.get(key) ?? [];
+        const siblingGroups = groups.get(element.parentElement) ?? new Map<string, Element[]>();
+        const group = siblingGroups.get(key) ?? [];
         group.push(element);
-        groups.set(key, group);
+        siblingGroups.set(key, group);
+        groups.set(element.parentElement, siblingGroups);
       }
 
-      const rows = [...groups.values()].filter((group) => group.length >= 3).flat();
+      const rows = [...groups.values()].flatMap((siblingGroups) => [...siblingGroups.values()].filter((group) => group.length >= 3).flat());
 
       return rows.map((element) => {
         const path: string[] = [];
