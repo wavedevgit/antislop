@@ -10,6 +10,7 @@ import gradients from "./gradients/index.ts";
 import monospaceFont from "./monospace-font/index.ts";
 import mostlyItalicTitles from "./mostly-italic-titles/index.ts";
 import neonBorder from "./neon-border/index.ts";
+import noBuzzwords from "./no-buzzwords/index.ts";
 import oneHtmlFile from "./one-html-file/index.ts";
 import excessivePadding from "./excessive-padding/index.ts";
 import oversizedCtaHeading from "./oversized-cta-heading/index.ts";
@@ -35,6 +36,7 @@ export const rules: Rule[] = [
   overusedFonts,
   mostlyItalicTitles,
   neonBorder,
+  noBuzzwords,
   softCornersEverywhere,
   dividedListRows,
   tooManyEmDashes,
