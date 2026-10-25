@@ -33,6 +33,7 @@ import textArrow from "./text-arrow/index.ts";
 import thickColoredCardBorder from "./thick-colored-card-border/index.ts";
 import tooManyEmDashes from "./too-many-em-dashes/index.ts";
 import tooManyEmojis from "./too-many-emojis/index.ts";
+import unstyledTextButton from "./unstyled-text-button/index.ts";
 
 export const rules: Rule[] = [
   accentStripeCard,
@@ -68,4 +69,5 @@ export const rules: Rule[] = [
   oversizedNavbar,
   excessivePadding,
   oversizedCtaHeading,
+  unstyledTextButton,
 ];
