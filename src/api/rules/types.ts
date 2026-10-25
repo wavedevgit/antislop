@@ -29,7 +29,7 @@ export type RuleContext = PuppeteerContext | FilesContext;
 
 export type Reference =
   | { type: "file"; path: string; line: number; column: number; source: string }
-  | { type: "element"; selector: string; source: string };
+  | { type: "element"; selector: string; source: string; text?: string; occurrence?: number };
 
 export type MatchResult =
   | { matches: false }

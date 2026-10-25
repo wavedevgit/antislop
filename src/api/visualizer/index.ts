@@ -11,6 +11,8 @@ async function renderVisualFindings(page: Page, findings: readonly Finding[], fu
       ruleId: finding.rule.id,
       description: finding.rule.description,
       explanation: finding.explanation,
+      text: reference.text,
+      occurrence: reference.occurrence,
     })));
 
   await page.evaluate((items, fullPage) => {
@@ -51,11 +53,50 @@ async function renderVisualFindings(page: Page, findings: readonly Finding[], fu
     };
 
     const grouped = new Map<Element, typeof items>();
+    const textTargets: Array<{ element: Element; range: Range; group: typeof items }> = [];
+
+    const textRange = (element: Element, text: string, occurrence: number): Range | null => {
+      const needle = text.toLowerCase();
+      let seen = 0;
+
+      for (const node of element.childNodes) {
+        if (node.nodeType !== Node.TEXT_NODE) continue;
+
+        const value = node.textContent ?? "";
+        let from = 0;
+
+        while (from <= value.length - text.length) {
+          const index = value.toLowerCase().indexOf(needle, from);
+
+          if (index < 0) break;
+
+          if (seen === occurrence) {
+            const range = document.createRange();
+            range.setStart(node, index);
+            range.setEnd(node, index + text.length);
+
+            return range;
+          }
+
+          seen += 1;
+          from = index + text.length;
+        }
+      }
+
+      return null;
+    };
 
     for (const item of items) {
       const element = resolve(item.selector);
 
       if (!element) continue;
+
+      if (item.text) {
+        const range = textRange(element, item.text, item.occurrence ?? 0);
+
+        if (range) textTargets.push({ element, range, group: [item] });
+        continue;
+      }
 
       const group = grouped.get(element) ?? [];
 
@@ -67,7 +108,7 @@ async function renderVisualFindings(page: Page, findings: readonly Finding[], fu
     tooltip.className = "tooltip";
     root.append(tooltip);
 
-    const marks: Array<{ element: Element; mark: HTMLDivElement }> = [];
+    const marks: Array<{ element: Element; range?: Range; mark: HTMLDivElement }> = [];
 
     const showTooltip = (group: typeof items) => {
       tooltip.replaceChildren();
@@ -89,7 +130,10 @@ async function renderVisualFindings(page: Page, findings: readonly Finding[], fu
       tooltip.style.display = "block";
     };
 
-    for (const [element, group] of grouped) {
+    for (const { element, range, group } of [
+      ...[...grouped].map(([element, group]) => ({ element, range: undefined, group })),
+      ...textTargets,
+    ]) {
       const mark = document.createElement("div");
       mark.className = "mark";
 
@@ -115,7 +159,7 @@ async function renderVisualFindings(page: Page, findings: readonly Finding[], fu
         tooltip.style.display = "none";
       });
       root.append(mark);
-      marks.push({ element, mark });
+      marks.push({ element, range, mark });
     }
 
     let frame = 0;
@@ -145,8 +189,8 @@ async function renderVisualFindings(page: Page, findings: readonly Finding[], fu
       frame = requestAnimationFrame(() => {
         tooltip.style.display = "none";
 
-        for (const { element, mark } of marks) {
-          const rect = element.getBoundingClientRect();
+        for (const { element, range, mark } of marks) {
+          const rect = range?.getBoundingClientRect() ?? element.getBoundingClientRect();
           mark.style.display = isVisible(element, rect) ? "block" : "none";
           mark.classList.toggle("label-below", rect.top + (fullPage ? scrollY : 0) < 24);
           mark.classList.toggle("label-left", rect.right > innerWidth - 420);

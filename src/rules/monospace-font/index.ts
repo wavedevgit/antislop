@@ -16,15 +16,31 @@ function tailwindMonospaceUses(content: string): number {
 export default defineRule({
   id: "no-decorative-monospace",
   title: "Monospace font",
-  description: "Only use monospace for real code, not labels or decorative text. Avoid it if possible.",
+  description: "Only use monospace for syntax-highlighted code, not single-color labels, prose, or decorative text.",
   async match(context) {
     const result = context.type === "puppeteer"
       ? await context.page.$$eval("*", (elements) => elements.flatMap((element) => {
         const family = getComputedStyle(element).fontFamily;
+        const parentFamily = element.parentElement ? getComputedStyle(element.parentElement).fontFamily : "";
 
-        if (element.getClientRects().length === 0 || !/\b(?:monospace|mono)\b/i.test(family)) {
+        if (
+          element.getClientRects().length === 0
+          || !element.textContent?.trim()
+          || !/\b(?:monospace|mono)\b/i.test(family)
+          || /\b(?:monospace|mono)\b/i.test(parentFamily)
+        ) {
           return [];
         }
+
+        const colors = new Set<string>();
+
+        for (const textElement of [element, ...element.querySelectorAll("*")]) {
+          const hasText = Array.from(textElement.childNodes).some((node) => node.nodeType === Node.TEXT_NODE && node.textContent?.trim());
+
+          if (hasText && textElement.getClientRects().length > 0) colors.add(getComputedStyle(textElement).color);
+        }
+
+        if (colors.size > 1) return [];
 
         const path: string[] = [];
         let current: Element | null = element;
@@ -46,7 +62,7 @@ export default defineRule({
     const uses = Array.isArray(result) ? result.length : result;
 
     return uses > 0
-      ? { matches: true, explanation: `${uses} monospace font ${uses === 1 ? "use was" : "uses were"} found. Only use monospace for real code, not labels or decorative text. Avoid it if possible.`, references: Array.isArray(result) ? result : undefined }
+      ? { matches: true, explanation: `${uses} single-color monospace ${uses === 1 ? "text region was" : "text regions were"} found. Use monospace only when syntax highlighting distinguishes the code.`, references: Array.isArray(result) ? result : undefined }
       : { matches: false };
   },
 });
