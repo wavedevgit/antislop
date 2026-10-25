@@ -14,6 +14,9 @@ npm install
 
 ## Usage
 
+> [!WARNING]
+> Browser scans with Puppeteer are recommended. File scans cannot reliably resolve computed styles or rendered layout and may be less accurate.
+
 ```sh
 # Scan HTML, CSS, and supported Tailwind utilities
 node src/cli/index.ts --folder ./path/to/site
