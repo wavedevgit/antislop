@@ -94,7 +94,7 @@ export default defineRule({
 
         for (const element of elements) {
           const style = getComputedStyle(element);
-          const value = `${style.backgroundImage} ${style.maskImage}`;
+          const value = style.backgroundImage;
 
           if (element.getClientRects().length > 0 && value.includes("gradient(")) {
             const path: string[] = [];
@@ -118,6 +118,7 @@ export default defineRule({
       });
     } else {
       declarations = ((await markup(context)).match(/[^{};\n]*(?:linear|radial|conic)-gradient\s*\([^{};\n]*/gi) ?? [])
+        .filter((value) => !/^\s*(?:-webkit-)?mask(?:-image)?\s*:/i.test(value))
         .map((value) => ({ value }));
     }
 
