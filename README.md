@@ -27,6 +27,9 @@ node src/cli/index.ts --browser /usr/bin/chromium --url https://example.com --vi
 # Save a full-page PNG with highlighted findings
 node src/cli/index.ts --browser /usr/bin/chromium --url https://example.com --screenshot result.png
 
+# Save a clean PNG report with explanations and screenshots of affected elements
+node src/cli/index.ts --browser /usr/bin/chromium --url https://example.com --screenshot-problems problems.png
+
 # Disable rules by ID
 node src/cli/index.ts --folder ./path/to/site \
   --disable no-visible-gradients,no-neon-borders

@@ -1,11 +1,12 @@
 export type DetectorConfig =
-  | { type: "browser"; executablePath: string; url: string; visual: boolean; screenshot?: string; disabledRuleIds: readonly string[] }
+  | { type: "browser"; executablePath: string; url: string; visual: boolean; screenshot?: string; screenshotProblems?: string; disabledRuleIds: readonly string[] }
   | { type: "files"; folder: string; disabledRuleIds: readonly string[] };
 
 export function parseArguments(args: readonly string[]): DetectorConfig {
   const options = new Map<string, string>();
   let visual = false;
   let screenshot: string | undefined;
+  let screenshotProblems: string | undefined;
 
   for (let index = 0; index < args.length;) {
     const name = args[index];
@@ -20,6 +21,14 @@ export function parseArguments(args: readonly string[]): DetectorConfig {
       const path = args[index + 1];
 
       screenshot = path && !path.startsWith("--") ? path : "antislop-screenshot.png";
+      index += path && !path.startsWith("--") ? 2 : 1;
+      continue;
+    }
+
+    if (name === "--screenshot-problems") {
+      const path = args[index + 1];
+
+      screenshotProblems = path && !path.startsWith("--") ? path : "antislop-problems.png";
       index += path && !path.startsWith("--") ? 2 : 1;
       continue;
     }
@@ -43,17 +52,17 @@ export function parseArguments(args: readonly string[]): DetectorConfig {
   const folder = options.get("--folder");
   const disabledRuleIds = options.get("--disable")?.split(",").map((id) => id.trim()).filter(Boolean) ?? [];
 
-  if (visual && screenshot) {
-    throw new Error("Use either --visual or --screenshot, not both");
+  if ([visual, Boolean(screenshot), Boolean(screenshotProblems)].filter(Boolean).length > 1) {
+    throw new Error("Use only one of --visual, --screenshot, or --screenshot-problems");
   }
 
-  if (folder && !browser && !url && !visual) {
+  if (folder && !browser && !url && !visual && !screenshot && !screenshotProblems) {
     return { type: "files", folder, disabledRuleIds };
   }
 
   if (browser && url && !folder) {
-    return { type: "browser", executablePath: browser, url: /^https?:\/\//i.test(url) ? url : `https://${url}`, visual, screenshot, disabledRuleIds };
+    return { type: "browser", executablePath: browser, url: /^https?:\/\//i.test(url) ? url : `https://${url}`, visual, screenshot, screenshotProblems, disabledRuleIds };
   }
 
-  throw new Error("Use either --folder <path> or --browser <chromium-path> --url <url> [--visual | --screenshot [path]]");
+  throw new Error("Use either --folder <path> or --browser <chromium-path> --url <url> [--visual | --screenshot [path] | --screenshot-problems [path]]");
 }

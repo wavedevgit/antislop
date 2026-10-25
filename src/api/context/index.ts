@@ -14,14 +14,14 @@ export async function withContext<T>(
   const browser = await puppeteer.launch({
     executablePath: config.executablePath,
     headless: !config.visual,
-    defaultViewport: config.visual ? null : config.screenshot ? { width: 1920, height: 1080 } : undefined,
+    defaultViewport: config.visual ? null : config.screenshot || config.screenshotProblems ? { width: 1920, height: 1080 } : undefined,
     args: config.visual ? ["--start-maximized"] : undefined,
   });
 
   try {
     const page = await browser.newPage();
 
-    if (config.visual || config.screenshot) await page.setBypassCSP(true);
+    if (config.visual || config.screenshot || config.screenshotProblems) await page.setBypassCSP(true);
 
     await page.goto(config.url, { waitUntil: "networkidle2" });
 

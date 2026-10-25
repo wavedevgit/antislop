@@ -217,6 +217,244 @@ export async function screenshotVisualFindings(page: Page, findings: readonly Fi
   await page.screenshot({ path, fullPage: true, type: "png" });
 }
 
+function escapeHtml(value: string): string {
+  return value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
+}
+
+async function screenshotAlignmentRow(page: Page, selectors: readonly string[]): Promise<string | undefined> {
+  const clip = await page.evaluate((selectors) => {
+    const resolve = (selector: string): Element | null => {
+      try {
+        if (selector.startsWith("xpath=")) {
+          const node = document.evaluate(selector.slice(6), document, null, XPathResult.FIRST_ORDERED_NODE_TYPE).singleNodeValue;
+
+          return node instanceof Element ? node : null;
+        }
+
+        return document.querySelector(selector);
+      } catch {
+        return null;
+      }
+    };
+
+    const elements = selectors.map(resolve).filter((element): element is Element => Boolean(element));
+
+    if (elements.length < 2) return null;
+
+    const boxes = elements.map((element) => element.getBoundingClientRect());
+    const verticalOverlap = Math.min(...boxes.map((box) => box.bottom)) - Math.max(...boxes.map((box) => box.top));
+
+    if (verticalOverlap <= 0) return null;
+
+    let row: Element | null = elements[0] ?? null;
+
+    while (row && !elements.every((element) => row?.contains(element))) row = row.parentElement;
+
+    if (!row || row === document.body || row === document.documentElement) return null;
+
+    document.querySelector("anti-slop-report-highlights")?.remove();
+
+    const host = document.createElement("anti-slop-report-highlights");
+    host.style.cssText = `all:initial;position:absolute;inset:0;width:${document.documentElement.scrollWidth}px;height:${document.documentElement.scrollHeight}px;z-index:2147483647;pointer-events:none;`;
+
+    for (const box of boxes) {
+      const mark = document.createElement("div");
+      mark.style.cssText = `position:absolute;box-sizing:border-box;left:${box.left + scrollX}px;top:${box.top + scrollY}px;width:${box.width}px;height:${box.height}px;border:3px solid #ef4056;background:rgb(239 64 86 / 12%);`;
+      host.append(mark);
+    }
+
+    document.documentElement.append(host);
+
+    const box = row.getBoundingClientRect();
+    const padding = 16;
+    const x = Math.max(0, box.left + scrollX - padding);
+    const y = Math.max(0, box.top + scrollY - padding);
+
+    return {
+      x,
+      y,
+      width: Math.min(1400, document.documentElement.scrollWidth - x, box.width + padding * 2),
+      height: Math.min(720, document.documentElement.scrollHeight - y, box.height + padding * 2),
+    };
+  }, selectors);
+
+  if (!clip || clip.width <= 0 || clip.height <= 0) return undefined;
+
+  try {
+    const image = await page.screenshot({ type: "png", clip, captureBeyondViewport: true });
+
+    return Buffer.from(image).toString("base64");
+  } finally {
+    await page.evaluate(() => document.querySelector("anti-slop-report-highlights")?.remove());
+  }
+}
+
+export async function screenshotProblemReport(page: Page, findings: readonly Finding[], path: string): Promise<void> {
+  const sections: Array<{ title: string; id: string; description: string; explanation: string; elementCount: number; images: Array<{ data: string; selector: string }> }> = [];
+
+  for (const finding of findings) {
+    const images: Array<{ data: string; selector: string }> = [];
+    const references = finding.references.filter((reference) => reference.type === "element");
+
+    if (finding.rule.id === "no-alignment-problems") {
+      const data = await screenshotAlignmentRow(page, references.map((reference) => reference.selector));
+
+      if (data) images.push({ data, selector: `Shared row · ${references.length} highlighted elements` });
+    }
+
+    for (const reference of images.length > 0 ? [] : references) {
+      const clip = await page.evaluate((item) => {
+        const resolve = (selector: string): Element | null => {
+          try {
+            if (selector.startsWith("xpath=")) {
+              const node = document.evaluate(selector.slice(6), document, null, XPathResult.FIRST_ORDERED_NODE_TYPE).singleNodeValue;
+
+              return node instanceof Element ? node : null;
+            }
+
+            return document.querySelector(selector);
+          } catch {
+            return null;
+          }
+        };
+
+        const element = resolve(item.selector);
+
+        if (!element) return null;
+
+        let rect = element.getBoundingClientRect();
+
+        if (item.text) {
+          const needle = item.text.toLowerCase();
+          let seen = 0;
+
+          for (const node of element.childNodes) {
+            if (node.nodeType !== Node.TEXT_NODE) continue;
+
+            const value = node.textContent ?? "";
+            let from = 0;
+
+            while (from <= value.length - item.text.length) {
+              const index = value.toLowerCase().indexOf(needle, from);
+
+              if (index < 0) break;
+
+              if (seen === (item.occurrence ?? 0)) {
+                const range = document.createRange();
+                range.setStart(node, index);
+                range.setEnd(node, index + item.text.length);
+                rect = range.getBoundingClientRect();
+                break;
+              }
+
+              seen += 1;
+              from = index + item.text.length;
+            }
+          }
+        }
+
+        const padding = 12;
+        const x = Math.max(0, rect.left + scrollX - padding);
+        const y = Math.max(0, rect.top + scrollY - padding);
+
+        return {
+          x,
+          y,
+          width: Math.min(960, document.documentElement.scrollWidth - x, rect.width + padding * 2),
+          height: Math.min(540, document.documentElement.scrollHeight - y, rect.height + padding * 2),
+        };
+      }, reference);
+
+      if (!clip || clip.width <= 0 || clip.height <= 0) continue;
+
+      const image = await page.screenshot({ type: "png", clip, captureBeyondViewport: true });
+
+      images.push({ data: Buffer.from(image).toString("base64"), selector: reference.selector });
+    }
+
+    sections.push({
+      title: finding.rule.title,
+      id: finding.rule.id,
+      description: finding.rule.description,
+      explanation: finding.explanation,
+      elementCount: references.length,
+      images,
+    });
+  }
+
+  const report = await page.browser().newPage();
+
+  try {
+    await report.setViewport({ width: 1440, height: 900, deviceScaleFactor: 1 });
+
+    const elementCount = sections.reduce((count, section) => count + section.elementCount, 0);
+
+    const content = sections.map((section, index) => `
+      <section class="finding">
+        <div class="number">${String(index + 1).padStart(2, "0")}</div>
+        <div class="copy">
+          <div class="rule"><code>${escapeHtml(section.id)}</code><span>${section.elementCount} ${section.elementCount === 1 ? "element" : "elements"}</span></div>
+          <h2>${escapeHtml(section.title)}</h2>
+          <p class="explanation">${escapeHtml(section.explanation)}</p>
+          <p class="description">${escapeHtml(section.description)}</p>
+        </div>
+        <div class="shots">
+          ${section.images.length > 0
+            ? section.images.map((image) => `<figure><img src="data:image/png;base64,${image.data}"><figcaption>${escapeHtml(image.selector)}</figcaption></figure>`).join("")
+            : "<p class=missing>No visible element screenshot was available.</p>"}
+        </div>
+      </section>
+    `).join("");
+
+    await report.setContent(`<!doctype html>
+      <html>
+        <head>
+          <meta charset="utf-8">
+          <style>
+            * { box-sizing: border-box; }
+            html { background: #e8edf2; }
+            body { width: 1440px; margin: 0; color: #172033; background: #f7f9fb; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
+            header { position: relative; padding: 56px 64px 48px; color: white; background: #172033; border-bottom: 6px solid #22d3ee; }
+            .brand { position: absolute; top: 48px; right: 64px; color: #22d3ee; font-size: 72px; font-weight: 900; line-height: 1; letter-spacing: -.05em; }
+            h1 { max-width: 900px; margin: 0; font-size: 52px; line-height: 1; letter-spacing: -.04em; }
+            header p { max-width: 1000px; margin: 22px 0 0; color: #d5dce6; font-size: 16px; line-height: 1.5; overflow-wrap: anywhere; }
+            .summary { display: flex; gap: 30px; margin-top: 32px; }
+            .summary strong { margin-right: 7px; font-size: 24px; }
+            main { padding: 0 64px 64px; }
+            .finding { display: grid; grid-template-columns: 52px 1fr; gap: 0 24px; padding: 44px 0 48px; border-bottom: 1px solid #cbd3dd; }
+            .number { padding-top: 5px; color: #0891b2; font-size: 15px; font-weight: 800; line-height: 1; }
+            .copy { max-width: 900px; }
+            .rule { display: flex; align-items: center; gap: 12px; }
+            .rule code { color: #526176; font: inherit; font-size: 12px; font-weight: 700; line-height: 1.2; }
+            .rule span { padding-left: 12px; color: #718096; border-left: 1px solid #cbd3dd; font-size: 12px; }
+            h2 { margin: 12px 0 8px; font-size: 30px; line-height: 1.1; letter-spacing: -.025em; }
+            .explanation { margin: 0; font-size: 17px; font-weight: 700; line-height: 1.45; }
+            .description { max-width: 820px; margin: 8px 0 0; color: #607086; font-size: 14px; line-height: 1.5; }
+            .shots { grid-column: 2; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-top: 26px; }
+            figure { min-width: 0; margin: 0; overflow: hidden; background: white; border: 1px solid #b9c4d0; }
+            img { display: block; width: 100%; height: 300px; object-fit: contain; background-color: #fff; background-image: linear-gradient(45deg, #f1f4f7 25%, transparent 25%), linear-gradient(-45deg, #f1f4f7 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #f1f4f7 75%), linear-gradient(-45deg, transparent 75%, #f1f4f7 75%); background-position: 0 0, 0 8px, 8px -8px, -8px 0; background-size: 16px 16px; }
+            figcaption { padding: 10px 12px; overflow: hidden; color: #526176; border-top: 1px solid #d8dee6; font-size: 11px; line-height: 1.3; text-overflow: ellipsis; white-space: nowrap; }
+            .missing { grid-column: 1 / -1; margin: 0; padding: 20px; color: #718096; border: 1px dashed #b9c4d0; }
+            .empty { padding: 80px 0; color: #607086; font-size: 18px; }
+          </style>
+        </head>
+        <body>
+          <header>
+            <div class="brand">ANTISLOP</div>
+            <h1>${findings.length === 0 ? "No problems found" : `${findings.length} ${findings.length === 1 ? "problem" : "problems"} found`}</h1>
+            <p>${escapeHtml(page.url())}</p>
+            <div class="summary"><span><strong>${findings.length}</strong> rules triggered</span><span><strong>${elementCount}</strong> elements captured</span></div>
+          </header>
+          <main>${content || '<p class="empty">The enabled rules found no problems on this page.</p>'}</main>
+        </body>
+      </html>`, { waitUntil: "load" });
+
+    await report.screenshot({ path, fullPage: true, type: "png" });
+  } finally {
+    await report.close();
+  }
+}
+
 export async function showVisualFindings(page: Page, findings: readonly Finding[]): Promise<void> {
   await renderVisualFindings(page, findings, false);
 

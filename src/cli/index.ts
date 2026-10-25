@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { detect, parseArguments, screenshotVisualFindings, showVisualFindings, withContext } from "../api/index.ts";
+import { detect, parseArguments, screenshotProblemReport, screenshotVisualFindings, showVisualFindings, withContext } from "../api/index.ts";
 import { rules } from "../rules/index.ts";
 
 try {
@@ -18,6 +18,8 @@ try {
     if (config.type === "browser" && context.type === "puppeteer") {
       if (config.screenshot) {
         await screenshotVisualFindings(context.page, findings, config.screenshot);
+      } else if (config.screenshotProblems) {
+        await screenshotProblemReport(context.page, findings, config.screenshotProblems);
       } else if (config.visual) {
         await showVisualFindings(context.page, findings);
       }
@@ -29,6 +31,8 @@ try {
   console.log(JSON.stringify(findings, null, 2));
 
   if (config.type === "browser" && config.screenshot) console.error(`Screenshot saved to ${config.screenshot}`);
+
+  if (config.type === "browser" && config.screenshotProblems) console.error(`Problem report saved to ${config.screenshotProblems}`);
 } catch (error) {
   console.error(error instanceof Error ? error.message : String(error));
   process.exitCode = 1;
