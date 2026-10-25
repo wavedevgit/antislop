@@ -50,6 +50,8 @@ Unknown rule IDs fail instead of being ignored.
 
 Rules live in `src/rules/` and are registered in `src/rules/index.ts`.
 
+See the [rule documentation](docs/rules/README.md) for examples, detection details, and scan support.
+
 ## Development
 
 ```sh
