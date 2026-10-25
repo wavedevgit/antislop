@@ -18,7 +18,7 @@ function sourceReferences(files: Files): Reference[] {
 export default defineRule({
   id: "no-slop-icons",
   title: "Slop icons",
-  description: "Lucide icons are heavily overused in AI-generated interfaces and can make products look interchangeable.",
+  description: "Lucide icons are a common vibe-coding default that makes interfaces look AI-generated.",
   async match(context) {
     const references: Reference[] = context.type === "files"
       ? sourceReferences(context.files)

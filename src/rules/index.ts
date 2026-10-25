@@ -19,6 +19,7 @@ import inconsistentButtonRadius from "./inconsistent-button-radius/index.ts";
 import lineBeforeLabel from "./line-before-label/index.ts";
 import monospaceFont from "./monospace-font/index.ts";
 import mostlyItalicTitles from "./mostly-italic-titles/index.ts";
+import navbarThemeToggle from "./navbar-theme-toggle/index.ts";
 import neonBorder from "./neon-border/index.ts";
 import noBuzzwords from "./no-buzzwords/index.ts";
 import noMetaTags from "./no-meta-tags/index.ts";
@@ -63,6 +64,7 @@ export const rules: Rule[] = [
   monospaceFont,
   overusedFonts,
   mostlyItalicTitles,
+  navbarThemeToggle,
   neonBorder,
   noBuzzwords,
   noMetaTags,
