@@ -30,6 +30,7 @@ import overusedFonts from "./overused-fonts/index.ts";
 import patternedBackground from "./patterned-background/index.ts";
 import pillButtons from "./pill-buttons/index.ts";
 import softCornersEverywhere from "./soft-corners-everywhere/index.ts";
+import slopIcons from "./slop-icons/index.ts";
 import dividedListRows from "./divided-list-rows/index.ts";
 import textArrow from "./text-arrow/index.ts";
 import thickColoredCardBorder from "./thick-colored-card-border/index.ts";
@@ -66,6 +67,7 @@ export const rules: Rule[] = [
   noBuzzwords,
   noMetaTags,
   softCornersEverywhere,
+  slopIcons,
   dividedListRows,
   tooManyEmDashes,
   tooManyEmojis,
