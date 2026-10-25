@@ -5,6 +5,7 @@ import auroraBackground from "./aurora-background/index.ts";
 import bullets from "./bullets/index.ts";
 import cardInCard from "./card-in-card/index.ts";
 import creamColors from "./cream-colors/index.ts";
+import crampedHeaderSpacing from "./cramped-header-spacing/index.ts";
 import excessiveLetterSpacing from "./excessive-letter-spacing/index.ts";
 import extremeCardRadius from "./extreme-card-radius/index.ts";
 import eyebrowOverAllTitles from "./eyebrow-over-all-titles/index.ts";
@@ -47,6 +48,7 @@ export const rules: Rule[] = [
   patternedBackground,
   pillButtons,
   creamColors,
+  crampedHeaderSpacing,
   excessiveLetterSpacing,
   extremeCardRadius,
   cardInCard,
