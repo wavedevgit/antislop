@@ -1,10 +1,22 @@
 #!/usr/bin/env node
 
-import { detect, parseArguments, screenshotProblemReport, screenshotVisualFindings, showVisualFindings, withContext } from "../api/index.ts";
+import { detect, findBrowser, parseArguments, screenshotProblemReport, screenshotVisualFindings, showVisualFindings, withContext } from "../api/index.ts";
 import { rules } from "../rules/index.ts";
 
-try {
-  const config = parseArguments(process.argv.slice(2));
+async function main(): Promise<void> {
+  const args = process.argv.slice(2);
+
+  if (args.length === 1 && (args[0] === "--find-browser" || args[0] === "--find-browsers")) {
+    const browser = await findBrowser();
+
+    if (!browser) throw new Error("No working Chromium-compatible browser was found");
+
+    console.log(browser);
+
+    return;
+  }
+
+  const config = parseArguments(args);
   const disabled = new Set(config.disabledRuleIds);
   const unknown = config.disabledRuleIds.filter((id) => !rules.some((rule) => rule.id === id));
 
@@ -33,6 +45,10 @@ try {
   if (config.type === "browser" && config.screenshot) console.error(`Screenshot saved to ${config.screenshot}`);
 
   if (config.type === "browser" && config.screenshotProblems) console.error(`Problem report saved to ${config.screenshotProblems}`);
+}
+
+try {
+  await main();
 } catch (error) {
   console.error(error instanceof Error ? error.message : String(error));
   process.exitCode = 1;

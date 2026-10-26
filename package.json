@@ -1,19 +1,37 @@
 {
   "name": "antislop",
   "version": "1.0.0",
-  "description": "Minimal TypeScript project with Oxlint anti-slop rules",
-  "main": "dist/index.js",
+  "description": "Detect common AI-generated design patterns and frontend quality issues",
+  "exports": "./dist/api/index.js",
   "bin": {
-    "detector": "src/cli/index.ts"
+    "antislop": "dist/cli/index.js"
   },
+  "files": [
+    "dist",
+    "skills",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
+    "build": "tsc -p tsconfig.build.json",
     "lint": "oxlint .",
+    "prepare": "npm run build",
     "typecheck": "tsc --noEmit"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "ai",
+    "design",
+    "frontend",
+    "linter"
+  ],
+  "repository": "github:wavedevgit/antislop",
+  "homepage": "https://github.com/wavedevgit/antislop#readme",
+  "bugs": "https://github.com/wavedevgit/antislop/issues",
   "license": "GPL-3.0-only",
   "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "devDependencies": {
     "@oxlint/plugins": "1.89.0",
     "@types/node": "26.6.5",

@@ -4,12 +4,12 @@ AntiSlop is a detector for common ai slop in websites.
 
 Inspired by the [Impeccable](https://impeccable.style/slop/) skill.
 
-## Install
+## Run
 
-Requires a recent Node.js version with TypeScript type stripping.
+Requires Node.js 22.12 or newer. Run directly from GitHub without installing:
 
 ```sh
-npm install
+npx --yes --package=github:wavedevgit/antislop antislop --find-browser
 ```
 
 ## Usage
@@ -18,25 +18,30 @@ npm install
 > Browser scans with Puppeteer are recommended. File scans cannot reliably resolve computed styles or rendered layout and may be less accurate.
 
 ```sh
+# Find Chromium-compatible browser executables
+npx --yes --package=github:wavedevgit/antislop antislop --find-browser
+
 # Scan HTML, CSS, and supported Tailwind utilities
-node src/cli/index.ts --folder ./path/to/site
+npx --yes --package=github:wavedevgit/antislop antislop --folder ./path/to/site
 
 # Scan computed styles in Chromium
-node src/cli/index.ts --browser /usr/bin/chromium --url https://example.com
+npx --yes --package=github:wavedevgit/antislop antislop --browser /usr/bin/chromium --url https://example.com
 
 # Open the page and highlight findings; close the tab when finished
-node src/cli/index.ts --browser /usr/bin/chromium --url https://example.com --visual
+npx --yes --package=github:wavedevgit/antislop antislop --browser /usr/bin/chromium --url https://example.com --visual
 
 # Save a full-page PNG with highlighted findings
-node src/cli/index.ts --browser /usr/bin/chromium --url https://example.com --screenshot result.png
+npx --yes --package=github:wavedevgit/antislop antislop --browser /usr/bin/chromium --url https://example.com --screenshot result.png
 
 # Save a clean PNG report with explanations and screenshots of affected elements
-node src/cli/index.ts --browser /usr/bin/chromium --url https://example.com --screenshot-problems problems.png
+npx --yes --package=github:wavedevgit/antislop antislop --browser /usr/bin/chromium --url https://example.com --screenshot-problems problems.png
 
 # Disable rules by ID
-node src/cli/index.ts --folder ./path/to/site \
+npx --yes --package=github:wavedevgit/antislop antislop --folder ./path/to/site \
   --disable no-visible-gradients,no-neon-borders
 ```
+
+Browser discovery caches the selected path in `~/.cache/antislop-browser.txt`. Later runs validate the cached browser with `--version` before using it, and automatically search again if it is stale. Discovery checks environment overrides and `$PATH` first, followed by Linux Flatpak installs, macOS application bundles, standard Windows install locations, and common browser binaries or AppImages under the home directory. Home searches skip `.cache`.
 
 Unknown rule IDs fail instead of being ignored.
 
@@ -52,6 +57,16 @@ Unknown rule IDs fail instead of being ignored.
 Rules live in `src/rules/` and are registered in `src/rules/index.ts`.
 
 See the [rule documentation](docs/rules/README.md) for examples, detection details, and scan support.
+
+## Agent skill
+
+The repository includes an [`antislop-design`](skills/SKILL.md) skill for agents building websites. It gathers the palette, typography, and theme requirements before implementation, embeds the rule guidance, and requires a final AntiSlop scan.
+
+Install it for any supported coding agent:
+
+```sh
+npx skills add wavedevgit/antislop --skill antislop-design
+```
 
 ## Development
 

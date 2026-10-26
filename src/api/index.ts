@@ -1,3 +1,5 @@
+export { findBrowser } from "./browsers/index.ts";
+
 export { parseArguments } from "./config/index.ts";
 
 export type { DetectorConfig } from "./config/index.ts";
