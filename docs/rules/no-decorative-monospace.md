@@ -6,7 +6,7 @@ Only use monospace for syntax-highlighted code, not single-color labels, prose, 
 
 ## How it works
 
-Reports single-color monospace text while allowing multi-color syntax-highlighted code.
+Reports single-color monospace text while allowing multi-color syntax-highlighted code and inline code tokens.
 
 ## Scan support
 

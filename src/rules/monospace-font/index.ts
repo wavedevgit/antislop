@@ -28,6 +28,7 @@ export default defineRule({
           || !element.textContent?.trim()
           || !/\b(?:monospace|mono)\b/i.test(family)
           || /\b(?:monospace|mono)\b/i.test(parentFamily)
+          || (element.tagName === "CODE" && !element.closest("pre"))
         ) {
           return [];
         }
