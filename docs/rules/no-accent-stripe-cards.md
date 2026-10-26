@@ -6,7 +6,7 @@ AI-generated landing pages often decorate rounded cards with a thick colored str
 
 ## How it works
 
-Finds card-like elements with a thick colored top or left border.
+Finds card-like elements with a thick colored top or left border, or an inset box-shadow stripe such as `box-shadow: inset 2px 0 var(--accent)`.
 
 ## Scan support
 

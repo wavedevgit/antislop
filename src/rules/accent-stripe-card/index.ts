@@ -3,7 +3,7 @@ import { cssClassStyles, isSourceCard } from "../shared/cards.ts";
 import { fileReference } from "../shared/index.ts";
 import { cssRules } from "../shared/styles.ts";
 
-const cardContainers = new Set(["article", "aside", "div", "li", "section"]);
+const cardContainers = new Set(["a", "article", "aside", "div", "li", "section"]);
 
 function stripeWidth(value: string): number {
   let widest = 0;
@@ -17,11 +17,70 @@ function stripeWidth(value: string): number {
   return widest;
 }
 
+function splitShadows(value: string): string[] {
+  const shadows: string[] = [];
+  let depth = 0;
+  let start = 0;
+
+  for (let index = 0; index < value.length; index += 1) {
+    const character = value[index];
+
+    if (character === "(") depth += 1;
+    else if (character === ")") depth -= 1;
+    else if (character === "," && depth === 0) {
+      shadows.push(value.slice(start, index));
+      start = index + 1;
+    }
+  }
+
+  shadows.push(value.slice(start));
+
+  return shadows;
+}
+
+function shadowLengths(value: string): number[] {
+  const lengths: number[] = [];
+
+  for (const token of value.trim().split(/\s+/)) {
+    const match = token.match(/^(-?[\d.]+)(px|rem|em)?$/i);
+
+    if (!match?.[1]) continue;
+
+    const amount = Number(match[1]);
+
+    if (!Number.isFinite(amount)) continue;
+
+    lengths.push(match[2]?.toLowerCase() === "rem" || match[2]?.toLowerCase() === "em" ? amount * 16 : amount);
+  }
+
+  return lengths;
+}
+
+function insetStripeWidth(value: string): number {
+  let widest = 0;
+
+  for (const match of value.matchAll(/box-shadow\s*[:=]\s*["']?([^;"'}]+)/gi)) {
+    for (const shadow of splitShadows(match[1] ?? "")) {
+      if (!/\binset\b/i.test(shadow)) continue;
+
+      const [x = 0, y = 0, blur = 0, spread = 0] = shadowLengths(shadow);
+
+      if (blur !== 0 || spread !== 0) continue;
+
+      if ((Math.abs(x) >= 2 && y === 0) || (Math.abs(y) >= 2 && x === 0)) {
+        widest = Math.max(widest, Math.abs(x), Math.abs(y));
+      }
+    }
+  }
+
+  return widest;
+}
+
 function stripeClasses(files: Files): Set<string> {
   const classes = new Set<string>();
 
   for (const rule of cssRules(files)) {
-    if (stripeWidth(rule.declarations) < 3) {
+    if (stripeWidth(rule.declarations) < 3 && insetStripeWidth(rule.declarations) < 2) {
       continue;
     }
 
@@ -38,7 +97,7 @@ function stripeClasses(files: Files): Set<string> {
 }
 
 function hasStripe(attributes: string, classes: Set<string>): boolean {
-  if (stripeWidth(attributes) >= 3) {
+  if (stripeWidth(attributes) >= 3 || insetStripeWidth(attributes) >= 2) {
     return true;
   }
 
@@ -84,7 +143,7 @@ export default defineRule({
   async match(context) {
     const references: Reference[] = context.type === "files"
       ? sourceReferences(context.files)
-      : await context.page.$$eval("article, aside, div, li, section", (elements) => elements.flatMap((element) => {
+      : await context.page.$$eval("a, article, aside, div, li, section", (elements) => elements.flatMap((element) => {
         const style = getComputedStyle(element);
         const box = element.getBoundingClientRect();
         const left = Number.parseFloat(style.borderLeftWidth);
@@ -99,7 +158,41 @@ export default defineRule({
           Number.parseFloat(style.borderBottomRightRadius),
         );
 
-        const stripe = (left >= 3 && left >= right + 2) || (top >= 3 && top >= bottom + 2);
+        const splitShadows = (value: string): string[] => {
+          const shadows: string[] = [];
+          let depth = 0;
+          let start = 0;
+
+          for (let index = 0; index < value.length; index += 1) {
+            const character = value[index];
+
+            if (character === "(") depth += 1;
+            else if (character === ")") depth -= 1;
+            else if (character === "," && depth === 0) {
+              shadows.push(value.slice(start, index));
+              start = index + 1;
+            }
+          }
+
+          shadows.push(value.slice(start));
+
+          return shadows;
+        };
+
+        const insetStripe = splitShadows(style.boxShadow).some((shadow) => {
+          if (!/\binset\b/i.test(shadow)) return false;
+
+          const lengths = [...shadow.matchAll(/-?[\d.]+px/g)].map((match) => Number.parseFloat(match[0]));
+          const [x = 0, y = 0, blur = 0, spread = 0] = lengths;
+
+          return blur === 0
+            && spread === 0
+            && ((Math.abs(x) >= 2 && y === 0) || (Math.abs(y) >= 2 && x === 0));
+        });
+
+        const stripe = (left >= 3 && left >= right + 2)
+          || (top >= 3 && top >= bottom + 2)
+          || insetStripe;
 
         const background = style.backgroundImage !== "none"
           || (style.backgroundColor !== "transparent" && !style.backgroundColor.endsWith(", 0)"));
