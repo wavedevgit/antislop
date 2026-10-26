@@ -20,7 +20,7 @@ Browser scans are recommended for computed layout and style checks.
 | [`no-low-contrast`](./no-low-contrast.md) | Low contrast text |
 | [`no-patterned-backgrounds`](./no-patterned-backgrounds.md) | Dotted or grid backgrounds |
 | [`no-pill-buttons`](./no-pill-buttons.md) | Pill-shaped buttons |
-| [`no-cream-colors`](./no-cream-colors.md) | Cream colors |
+| [`no-ai-color-palette`](./no-ai-color-palette.md) | AI color palette |
 | [`no-cramped-header-spacing`](./no-cramped-header-spacing.md) | Cramped header spacing |
 | [`no-excessive-letter-spacing`](./no-excessive-letter-spacing.md) | Excessive letter spacing |
 | [`no-extreme-card-radius`](./no-extreme-card-radius.md) | Extreme border-radius on cards |

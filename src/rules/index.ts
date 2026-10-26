@@ -5,7 +5,7 @@ import alignmentProblems from "./alignment-problems/index.ts";
 import auroraBackground from "./aurora-background/index.ts";
 import bullets from "./bullets/index.ts";
 import cardInCard from "./card-in-card/index.ts";
-import creamColors from "./cream-colors/index.ts";
+import aiColorPalette from "./ai-color-palette/index.ts";
 import crampedHeaderSpacing from "./cramped-header-spacing/index.ts";
 import excessiveLetterSpacing from "./excessive-letter-spacing/index.ts";
 import extremeCardRadius from "./extreme-card-radius/index.ts";
@@ -58,7 +58,7 @@ export const rules: Rule[] = [
   lowContrast,
   patternedBackground,
   pillButtons,
-  creamColors,
+  aiColorPalette,
   crampedHeaderSpacing,
   excessiveLetterSpacing,
   extremeCardRadius,
