@@ -12,4 +12,4 @@ Counts the rendered lines in the first visible level-one heading. File scans det
 
 | File scan | Browser scan |
 | --- | --- |
-| ✅ Supported | ✅ Supported |
+| <span class="status-ok">Supported</span> | <span class="status-ok">Supported</span> |

@@ -12,4 +12,4 @@ Detects Lucide package imports and rendered Lucide class or data attributes.
 
 | File scan | Browser scan |
 | --- | --- |
-| ✅ Supported | ✅ Supported |
+| <span class="status-ok">Supported</span> | <span class="status-ok">Supported</span> |

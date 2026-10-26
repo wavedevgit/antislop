@@ -12,4 +12,4 @@ Checks whether the project is shipped as one HTML file with embedded CSS and Jav
 
 | File scan | Browser scan |
 | --- | --- |
-| ✅ Supported | ❌ Not supported |
+| <span class="status-ok">Supported</span> | <span class="status-no">Not supported</span> |

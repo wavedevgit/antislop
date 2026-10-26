@@ -12,4 +12,4 @@ Counts small accent labels immediately above headings and reports repeated use a
 
 | File scan | Browser scan |
 | --- | --- |
-| ✅ Supported | ✅ Supported |
+| <span class="status-ok">Supported</span> | <span class="status-ok">Supported</span> |

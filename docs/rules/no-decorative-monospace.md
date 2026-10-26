@@ -12,4 +12,4 @@ Reports single-color monospace text while allowing multi-color syntax-highlighte
 
 | File scan | Browser scan |
 | --- | --- |
-| ✅ Supported | ✅ Supported |
+| <span class="status-ok">Supported</span> | <span class="status-ok">Supported</span> |

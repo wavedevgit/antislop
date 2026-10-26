@@ -12,4 +12,4 @@ Finds rounded cards that combine a hairline border with a wide soft shadow.
 
 | File scan | Browser scan |
 | --- | --- |
-| ✅ Supported | ✅ Supported |
+| <span class="status-ok">Supported</span> | <span class="status-ok">Supported</span> |

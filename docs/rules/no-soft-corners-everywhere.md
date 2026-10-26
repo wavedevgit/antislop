@@ -12,4 +12,4 @@ Counts repeated moderate corner radii across many interface surfaces.
 
 | File scan | Browser scan |
 | --- | --- |
-| ✅ Supported | ✅ Supported |
+| <span class="status-ok">Supported</span> | <span class="status-ok">Supported</span> |

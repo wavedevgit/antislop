@@ -12,4 +12,4 @@ Checks background colors against the known AI palette list in the rule. Cream is
 
 | File scan | Browser scan |
 | --- | --- |
-| ✅ Supported | ✅ Supported |
+| <span class="status-ok">Supported</span> | <span class="status-ok">Supported</span> |

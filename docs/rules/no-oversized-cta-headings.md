@@ -12,4 +12,4 @@ Finds unusually large headings used next to calls to action.
 
 | File scan | Browser scan |
 | --- | --- |
-| ✅ Supported | ✅ Supported |
+| <span class="status-ok">Supported</span> | <span class="status-ok">Supported</span> |

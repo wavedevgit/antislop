@@ -12,4 +12,4 @@ Detects a pill-shaped badge placed directly above the main page heading.
 
 | File scan | Browser scan |
 | --- | --- |
-| ✅ Supported | ✅ Supported |
+| <span class="status-ok">Supported</span> | <span class="status-ok">Supported</span> |

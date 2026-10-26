@@ -12,4 +12,4 @@ Compares sibling buttons in one action row and reports height differences of at 
 
 | File scan | Browser scan |
 | --- | --- |
-| ✅ Supported | ✅ Supported |
+| <span class="status-ok">Supported</span> | <span class="status-ok">Supported</span> |

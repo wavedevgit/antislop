@@ -12,4 +12,4 @@ Finds rounded, filled cards targeted by hover styles that add a visible border.
 
 | File scan | Browser scan |
 | --- | --- |
-| ✅ Supported | ✅ Supported |
+| <span class="status-ok">Supported</span> | <span class="status-ok">Supported</span> |

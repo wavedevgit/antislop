@@ -12,4 +12,4 @@ Counts decorative emoji characters and reports excessive use.
 
 | File scan | Browser scan |
 | --- | --- |
-| ✅ Supported | ✅ Supported |
+| <span class="status-ok">Supported</span> | <span class="status-ok">Supported</span> |

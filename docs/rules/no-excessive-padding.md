@@ -12,4 +12,4 @@ Finds ordinary elements with at least 48px of padding and compact cards with at 
 
 | File scan | Browser scan |
 | --- | --- |
-| ✅ Supported | ✅ Supported |
+| <span class="status-ok">Supported</span> | <span class="status-ok">Supported</span> |

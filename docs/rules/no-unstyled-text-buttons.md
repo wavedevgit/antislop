@@ -12,4 +12,4 @@ Finds text buttons without a visible background, border, radius, or hover backgr
 
 | File scan | Browser scan |
 | --- | --- |
-| ✅ Supported | ✅ Supported |
+| <span class="status-ok">Supported</span> | <span class="status-ok">Supported</span> |

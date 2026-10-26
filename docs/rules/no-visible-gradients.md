@@ -12,4 +12,4 @@ Finds clearly visible CSS gradients while allowing subtle lighting effects.
 
 | File scan | Browser scan |
 | --- | --- |
-| ✅ Supported | ✅ Supported |
+| <span class="status-ok">Supported</span> | <span class="status-ok">Supported</span> |

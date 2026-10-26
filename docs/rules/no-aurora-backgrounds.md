@@ -12,4 +12,4 @@ Looks for oversized blurred color blobs and layered radial gradients used as atm
 
 | File scan | Browser scan |
 | --- | --- |
-| ✅ Supported | ✅ Supported |
+| <span class="status-ok">Supported</span> | <span class="status-ok">Supported</span> |

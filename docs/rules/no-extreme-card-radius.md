@@ -12,4 +12,4 @@ Finds card-like containers with corner radii that are unusually large for their 
 
 | File scan | Browser scan |
 | --- | --- |
-| ✅ Supported | ✅ Supported |
+| <span class="status-ok">Supported</span> | <span class="status-ok">Supported</span> |

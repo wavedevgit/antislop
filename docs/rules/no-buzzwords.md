@@ -12,4 +12,4 @@ Searches visible copy for configured clichéd marketing phrases.
 
 | File scan | Browser scan |
 | --- | --- |
-| ✅ Supported | ✅ Supported |
+| <span class="status-ok">Supported</span> | <span class="status-ok">Supported</span> |

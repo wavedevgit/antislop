@@ -12,4 +12,4 @@ Finds generic SVG marks placed in contrasting rounded logo tiles.
 
 | File scan | Browser scan |
 | --- | --- |
-| ✅ Supported | ✅ Supported |
+| <span class="status-ok">Supported</span> | <span class="status-ok">Supported</span> |

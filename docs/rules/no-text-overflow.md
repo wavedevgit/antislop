@@ -12,4 +12,4 @@ Finds visible text that extends at least 16px beyond its container, while ignori
 
 | File scan | Browser scan |
 | --- | --- |
-| ❌ Not supported | ✅ Supported |
+| <span class="status-no">Not supported</span> | <span class="status-ok">Supported</span> |

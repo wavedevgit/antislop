@@ -12,4 +12,4 @@ Compares corresponding child positions across three or more similarly sized card
 
 | File scan | Browser scan |
 | --- | --- |
-| ❌ Not supported | ✅ Supported |
+| <span class="status-no">Not supported</span> | <span class="status-ok">Supported</span> |

@@ -12,4 +12,4 @@ Computes rendered text contrast using WCAG thresholds: 4.5:1 for body text and 3
 
 | File scan | Browser scan |
 | --- | --- |
-| ❌ Not supported | ✅ Supported |
+| <span class="status-no">Not supported</span> | <span class="status-ok">Supported</span> |

@@ -12,4 +12,4 @@ Checks font declarations and computed fonts against the configured overused-font
 
 | File scan | Browser scan |
 | --- | --- |
-| ✅ Supported | ✅ Supported |
+| <span class="status-ok">Supported</span> | <span class="status-ok">Supported</span> |

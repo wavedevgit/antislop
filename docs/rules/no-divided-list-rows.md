@@ -12,4 +12,4 @@ Finds repeated multi-column content rows separated by horizontal rules.
 
 | File scan | Browser scan |
 | --- | --- |
-| ✅ Supported | ✅ Supported |
+| <span class="status-ok">Supported</span> | <span class="status-ok">Supported</span> |

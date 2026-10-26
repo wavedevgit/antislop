@@ -12,4 +12,4 @@ Measures spacing after navigation bars and headings against minimum visible gaps
 
 | File scan | Browser scan |
 | --- | --- |
-| ✅ Supported | ✅ Supported |
+| <span class="status-ok">Supported</span> | <span class="status-ok">Supported</span> |

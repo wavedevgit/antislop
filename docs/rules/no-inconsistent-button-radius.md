@@ -12,4 +12,4 @@ Collects button corner radii and reports interfaces that mix conflicting radius 
 
 | File scan | Browser scan |
 | --- | --- |
-| ✅ Supported | ✅ Supported |
+| <span class="status-ok">Supported</span> | <span class="status-ok">Supported</span> |
