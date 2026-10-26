@@ -450,13 +450,19 @@ body .markdown-section h3 {
 
 .markdown-section table {
     border: 1px solid var(--line);
+    border-collapse: separate;
+    border-radius: 5px;
+    border-spacing: 0;
     display: table;
     font-size: 14px;
     margin: 24px 0;
+    overflow: hidden;
     width: 100%;
 }
 
 .markdown-section th {
+    border: 0;
+    border-bottom: 1px solid var(--line);
     color: var(--dim);
     font-family: var(--sans);
     font-size: 10px;
@@ -468,9 +474,19 @@ body .markdown-section h3 {
 }
 
 .markdown-section td {
+    border: 0;
     border-bottom: 1px solid var(--line-soft);
     padding: 12px 14px;
     vertical-align: top;
+}
+
+.markdown-section th + th,
+.markdown-section td + td {
+    border-left: 1px solid var(--line);
+}
+
+.markdown-section tbody tr:last-child td {
+    border-bottom: 0;
 }
 
 .markdown-section tr,
