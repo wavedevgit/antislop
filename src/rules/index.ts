@@ -15,9 +15,11 @@ import glassmorphismEverywhere from "./glassmorphism-everywhere/index.ts";
 import gradients from "./gradients/index.ts";
 import ghostCard from "./ghost-card/index.ts";
 import headlineBadge from "./headline-badge/index.ts";
+import hoverCardBorder from "./hover-card-border/index.ts";
 import inconsistentButtonHeight from "./inconsistent-button-height/index.ts";
 import inconsistentButtonRadius from "./inconsistent-button-radius/index.ts";
 import lineBeforeLabel from "./line-before-label/index.ts";
+import lowContrast from "./low-contrast/index.ts";
 import monospaceFont from "./monospace-font/index.ts";
 import mostlyItalicTitles from "./mostly-italic-titles/index.ts";
 import navbarThemeToggle from "./navbar-theme-toggle/index.ts";
@@ -35,6 +37,7 @@ import softCornersEverywhere from "./soft-corners-everywhere/index.ts";
 import slopIcons from "./slop-icons/index.ts";
 import dividedListRows from "./divided-list-rows/index.ts";
 import textArrow from "./text-arrow/index.ts";
+import textOverflow from "./text-overflow/index.ts";
 import thickColoredCardBorder from "./thick-colored-card-border/index.ts";
 import tooManyEmDashes from "./too-many-em-dashes/index.ts";
 import tooManyEmojis from "./too-many-emojis/index.ts";
@@ -48,9 +51,11 @@ export const rules: Rule[] = [
   bullets,
   gradients,
   headlineBadge,
+  hoverCardBorder,
   inconsistentButtonHeight,
   inconsistentButtonRadius,
   lineBeforeLabel,
+  lowContrast,
   patternedBackground,
   pillButtons,
   creamColors,
@@ -62,6 +67,7 @@ export const rules: Rule[] = [
   glassmorphismEverywhere,
   ghostCard,
   textArrow,
+  textOverflow,
   thickColoredCardBorder,
   monospaceFont,
   overusedFonts,

@@ -1,6 +1,6 @@
 # Rules
 
-**39 rules available**
+**42 rules available**
 
 Browser scans are recommended for computed layout and style checks.
 
@@ -13,9 +13,11 @@ Browser scans are recommended for computed layout and style checks.
 | [`no-unicode-bullets`](./no-unicode-bullets.md) | Unicode bullets |
 | [`no-visible-gradients`](./no-visible-gradients.md) | Visible gradients |
 | [`no-headline-badges`](./no-headline-badges.md) | Headline badge |
+| [`no-hover-card-borders`](./no-hover-card-borders.md) | Card border on hover |
 | [`no-inconsistent-button-heights`](./no-inconsistent-button-heights.md) | Inconsistent button heights |
 | [`no-inconsistent-button-radius`](./no-inconsistent-button-radius.md) | Inconsistent button radius |
 | [`no-line-before-label`](./no-line-before-label.md) | Line before label |
+| [`no-low-contrast`](./no-low-contrast.md) | Low contrast text |
 | [`no-patterned-backgrounds`](./no-patterned-backgrounds.md) | Dotted or grid backgrounds |
 | [`no-pill-buttons`](./no-pill-buttons.md) | Pill-shaped buttons |
 | [`no-cream-colors`](./no-cream-colors.md) | Cream colors |
@@ -27,6 +29,7 @@ Browser scans are recommended for computed layout and style checks.
 | [`no-glassmorphism-everywhere`](./no-glassmorphism-everywhere.md) | Glassmorphism everywhere |
 | [`no-ghost-cards`](./no-ghost-cards.md) | Ghost cards |
 | [`no-text-arrows`](./no-text-arrows.md) | Text arrow |
+| [`no-text-overflow`](./no-text-overflow.md) | Text overflow |
 | [`no-thick-colored-card-borders`](./no-thick-colored-card-borders.md) | Thick colored card borders |
 | [`no-decorative-monospace`](./no-decorative-monospace.md) | Monospace font |
 | [`no-overused-fonts`](./no-overused-fonts.md) | Overused fonts |
