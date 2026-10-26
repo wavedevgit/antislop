@@ -9,8 +9,8 @@
     --muted: #8b93a1;
     --dim: #7a8290;
     --bright: #f3f5f8;
-    --accent: #22d3ee;
-    --accent-soft: #67e8f9;
+    --accent: #06b6d4;
+    --accent-soft: #22d3ee;
     --pass: #7dd3a0;
     --sans:
         ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
@@ -560,7 +560,7 @@ body .markdown-section h3 {
     gap: 10px;
 }
 
-.button {
+.markdown-section .button {
     align-items: center;
     border: 1px solid var(--line);
     border-radius: 3px;
@@ -578,21 +578,21 @@ body .markdown-section h3 {
         transform 160ms ease;
 }
 
-.button:hover {
+.markdown-section .button:hover {
     background: var(--panel-2);
     border-color: #333844;
     color: var(--bright);
 }
 
-.button.primary {
+.markdown-section .button.primary {
     background: var(--accent);
     border-color: var(--accent);
     color: var(--ink);
 }
 
-.button.primary:hover {
-    background: var(--accent-soft);
-    border-color: var(--accent-soft);
+.markdown-section .button.primary:hover {
+    background: var(--accent);
+    border-color: var(--accent);
     color: var(--ink);
     transform: translateY(-1px);
 }
