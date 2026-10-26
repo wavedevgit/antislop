@@ -31,11 +31,6 @@ const aiColorPalettes: Palette[] = [{
   ],
   utilities: ["amber-50", "orange-50", "yellow-50", "cream", "floralwhite", "linen", "oldlace"],
 }, {
-  name: "red",
-  colors: [{ red: 239, green: 64, blue: 86 }],
-  named: [],
-  utilities: [],
-}, {
   name: "indigo",
   colors: [{ red: 79, green: 70, blue: 229 }],
   named: [],
