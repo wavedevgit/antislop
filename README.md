@@ -43,7 +43,7 @@ Unknown rule IDs fail instead of being ignored.
 ## Rules
 
 - **Copy:** `no-unicode-bullets`, `no-text-arrows`, `no-buzzwords`, `limit-em-dashes`, `limit-emojis`
-- **Typography:** `no-eyebrows-over-all-titles`, `no-decorative-monospace`, `no-overused-fonts`, `no-mostly-italic-titles`, `no-excessive-letter-spacing`, `no-oversized-cta-headings`
+- **Typography:** `no-eyebrows-over-all-titles`, `no-decorative-monospace`, `no-overused-fonts`, `no-mostly-italic-titles`, `no-excessive-letter-spacing`, `no-oversized-cta-headings`, `limit-hero-heading-lines`
 - **Visual:** `no-visible-gradients`, `no-aurora-backgrounds`, `no-patterned-backgrounds`, `no-ai-color-palette`, `no-accent-stripe-cards`, `no-nested-cards`, `no-fake-logo-cards`, `no-glassmorphism-everywhere`, `no-ghost-cards`, `no-neon-borders`, `no-thick-colored-card-borders`, `no-hover-card-borders`, `no-soft-corners-everywhere`, `no-extreme-card-radius`, `no-pill-buttons`, `no-inconsistent-button-radius`, `no-inconsistent-button-heights`, `no-slop-icons`
 - **Layout:** `no-headline-badges`, `no-line-before-label`, `no-cramped-header-spacing`, `no-divided-list-rows`, `no-oversized-navbar`, `no-excessive-padding`, `no-alignment-problems`, `no-navbar-theme-toggle`
 - **Structure:** `no-monolithic-html`, `require-meta-tags`, `no-unstyled-text-buttons`

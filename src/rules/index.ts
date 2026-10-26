@@ -15,6 +15,7 @@ import glassmorphismEverywhere from "./glassmorphism-everywhere/index.ts";
 import gradients from "./gradients/index.ts";
 import ghostCard from "./ghost-card/index.ts";
 import headlineBadge from "./headline-badge/index.ts";
+import heroHeadingLines from "./hero-heading-lines/index.ts";
 import hoverCardBorder from "./hover-card-border/index.ts";
 import inconsistentButtonHeight from "./inconsistent-button-height/index.ts";
 import inconsistentButtonRadius from "./inconsistent-button-radius/index.ts";
@@ -51,6 +52,7 @@ export const rules: Rule[] = [
   bullets,
   gradients,
   headlineBadge,
+  heroHeadingLines,
   hoverCardBorder,
   inconsistentButtonHeight,
   inconsistentButtonRadius,

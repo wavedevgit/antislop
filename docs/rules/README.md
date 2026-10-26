@@ -1,6 +1,6 @@
 # Rules
 
-**42 rules available**
+**43 rules available**
 
 Browser scans are recommended for computed layout and style checks.
 
@@ -13,6 +13,7 @@ Browser scans are recommended for computed layout and style checks.
 | [`no-unicode-bullets`](./no-unicode-bullets.md) | Unicode bullets |
 | [`no-visible-gradients`](./no-visible-gradients.md) | Visible gradients |
 | [`no-headline-badges`](./no-headline-badges.md) | Headline badge |
+| [`limit-hero-heading-lines`](./limit-hero-heading-lines.md) | Hero heading over three lines |
 | [`no-hover-card-borders`](./no-hover-card-borders.md) | Card border on hover |
 | [`no-inconsistent-button-heights`](./no-inconsistent-button-heights.md) | Inconsistent button heights |
 | [`no-inconsistent-button-radius`](./no-inconsistent-button-radius.md) | Inconsistent button radius |
