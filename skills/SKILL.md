@@ -42,7 +42,7 @@ Use this checklist while designing so the scanner is a final check, not the desi
 - Use semantic lists instead of decorative Unicode bullets.
 - Use icons instead of text arrows such as `→`.
 - Avoid canned phrases such as “made with love,” “seamless,” “blazing-fast,” “next-generation,” and “game-changing.”
-- Use em dashes and emoji sparingly.
+- Avoid emoji and use icons instead. Use emoji only when they are necessary to the meaning or explicitly requested.
 
 ### Typography
 
@@ -83,7 +83,7 @@ Use this checklist while designing so the scanner is a final check, not the desi
 
 ### Quality and structure
 
-- Meet WCAG AA text contrast: 4.5:1 for body text and 3:1 for large text.
+- Aim to meet WCAG AA text contrast: 4.5:1 for body text and 3:1 for large text. Do not calculate contrast manually; use the AntiSlop detector to verify it.
 - Prevent text from overflowing its container.
 - Include title, description, and viewport metadata.
 - Keep HTML, CSS, and JavaScript separated when the project warrants multiple files.
