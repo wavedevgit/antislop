@@ -3,8 +3,8 @@
 ## Documentation surface
 
 - Mode: Read.
-- Ink-black background with charcoal panels, vermilion signal color, and off-white text.
-- System sans-serif for prose; system monospace for commands, labels, and scan output.
+- Ink-black background with charcoal panels, bright cyan signal color, and off-white text.
+- System sans-serif for interface labels and prose; system monospace only for code, commands, and scan output.
 - Fixed 56px top bar with a scan-frame mark, rule count, and source link.
 - 264px rule sidebar with grouped navigation and a persistent search field.
 - Content measure of 840px with hairline section rules and generous vertical spacing.

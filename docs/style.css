@@ -9,8 +9,8 @@
     --muted: #8b93a1;
     --dim: #7a8290;
     --bright: #f3f5f8;
-    --accent: #ff5c35;
-    --accent-soft: #ff7a55;
+    --accent: #22d3ee;
+    --accent-soft: #67e8f9;
     --pass: #7dd3a0;
     --sans:
         ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
@@ -202,7 +202,7 @@ input:focus-visible {
 }
 
 .sidebar .search {
-    margin: 0 0 16px;
+    margin: 18px 0 16px;
     padding: 0;
 }
 
@@ -220,6 +220,13 @@ input:focus-visible {
 
 .search input::placeholder {
     color: var(--dim);
+}
+
+.search input:focus,
+.search input:focus-visible {
+    border-color: var(--accent) !important;
+    box-shadow: none !important;
+    outline: 0;
 }
 
 .search .results-panel {
