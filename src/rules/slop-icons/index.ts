@@ -26,7 +26,7 @@ export default defineRule({
         const lucide = element.hasAttribute("data-lucide")
           || Array.from(element.classList).some((name) => name === "lucide" || name.startsWith("lucide-"));
 
-        if (!lucide || element.getClientRects().length === 0) return [];
+        if (!lucide) return [];
 
         const path: string[] = [];
         let current: Element | null = element;

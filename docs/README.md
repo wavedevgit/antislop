@@ -7,22 +7,30 @@
   </div>
 </section>
 
-<div class="scan" aria-label="Example AntiSlop browser scan">
-  <div class="scan-head">
-    <span class="scan-dots" aria-hidden="true"><i></i><i></i><i></i></span>
-    <span class="scan-title">antislop / browser scan</span>
-    <span class="scan-status">3 findings</span>
-  </div>
-  <div class="scan-body">
-    <div class="line"><span class="prompt">$</span> antislop --url http://localhost:3000</div>
-    <div class="line"><span class="pass">PASS</span> chromium ready <span class="loc">1440 x 900</span></div>
-    <div class="line"><span class="find">FIND</span> no-visible-gradients <span class="loc">.hero .backdrop</span></div>
-    <div class="line"><span class="find">FIND</span> no-ai-color-palette <span class="loc">#4f46e5 on .badge</span></div>
-    <div class="line"><span class="find">FIND</span> no-nested-cards <span class="loc">.pricing .card</span></div>
-    <div class="line"><span class="pass">PASS</span> 40 rules clear</div>
-    <div class="line"><span class="meta">3 findings / 0 errors / 1.8s</span></div>
-  </div>
+<div class="scan-example">
+  <strong>Actual browser scan</strong>
+  <p>Output from a page containing an inset accent-stripe card.</p>
 </div>
+
+```json
+[
+  {
+    "rule": {
+      "id": "no-accent-stripe-cards",
+      "title": "Accent stripe cards",
+      "description": "AI-generated landing pages often decorate rounded cards with a thick colored stripe along the top or left edge."
+    },
+    "explanation": "1 accent-stripe card was found.",
+    "references": [
+      {
+        "type": "element",
+        "selector": "xpath=/html/body/div",
+        "source": "<div class=\"card\">Stripe card</div>"
+      }
+    ]
+  }
+]
+```
 
 ## Run it
 
