@@ -2,7 +2,7 @@
   <h1>Catch the patterns that make generated sites feel generated.</h1>
   <p class="lede">AntiSlop scans source files or a live page for the recurring design decisions that make AI-built interfaces feel interchangeable.</p>
   <div class="actions">
-    <a class="button primary" href="#/rules/README">Browse 43 rules</a>
+    <a class="button primary" href="#/rules/README">Browse 44 rules</a>
     <a class="button" href="https://github.com/wavedevgit/antislop">View source</a>
   </div>
 </section>
@@ -78,7 +78,7 @@
 <div class="categories">
   <a class="category" href="#/rules/README"><span>Copy</span><small>5 rules</small></a>
   <a class="category" href="#/rules/README"><span>Typography</span><small>7 rules</small></a>
-  <a class="category" href="#/rules/README"><span>Visual</span><small>18 rules</small></a>
+  <a class="category" href="#/rules/README"><span>Visual</span><small>19 rules</small></a>
   <a class="category" href="#/rules/README"><span>Layout</span><small>8 rules</small></a>
   <a class="category" href="#/rules/README"><span>Structure</span><small>3 rules</small></a>
   <a class="category" href="#/rules/README"><span>Quality</span><small>2 rules</small></a>

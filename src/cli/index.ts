@@ -1,10 +1,26 @@
 #!/usr/bin/env node
 
-import { detect, findBrowser, parseArguments, screenshotProblemReport, screenshotVisualFindings, showVisualFindings, withContext } from "../api/index.ts";
+import { checkContrast, createColorRoles, detect, findBrowser, parseArguments, screenshotProblemReport, screenshotVisualFindings, showVisualFindings, withContext } from "../api/index.ts";
 import { rules } from "../rules/index.ts";
 
 async function main(): Promise<void> {
   const args = process.argv.slice(2);
+
+  if (args[0] === "contrast") {
+    if (args.length !== 3) throw new Error("Usage: antislop contrast <foreground> <background>");
+
+    console.log(JSON.stringify(checkContrast(args[1]!, args[2]!), null, 2));
+
+    return;
+  }
+
+  if (args[0] === "colors") {
+    if (args.length < 2 || args.length > 3) throw new Error("Usage: antislop colors <accent> [background]");
+
+    console.log(JSON.stringify(createColorRoles(args[1]!, args[2]), null, 2));
+
+    return;
+  }
 
   if (args.length === 1 && (args[0] === "--find-browser" || args[0] === "--find-browsers")) {
     const browser = await findBrowser();

@@ -1,5 +1,7 @@
 export { findBrowser } from "./browsers/index.ts";
 
+export { checkContrast, createColorRoles } from "./colors/index.ts";
+
 export { parseArguments } from "./config/index.ts";
 
 export type { DetectorConfig } from "./config/index.ts";

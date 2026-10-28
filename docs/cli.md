@@ -24,6 +24,26 @@ npx --yes --package=github:wavedevgit/antislop antislop \
 | `--url` | URL | Page to scan. URLs without a protocol use `https://`. Requires `--browser`. |
 | `--disable` | Comma-separated rule IDs | Skip selected rules. Unknown IDs are errors. |
 
+## Color tools
+
+These commands run without a browser. They accept concrete CSS colors such as hex, named colors, `rgb()`, `hsl()`, and `oklch()`. Quote colors that contain spaces or shell punctuation.
+
+```sh
+# Measure a foreground/background pair against WCAG 2 thresholds
+npx --yes --package=github:wavedevgit/antislop antislop \
+  contrast "oklch(45% 0.15 250)" white
+
+# Generate semantic roles from one accent and an optional background
+npx --yes --package=github:wavedevgit/antislop antislop \
+  colors rebeccapurple
+npx --yes --package=github:wavedevgit/antislop antislop \
+  colors "rgb(50 100 220)" "#111827"
+```
+
+`contrast` reports the measured ratio and pass/fail results for normal text, large text, and UI components. `colors` returns the normalized accent, accessible text, on-accent text, hover, active, subtle, and border colors. Its background defaults to white.
+
+Both commands reject transparent colors because contrast depends on the surface beneath them.
+
 ## Browser output
 
 These options only work with `--browser` and `--url`. Use at most one per scan.

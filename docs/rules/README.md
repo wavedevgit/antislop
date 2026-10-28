@@ -1,6 +1,6 @@
 # Rules
 
-**43 rules available**
+**44 rules available**
 
 Browser scans are recommended for computed layout and style checks.
 
@@ -42,6 +42,7 @@ Browser scans are recommended for computed layout and style checks.
 | [`no-soft-corners-everywhere`](./no-soft-corners-everywhere.md) | Soft corners everywhere |
 | [`no-slop-icons`](./no-slop-icons.md) | Slop icons |
 | [`no-divided-list-rows`](./no-divided-list-rows.md) | Divided list rows |
+| [`no-decorative-live-status`](./no-decorative-live-status.md) | Decorative live status |
 | [`limit-em-dashes`](./limit-em-dashes.md) | Too many em dashes |
 | [`limit-emojis`](./limit-emojis.md) | Too many emojis |
 | [`no-monolithic-html`](./no-monolithic-html.md) | Everything in one HTML file |

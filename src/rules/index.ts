@@ -37,6 +37,7 @@ import pillButtons from "./pill-buttons/index.ts";
 import softCornersEverywhere from "./soft-corners-everywhere/index.ts";
 import slopIcons from "./slop-icons/index.ts";
 import dividedListRows from "./divided-list-rows/index.ts";
+import decorativeLiveStatus from "./decorative-live-status/index.ts";
 import textArrow from "./text-arrow/index.ts";
 import textOverflow from "./text-overflow/index.ts";
 import thickColoredCardBorder from "./thick-colored-card-border/index.ts";
@@ -52,6 +53,7 @@ export const rules: Rule[] = [
   bullets,
   gradients,
   headlineBadge,
+  decorativeLiveStatus,
   heroHeadingLines,
   hoverCardBorder,
   inconsistentButtonHeight,

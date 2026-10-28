@@ -34,11 +34,13 @@
   },
   "devDependencies": {
     "@oxlint/plugins": "1.89.0",
+    "@types/culori": "4.0.1",
     "@types/node": "26.6.5",
     "oxlint": "1.89.0",
     "typescript": "7.0.2"
   },
   "dependencies": {
+    "culori": "4.0.2",
     "puppeteer-core": "25.15.0"
   }
 }

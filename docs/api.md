@@ -48,6 +48,8 @@ console.log(findings);
 
 | Export | Purpose |
 | --- | --- |
+| `checkContrast(foreground, background)` | Measure a CSS color pair against WCAG 2 thresholds. |
+| `createColorRoles(accent, background?)` | Generate semantic colors from one accent and an optional background. |
 | `detect(rules, context)` | Run rules in order and return their findings. |
 | `withContext(config, run)` | Open a file or Puppeteer context, run a callback, and clean up. |
 | `defineRule(rule)` | Define a custom rule while preserving its shape. |

@@ -33,7 +33,7 @@ AntiSlop detects common AI-generated website patterns. Its documentation helps u
 ## Evidence on Hand
 
 - Scanner usage and installation instructions in `README.md`.
-- 43 documented rules and their screenshots in `docs/rules/`.
+- 44 documented rules and their screenshots in `docs/rules/`.
 
 ## Product Principles
 

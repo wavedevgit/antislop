@@ -32,6 +32,7 @@
 - [Button radii](/rules/no-inconsistent-button-radius.md)
 - [Button heights](/rules/no-inconsistent-button-heights.md)
 - [Slop icons](/rules/no-slop-icons.md)
+- [Decorative live status](/rules/no-decorative-live-status.md)
 - **Layout**
 - [Headline badges](/rules/no-headline-badges.md)
 - [Line before label](/rules/no-line-before-label.md)

@@ -61,6 +61,7 @@ Use this checklist while designing so the scanner is a final check, not the desi
 - Avoid the known AI palette defaults: cream backgrounds, `#4F46E5`, and `#00FF00`/CSS `lime`, unless explicitly requested.
 - Do not use thick colored card borders, accent stripes, or borders that appear only on hover.
 - Do not combine a hairline card border with a wide soft shadow.
+- Do not add decorative live or online signals. Keep status indicators only when they report real state.
 - Give each surface one clear depth treatment.
 
 ### Cards and shapes
@@ -90,6 +91,22 @@ Use this checklist while designing so the scanner is a final check, not the desi
 - Keep HTML, CSS, and JavaScript separated when the project warrants multiple files.
 
 The detector is authoritative when this summary and the current rule implementation differ. Current rule details are available at <https://github.com/wavedevgit/antislop/tree/main/docs/rules>.
+
+## Required color checks
+
+Before implementing a chosen palette, measure every solid text and background pair instead of estimating contrast:
+
+```sh
+npx --yes --package=github:wavedevgit/antislop antislop contrast <foreground> <background>
+```
+
+Use the color-role generator when deriving text, hover, active, subtle, or border colors from one accent:
+
+```sh
+npx --yes --package=github:wavedevgit/antislop antislop colors <accent> [background]
+```
+
+Use the generated values as a starting point, map them to semantic tokens, and keep established brand colors unchanged unless the user approves a change. These commands check declared solid colors without a browser; the final browser scan still verifies rendered colors, transparency, and layout.
 
 ## Required scan
 
