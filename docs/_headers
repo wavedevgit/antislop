@@ -1,17 +1,2 @@
-/
-    Cache-Control: no-cache
-
-/index.html
-    Cache-Control: no-cache
-
-/app.js
-    Cache-Control: no-cache
-
-/preview.html
-    Cache-Control: no-cache
-
-/preview.js
-    Cache-Control: no-cache
-
-/preview.css
-    Cache-Control: no-cache
+/*
+    Cache-Control: public, max-age=300, must-revalidate
