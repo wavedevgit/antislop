@@ -8,6 +8,14 @@ Blur effects, glass cards, and glow borders are often used as decoration rather 
 
 Counts translucent blurred surfaces and reports repeated decorative glass effects.
 
+## How to fix
+
+Remove repeated blur and translucency. Keep glass only where it communicates a surface floating over visible content.
+
+## Common false positives
+
+Media controls and temporary overlays may legitimately need translucent backdrop blur.
+
 ## Scan support
 
 | File scan | Browser scan |

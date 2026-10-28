@@ -8,6 +8,14 @@ Unfinished AI-generated pages often omit metadata entirely.
 
 Checks the document head for basic metadata such as title, description, and viewport tags.
 
+## How to fix
+
+Add a descriptive `<title>`, a meta description, and `<meta name="viewport" content="width=device-width, initial-scale=1">` to the document head.
+
+## Common false positives
+
+Embeddable fragments and HTML partials are not complete documents and may not own page metadata.
+
 ## Scan support
 
 | File scan | Browser scan |

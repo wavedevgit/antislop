@@ -8,6 +8,14 @@ AI-generated websites often overuse decorative emojis.
 
 Counts decorative emoji characters and reports excessive use.
 
+## How to fix
+
+Remove decorative emoji or replace functional symbols with accessible icons and text labels.
+
+## Common false positives
+
+User-generated content, product names, and examples may legitimately contain many emoji.
+
 ## Scan support
 
 | File scan | Browser scan |

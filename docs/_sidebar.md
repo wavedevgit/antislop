@@ -49,5 +49,7 @@
 - [Low contrast](/rules/no-low-contrast.md)
 - [Text overflow](/rules/no-text-overflow.md)
 - **Project**
+- [CLI reference](/cli.md)
+- [JavaScript API](/api.md)
 - [Agent skill](https://github.com/wavedevgit/antislop/blob/main/skills/SKILL.md)
 - [Source](https://github.com/wavedevgit/antislop)

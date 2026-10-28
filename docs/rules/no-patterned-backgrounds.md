@@ -8,6 +8,14 @@ AI-generated websites often place repeating dot or grid patterns behind page con
 
 Detects repeating CSS dot and grid background patterns.
 
+## How to fix
+
+Remove decorative dot or grid layers. Use a solid surface or imagery that supports the content.
+
+## Common false positives
+
+Graph paper, spatial editors, diagrams, and technical canvases may need a grid for orientation.
+
 ## Scan support
 
 | File scan | Browser scan |

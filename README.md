@@ -4,7 +4,7 @@
 
 # AntiSlop
 
-AntiSlop is a detector for common ai slop in websites.
+AntiSlop is a detector for common AI slop in websites.
 
 Inspired by the [Impeccable](https://impeccable.style/slop/) skill.
 
@@ -48,6 +48,8 @@ npx --yes --package=github:wavedevgit/antislop antislop --folder ./path/to/site 
 Browser discovery caches the selected path in `~/.cache/antislop-browser.txt`. Later runs validate the cached browser with `--version` before using it, and automatically search again if it is stale. Discovery checks environment overrides and `$PATH` first, followed by Linux Flatpak installs, macOS application bundles, standard Windows install locations, and common browser binaries or AppImages under the home directory. Home searches skip `.cache`.
 
 Unknown rule IDs fail instead of being ignored.
+
+See the [CLI reference](docs/cli.md) for every option, default, and exit status, or the [JavaScript API](docs/api.md) for custom integrations.
 
 ## Rules
 

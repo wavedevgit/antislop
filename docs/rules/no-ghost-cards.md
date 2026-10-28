@@ -8,6 +8,14 @@ A hairline border paired with a wide soft shadow makes both effects compete to d
 
 Finds rounded cards that combine a hairline border with a wide soft shadow.
 
+## How to fix
+
+Choose one boundary treatment: a subtle border, a surface change, or a restrained shadow. Do not make all three compete.
+
+## Common false positives
+
+Floating overlays may need both an edge and shadow to remain legible over changing content.
+
 ## Scan support
 
 | File scan | Browser scan |

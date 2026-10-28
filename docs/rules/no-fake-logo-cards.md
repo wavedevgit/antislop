@@ -8,6 +8,14 @@ AI-generated websites often place a generic SVG in a logo card whose color clash
 
 Finds generic SVG marks placed in contrasting rounded logo tiles.
 
+## How to fix
+
+Place the mark directly on the parent surface or use the brand-approved logo container and colors.
+
+## Common false positives
+
+Official app icons and partner marks may require a prescribed contrasting tile.
+
 ## Scan support
 
 | File scan | Browser scan |

@@ -88,4 +88,4 @@
 
 <p>File scans cannot reliably resolve computed styles, rendered layout, or responsive behavior. Browser scans run against the page a visitor actually sees and return the element, the rule, and the reason.</p>
 
-<p>Both modes share the same rule IDs and exit behavior. Unknown rule IDs fail instead of being ignored.</p>
+<p>Both modes share the same rule IDs and exit behavior. Unknown rule IDs fail instead of being ignored. See the <a href="#/cli">CLI reference</a> for every option, default, and exit status.</p>

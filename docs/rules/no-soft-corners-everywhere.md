@@ -8,6 +8,14 @@ AI-generated websites often apply the same soft corner radius to nearly every in
 
 Counts repeated moderate corner radii across many interface surfaces.
 
+## How to fix
+
+Remove radii from surfaces that do not need containment and define a small radius scale for the components that do.
+
+## Common false positives
+
+A mature design system may intentionally use one recurring radius as a strong brand characteristic.
+
 ## Scan support
 
 | File scan | Browser scan |
