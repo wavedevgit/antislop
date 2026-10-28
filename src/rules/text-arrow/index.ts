@@ -6,7 +6,7 @@ export default defineRule({
   title: "Text arrow",
   description: "Only AI uses this arrow. Use an icon instead.",
   async match(context) {
-    const result = await textMatches(context, /→/g);
+    const result = await textMatches(context, /[→↗]/g);
 
     return result.count > 0
       ? { matches: true, explanation: result.count === 1
