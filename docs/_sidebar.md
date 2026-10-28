@@ -1,4 +1,4 @@
-- [Getting started](/README.md)
+- [Getting started](/)
 - [All rules](/rules/README.md)
 - **Copy**
 - [Unicode bullets](/rules/no-unicode-bullets.md)

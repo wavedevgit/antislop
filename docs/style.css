@@ -394,7 +394,8 @@ body .markdown-section h3 {
 }
 
 .markdown-section a:hover {
-    color: var(--bright);
+    color: var(--accent-soft);
+    text-decoration-color: currentColor;
 }
 
 .markdown-section ul,
