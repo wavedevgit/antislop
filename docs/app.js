@@ -7,11 +7,11 @@ document
 
 const seen = new WeakMap();
 
-new MutationObserver(function () {
+function updatePage() {
     const rule = location.hash.match(/^#\/rules\/([a-z0-9-]+)(?:\.md)?/);
 
     const screenshot = document.querySelector(
-        '.markdown-section img[src*="/rules/assets/"]',
+        '.markdown-section img[src*="assets/"]',
     );
 
     if (rule && screenshot) {
@@ -42,4 +42,11 @@ new MutationObserver(function () {
             seen.set(node, clean);
             node.textContent = clean;
         });
-}).observe(document.body, { childList: true, subtree: true });
+}
+
+new MutationObserver(updatePage).observe(document.body, {
+    childList: true,
+    subtree: true,
+});
+
+updatePage();
