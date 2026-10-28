@@ -52,5 +52,5 @@
 - **Project**
 - [CLI reference](/cli.md)
 - [JavaScript API](/api.md)
-- [Agent skill](https://github.com/wavedevgit/antislop/blob/main/skills/SKILL.md)
+- [Agent skill](/skill.md)
 - [Source](https://github.com/wavedevgit/antislop)

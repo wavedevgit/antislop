@@ -1,0 +1,15 @@
+# AntiSlop
+
+> AntiSlop detects recurring design patterns that make AI-built interfaces feel interchangeable. The documentation covers installation, CLI and JavaScript usage, and all detector rules.
+
+## Documentation
+
+- [Documentation home](https://antislop.wavedev.qzz.io/README.md): Overview, installation, and common workflows
+- [CLI reference](https://antislop.wavedev.qzz.io/cli.md): Commands, options, defaults, and exit statuses
+- [JavaScript API](https://antislop.wavedev.qzz.io/api.md): Programmatic scanner usage
+- [Rule reference](https://antislop.wavedev.qzz.io/rules/README.md): Index of all rules with detection details and examples
+- [Agent skill](https://antislop.wavedev.qzz.io/skill.md): Installation, requirements, and enforced workflow for coding agents
+
+## Project
+
+- [Source repository](https://github.com/wavedevgit/antislop): Source code, issues, and agent skill
