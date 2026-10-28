@@ -1,15 +1,15 @@
-# Pill-shaped buttons
+# Badge-like buttons
 
-![Pill-shaped buttons example](./assets/no-pill-buttons.png)
+![Badge-like buttons example](./assets/no-pill-buttons.png)
 
-Buttons should use modest corner radii unless the control is genuinely circular.
+Short, fully rounded buttons can look like badges instead of interactive controls.
 
 ## How it works
 
-Finds button controls whose radius makes them fully pill-shaped.
+Finds fully rounded text controls under 36px tall. Circular icon buttons are allowed.
 
 ## Scan support
 
 | File scan | Browser scan |
 | --- | --- |
-| <span class="status-ok">Supported</span> | <span class="status-ok">Supported</span> |
+| <span class="status-no">Not supported</span> | <span class="status-ok">Supported</span> |

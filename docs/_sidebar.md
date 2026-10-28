@@ -28,7 +28,7 @@
 - [Hover card borders](/rules/no-hover-card-borders.md)
 - [Soft corners](/rules/no-soft-corners-everywhere.md)
 - [Extreme card radius](/rules/no-extreme-card-radius.md)
-- [Pill buttons](/rules/no-pill-buttons.md)
+- [Badge-like buttons](/rules/no-pill-buttons.md)
 - [Button radii](/rules/no-inconsistent-button-radius.md)
 - [Button heights](/rules/no-inconsistent-button-heights.md)
 - [Slop icons](/rules/no-slop-icons.md)

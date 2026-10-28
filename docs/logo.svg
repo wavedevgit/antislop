@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">AntiSlop</title>
+  <desc id="desc">A clean white scan frame with blue dithered folds sweeping from bottom left to top right.</desc>
+  <defs>
+    <clipPath id="tile">
+      <rect width="512" height="512" rx="88"/>
+    </clipPath>
+    <pattern id="dither" width="5" height="5" patternUnits="userSpaceOnUse">
+      <path d="M0 0h2v2H0zM2.5 2.5h2v2h-2z" fill="#489cff"/>
+    </pattern>
+    <linearGradient id="fold" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#fff" stop-opacity="0"/>
+      <stop offset=".35" stop-color="#fff" stop-opacity=".06"/>
+      <stop offset=".75" stop-color="#fff" stop-opacity=".4"/>
+      <stop offset=".98" stop-color="#fff"/>
+      <stop offset="1" stop-color="#fff" stop-opacity=".1"/>
+    </linearGradient>
+    <mask id="folds" maskUnits="userSpaceOnUse" x="0" y="0" width="512" height="512">
+      <path d="M-40 486C56 441 87 401 170 397C303 389 434 328 552 238L552 307C421 398 308 442 183 449C84 453 36 504-40 541Z" fill="url(#fold)"/>
+      <path d="M-40 541C36 504 84 453 183 449C308 442 421 398 552 307L552 375C419 461 309 495 196 501C94 506 44 555-40 595Z" fill="url(#fold)"/>
+      <path d="M-40 595C44 555 94 506 196 501C309 495 419 461 552 375V640H-40Z" fill="url(#fold)"/>
+    </mask>
+    <g id="background">
+      <rect width="512" height="512" fill="#080d19"/>
+      <rect width="512" height="512" fill="url(#dither)" mask="url(#folds)"/>
+    </g>
+    <filter id="icon-shadow" x="-25%" y="-25%" width="150%" height="160%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity=".22"/>
+    </filter>
+  </defs>
+
+  <g clip-path="url(#tile)">
+    <use href="#background"/>
+  </g>
+
+  <!-- Scan icon from Hugeicons Free Icons (MIT), scaled from its 24px viewBox. -->
+  <g filter="url(#icon-shadow)">
+    <g transform="translate(88 88) scale(14)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.25">
+      <path d="M16.004 2.5c1.993.113 3.254.434 4.158 1.338s1.225 2.165 1.338 4.158M7.996 2.5c-1.993.113-3.254.434-4.158 1.338S2.613 6.003 2.5 7.996m19 8.008c-.113 1.993-.434 3.254-1.338 4.158s-2.165 1.225-4.158 1.338M2.5 16.004c.113 1.993.434 3.254 1.338 4.158s2.165 1.225 4.158 1.338M5 12h14"/>
+    </g>
+  </g>
+</svg>

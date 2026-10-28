@@ -1,12 +1,8 @@
 import { defineRule, type Files, type Reference } from "../../api/index.ts";
 import { fileReference } from "../shared/index.ts";
 
-const minimumPixels = 0.8;
-
-const minimumRatio = 0.05;
-
 function pixels(value: string): number | undefined {
-  const match = value.trim().match(/^([\d.]+)\s*(px|em|rem|%)$/i);
+  const match = value.trim().match(/^(-?(?:\d+(?:\.\d*)?|\.\d+))\s*(px|em|rem|%)$/i);
 
   if (!match?.[1] || !match[2]) {
     return undefined;
@@ -21,18 +17,19 @@ function pixels(value: string): number | undefined {
   return match[2] === "%" ? amount / 6.25 : match[2].toLowerCase() === "px" ? amount : amount * 16;
 }
 
-function isExcessive(value: string): boolean {
+function addsSpacing(value: string): boolean {
   const amount = pixels(value);
 
-  return amount !== undefined && amount >= minimumPixels;
+  return amount !== undefined && amount > 0;
 }
 
 function trackingClass(value: string): boolean {
   const utility = value.slice(value.lastIndexOf(":") + 1);
 
-  return utility === "tracking-wider"
+  return utility === "tracking-wide"
+    || utility === "tracking-wider"
     || utility === "tracking-widest"
-    || isExcessive(utility.match(/^tracking-\[([^\]]+)\]$/)?.[1] ?? "");
+    || addsSpacing(utility.match(/^tracking-\[([^\]]+)\]$/)?.[1] ?? "");
 }
 
 function sourceReferences(files: Files): Reference[] {
@@ -40,7 +37,7 @@ function sourceReferences(files: Files): Reference[] {
 
   for (const file of files.all()) {
     for (const match of file.content.matchAll(/letter-spacing\s*:\s*([^;}\s]+)/gi)) {
-      if (isExcessive(match[1] ?? "")) {
+      if (addsSpacing(match[1] ?? "")) {
         references.push(fileReference(file.path, file.content, match.index ?? 0));
       }
     }
@@ -58,17 +55,17 @@ function sourceReferences(files: Files): Reference[] {
 export default defineRule({
   id: "no-excessive-letter-spacing",
   title: "Excessive letter spacing",
-  description: "AI-generated sites often add conspicuously wide tracking to ordinary text and labels.",
+  description: "AI-generated sites often add positive tracking to ordinary text and labels.",
   async match(context) {
     if (context.type === "files") {
       const references = sourceReferences(context.files);
 
       return references.length
-        ? { matches: true, explanation: `${references.length} excessive letter-spacing declaration${references.length === 1 ? "" : "s"} or utility classes were found.`, references }
+        ? { matches: true, explanation: `${references.length} positive letter-spacing declaration${references.length === 1 ? "" : "s"} or utility classes were found.`, references }
         : { matches: false };
     }
 
-    const references = await context.page.$$eval("body *", (elements, limits) => elements.flatMap((element) => {
+    const references = await context.page.$$eval("body *", (elements) => elements.flatMap((element) => {
       const text = Array.from(element.childNodes)
         .filter((node) => node.nodeType === Node.TEXT_NODE)
         .map((node) => node.textContent ?? "")
@@ -77,9 +74,8 @@ export default defineRule({
 
       const style = getComputedStyle(element);
       const letterSpacing = Number.parseFloat(style.letterSpacing);
-      const fontSize = Number.parseFloat(style.fontSize);
 
-      if (!text || element.getClientRects().length === 0 || !Number.isFinite(letterSpacing) || letterSpacing < limits.pixels || letterSpacing / fontSize < limits.ratio) {
+      if (!text || element.getClientRects().length === 0 || !Number.isFinite(letterSpacing) || letterSpacing <= 0) {
         return [];
       }
 
@@ -93,10 +89,10 @@ export default defineRule({
       }
 
       return [{ type: "element" as const, selector: element.id ? `#${CSS.escape(element.id)}` : `xpath=/${path.join("/")}`, source: element.outerHTML.slice(0, 200) }];
-    }), { pixels: minimumPixels, ratio: minimumRatio });
+    }));
 
     return references.length
-      ? { matches: true, explanation: `${references.length} visible text elements use conspicuously wide letter spacing.`, references }
+      ? { matches: true, explanation: `${references.length} visible text elements use positive letter spacing.`, references }
       : { matches: false };
   },
 });

@@ -6,7 +6,9 @@ window.$docsify = {
     name: 'AntiSlop',
     relativePath: true,
     search: {
-        depth: 3,
+        depth: 1,
+        hideOtherSidebarContent: true,
+        namespace: 'antislop-v2',
         noData: 'No matching documentation',
         placeholder: 'Search rules',
     },
@@ -41,4 +43,3 @@ window.$docsify = {
         },
     ],
 };
-
