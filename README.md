@@ -1,8 +1,6 @@
 <p align="center">
-  <img src="./banner.svg" alt="AntiSlop" width="128" height="128">
+  <img src="./banner.svg" alt="AntiSlop" width="100%">
 </p>
-
-# AntiSlop
 
 AntiSlop is a detector for common AI slop in websites.
 
