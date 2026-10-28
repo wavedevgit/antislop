@@ -1,6 +1,6 @@
 ---
 name: antislop-design
-description: MUST be used before creating, redesigning, or modifying any website, landing page, web app, frontend component, HTML/CSS, or browser-rendered interface. Establishes the palette, typography, and themes before implementation, prevents common AI-design patterns, and requires an AntiSlop scan before completion.
+description: MUST be used before creating, redesigning, or modifying any website, landing page, web app, frontend component, HTML/CSS, or browser-rendered interface. Establishes the palette, typography, themes, and icon library before implementation, prevents common AI-design patterns, and requires an AntiSlop scan before completion.
 license: GPL-3.0-only
 compatibility: Requires Node.js 22.12 or newer and network access to run the AntiSlop scanner from GitHub. Browser scans require a Chromium-compatible executable.
 ---
@@ -9,27 +9,28 @@ compatibility: Requires Node.js 22.12 or newer and network access to run the Ant
 
 ## Check for updates
 
-Once per session, run this without blocking the website task:
+Once per session, check only this globally installed skill:
 
 ```sh
-npx skills check
+npx skills check --global antislop-design
 ```
 
-If an `antislop-design` update is available, tell the user and ask whether they want it installed, then continue the current work without waiting for an answer. Never update automatically. If the user accepts, run:
+If an update is available, tell the user and ask whether they want it installed, then continue the current work without waiting for an answer. Never update automatically. If the user accepts, run:
 
 ```sh
-npx skills update antislop-design -y
+npx skills update --global antislop-design -y
 ```
 
-If the check fails, the skill is not installed, or no update is available, continue silently.
+If the check fails or no update is available, continue silently.
 
 ## Ask first
 
-Before editing, ask the user these three questions together unless the answers are already explicit:
+Before editing, ask the user these four questions together unless the answers are already explicit:
 
 1. What color palette or brand colors should the interface use?
 2. What font family or type direction should it use?
 3. Which themes should it support: light, dark, both, or system-controlled?
+4. Which icon library should it use: Hugeicons, Font Awesome, or Google Icons?
 
 Do not choose these silently. If the user wants recommendations, propose concise options and wait for their choice.
 
@@ -79,7 +80,7 @@ Use this checklist while designing so the scanner is a final check, not the desi
 - Prefer semantic links for navigation; buttons need a visible base or hover treatment.
 - Avoid repeated multi-column list rows separated only by horizontal rules.
 - Do not add a navbar theme toggle unless the user requested one.
-- Use a deliberate icon set or authored SVGs instead of Lucide defaults.
+- Use the icon library selected by the user. Do not mix icon libraries or substitute Unicode symbols for icons.
 
 ### Quality and structure
 
