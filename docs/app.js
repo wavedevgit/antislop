@@ -57,7 +57,7 @@ function updatePage() {
             const frame = document.createElement('iframe');
             frame.className = 'rule-preview';
             frame.title = screenshot.alt || 'Rule example';
-            frame.src = `preview.html?rule=${encodeURIComponent(rule[1])}`;
+            frame.src = `preview.html?v=2&rule=${encodeURIComponent(rule[1])}`;
             frame.sandbox = 'allow-scripts';
             screenshot.replaceWith(frame);
         }
