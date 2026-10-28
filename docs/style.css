@@ -609,6 +609,26 @@ body .markdown-section h3 {
     width: 100%;
 }
 
+.markdown-section .rule-diff {
+    margin: 24px 0;
+}
+
+.rule-diff code span {
+    display: block;
+    margin: 0 -16px;
+    padding: 0 16px;
+}
+
+.rule-diff .diff-add {
+    background: #173b2a;
+    color: #a7e5bd;
+}
+
+.rule-diff .diff-remove {
+    background: #48252a;
+    color: #f3b5ba;
+}
+
 /* Home */
 
 .hero {

@@ -24,7 +24,6 @@ const examples = {
     'no-inconsistent-button-radius': `<div class="buttons radii"><button>Primary</button><button>Secondary</button></div>`,
     'no-line-before-label': `<div class="line-label"><small>OUR PROCESS</small><h2>How it works</h2></div>`,
     'no-low-contrast': `<div><h2>Readable heading</h2><p class="low-contrast">This paragraph is too faint to read comfortably.</p></div>`,
-    'no-monolithic-html': `<pre><code>index.html\n────────────\nHTML\nCSS\nJavaScript\n────────────\nEverything embedded in one file</code></pre>`,
     'no-mostly-italic-titles': `<div class="italic-titles"><h2>Beautifully simple</h2><h2>Designed for you</h2></div>`,
     'no-navbar-theme-toggle': `<nav class="dark-nav"><strong>Brand</strong><span>Docs&nbsp;&nbsp; Pricing&nbsp;&nbsp; ◐</span></nav>`,
     'no-neon-borders': `<article class="neon"><small>AI POWERED</small><p>Glowing cyan border</p></article>`,
@@ -42,7 +41,6 @@ const examples = {
     'no-unicode-bullets': `<div class="unicode-list">• Fast setup<br>• Seamless workflow<br>• Built with love</div>`,
     'no-unstyled-text-buttons': `<nav class="unstyled"><strong>Northstar</strong><span><button>Docs</button><button>Pricing</button><button>Log in</button></span></nav>`,
     'no-visible-gradients': `<section class="gradient"><h2>Ship your next idea</h2><button>Get started</button></section>`,
-    'require-meta-tags': `<pre><code>&lt;head&gt;\n  &lt;title&gt;Untitled&lt;/title&gt;\n  <mark>Missing description and viewport</mark>\n&lt;/head&gt;</code></pre>`,
 };
 
 const rule = new URLSearchParams(location.search).get('rule');

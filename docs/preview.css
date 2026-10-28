@@ -50,7 +50,6 @@ button { border: 0; font: inherit; }
 .buttons button, .oversized-cta button, .gradient button, .oversized-nav button { background: #4285f4; border-radius: 4px; color: white; padding: 10px 16px; }.heights button:last-child { background: #344157; padding-block: 15px; }.radii button:last-child { background: #344157; border-radius: 999px; }
 .line-label small { position: relative; }.line-label small::before { background: #ec4b55; content: ''; display: inline-block; height: 2px; margin-right: 8px; vertical-align: middle; width: 35px; }
 .low-contrast { color: #d5dbe3; }
-pre { background: #172033; color: #d7e1f2; font: 12px/1.7 ui-monospace, monospace; margin: 0; padding: 20px 26px; white-space: pre-wrap; } mark { background: transparent; color: #ff7680; }
 .italic-titles h2 { font-family: Georgia, serif; font-style: italic; }
 .dark-nav { width: min(520px, 100%); }
 .neon { background: #172033; border: 2px solid #00eaff; box-shadow: 0 0 20px #00eaff; color: #5df4ff; padding: 30px; }

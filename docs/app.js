@@ -7,6 +7,24 @@ document
 
 const seen = new WeakMap();
 
+const codePreviews = {
+    'no-monolithic-html': [
+        ' index.html',
+        '-  <style>/* all styles */</style>',
+        '-  <script>/* all behavior */</script>',
+        '+  <link rel="stylesheet" href="styles.css">',
+        '+  <script src="app.js"></script>',
+    ],
+    'require-meta-tags': [
+        ' <head>',
+        '-  <title>Untitled</title>',
+        '+  <meta name="viewport" content="width=device-width, initial-scale=1">',
+        '+  <meta name="description" content="A clear page description.">',
+        '+  <title>Product name</title>',
+        ' </head>',
+    ],
+};
+
 function updatePage() {
     const rule = location.hash.match(/^#\/rules\/([a-z0-9-]+)(?:\.md)?/);
 
@@ -15,12 +33,34 @@ function updatePage() {
     );
 
     if (rule && screenshot) {
-        const frame = document.createElement('iframe');
-        frame.className = 'rule-preview';
-        frame.title = screenshot.alt || 'Rule example';
-        frame.src = `preview.html?rule=${encodeURIComponent(rule[1])}`;
-        frame.sandbox = 'allow-scripts';
-        screenshot.replaceWith(frame);
+        const diff = codePreviews[rule[1]];
+
+        if (diff) {
+            const code = document.createElement('code');
+
+            diff.forEach(function (line) {
+                const row = document.createElement('span');
+                row.className = line.startsWith('+')
+                    ? 'diff-add'
+                    : line.startsWith('-')
+                      ? 'diff-remove'
+                      : '';
+                row.textContent = line;
+                code.append(row);
+            });
+
+            const preview = document.createElement('pre');
+            preview.className = 'rule-diff';
+            preview.append(code);
+            screenshot.replaceWith(preview);
+        } else {
+            const frame = document.createElement('iframe');
+            frame.className = 'rule-preview';
+            frame.title = screenshot.alt || 'Rule example';
+            frame.src = `preview.html?rule=${encodeURIComponent(rule[1])}`;
+            frame.sandbox = 'allow-scripts';
+            screenshot.replaceWith(frame);
+        }
     }
 
     document
