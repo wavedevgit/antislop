@@ -61,7 +61,7 @@ Use this checklist while designing so the scanner is a final check, not the desi
 - Avoid the known AI palette defaults: cream backgrounds, `#4F46E5`, and `#00FF00`/CSS `lime`, unless explicitly requested.
 - Do not use thick colored card borders, accent stripes, or borders that appear only on hover.
 - Do not combine a hairline card border with a wide soft shadow.
-- Do not add decorative live or online signals. Keep status indicators only when they report real state.
+- Do not add decorative live or online signals or green status dots. Keep status indicators only when they report real state.
 - Give each surface one clear depth treatment.
 
 ### Cards and shapes
