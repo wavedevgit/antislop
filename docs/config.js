@@ -26,6 +26,14 @@ window.$docsify = {
 
                 document.title = title;
 
+                document
+                    .querySelectorAll(
+                        '.markdown-section pre code[class*="language-"]',
+                    )
+                    .forEach(function (block) {
+                        Prism.highlightElement(block);
+                    });
+
                 document.querySelector('.doc-footer')?.remove();
 
                 const section =

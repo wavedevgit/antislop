@@ -40,36 +40,36 @@
       <h3>Install the agent skill</h3>
       <p>Set the palette, typography, and themes before implementation, then require a scan before completion.</p>
     </div>
-    <pre><code><span class="cmd">npx</span> skills add wavedevgit/antislop <span class="slash">\</span>
-  <span class="flag">--skill</span> antislop-design</code></pre>
+    <pre><code class="language-bash">npx skills add wavedevgit/antislop \
+  --skill antislop-design</code></pre>
   </div>
   <div class="command">
     <div>
       <h3>Find a browser</h3>
       <p>Locate and verify a Chromium-compatible executable. The working path is cached for later scans.</p>
     </div>
-    <pre><code><span class="cmd">npx</span> <span class="flag">--yes</span> <span class="slash">\</span>
-  <span class="flag">--package=github:wavedevgit/antislop</span> <span class="slash">\</span>
-  antislop <span class="flag">--find-browser</span></code></pre>
+    <pre><code class="language-bash">npx --yes \
+  --package=github:wavedevgit/antislop \
+  antislop --find-browser</code></pre>
   </div>
   <div class="command">
     <div>
       <h3>Scan a page</h3>
       <p>Inspect computed styles, rendered layout, and interaction states in a real browser.</p>
     </div>
-    <pre><code><span class="cmd">npx</span> <span class="flag">--yes</span> <span class="slash">\</span>
-  <span class="flag">--package=github:wavedevgit/antislop</span> <span class="slash">\</span>
-  antislop <span class="flag">--browser</span> /path/to/chromium <span class="slash">\</span>
-  <span class="flag">--url</span> http://localhost:3000</code></pre>
+    <pre><code class="language-bash">npx --yes \
+  --package=github:wavedevgit/antislop \
+  antislop --browser /path/to/chromium \
+  --url http://localhost:3000</code></pre>
   </div>
   <div class="command">
     <div>
       <h3>Scan source</h3>
       <p>Check HTML, CSS, and supported Tailwind utilities when no browser is available.</p>
     </div>
-    <pre><code><span class="cmd">npx</span> <span class="flag">--yes</span> <span class="slash">\</span>
-  <span class="flag">--package=github:wavedevgit/antislop</span> <span class="slash">\</span>
-  antislop <span class="flag">--folder</span> ./path/to/site</code></pre>
+    <pre><code class="language-bash">npx --yes \
+  --package=github:wavedevgit/antislop \
+  antislop --folder ./path/to/site</code></pre>
   </div>
 </div>
 
