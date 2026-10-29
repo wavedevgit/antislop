@@ -98,6 +98,11 @@ function renderFinding(step) {
       .tooltip strong { display: block; margin-bottom: 3px; color: #fff; font-size: 14px; }
       .tooltip code { color: #d4d4d4; font: 11px/1.2 ui-monospace, monospace; }
       .tooltip p { margin: 6px 0 0; }
+      @media (max-width: 620px) {
+        .label { display: none; }
+        .tooltip, .tooltip.left { right: 12px; left: 12px; width: auto; max-height: 42vh; }
+        .tooltip.bottom { top: auto; bottom: 12px; }
+      }
     `;
     root.append(style);
 
@@ -133,6 +138,13 @@ function renderFinding(step) {
 
             return rect.top < 360 && rect.right > innerWidth - 360;
         }),
+    );
+    tooltip.classList.toggle(
+        'bottom',
+        innerWidth <= 620
+            && targets.some(function (target) {
+                return target.getBoundingClientRect().bottom < innerHeight * 0.55;
+            }),
     );
     title.textContent = finding.title;
     id.textContent = finding.ruleId;

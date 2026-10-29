@@ -861,12 +861,12 @@ body .markdown-section .demo-intro h2 {
 }
 
 .demo-stage {
-    min-height: 13svh;
+    min-height: 100px;
     position: relative;
 }
 
 .demo-stage:first-child {
-    min-height: 60svh;
+    min-height: 58svh;
 }
 
 .demo-stage-marker {
@@ -1012,6 +1012,15 @@ body .markdown-section .demo-intro h2 {
 }
 
 @media (max-width: 768px) {
+    body.landing-page {
+        height: auto;
+        overflow: visible;
+    }
+
+    body.landing-page > main {
+        overflow: visible;
+    }
+
     .topbar {
         padding-left: 64px;
     }
@@ -1074,6 +1083,17 @@ body .markdown-section .demo-intro h2 {
 
     .scroll-demo-sticky {
         height: 100svh;
+    }
+
+    .demo-intro {
+        backdrop-filter: blur(2px) saturate(0.8);
+        padding: 32px 20px 48px;
+    }
+
+    body .markdown-section .demo-intro h2 {
+        font-size: clamp(3.25rem, 16vw, 4.25rem);
+        letter-spacing: -0.05em;
+        line-height: 0.9;
     }
 
     .command {
