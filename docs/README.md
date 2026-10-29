@@ -16,7 +16,7 @@
 <section class="scroll-demo" id="live-demo" data-scroll-demo data-step="-1" data-started="false">
   <div class="scroll-demo-sticky">
     <div class="demo-browser">
-      <iframe src="demo.html?v=2" title="Live AntiSlop scan of a coworking landing page" sandbox="allow-scripts"></iframe>
+      <iframe src="demo.html?v=2" title="Live AntiSlop scan of a coworking landing page"></iframe>
     </div>
     <div class="demo-intro">
       <h2>See what gets<br>flagged.</h2>
