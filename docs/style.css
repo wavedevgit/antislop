@@ -866,7 +866,7 @@ body .markdown-section .demo-intro h2 {
 }
 
 .demo-stage:first-child {
-    min-height: 50svh;
+    min-height: 60svh;
 }
 
 .demo-stage-marker {

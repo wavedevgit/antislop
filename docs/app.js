@@ -9,8 +9,6 @@ const seen = new WeakMap();
 
 let demoController;
 
-let demoVisibilityObserver;
-
 const codePreviews = {
     'no-monolithic-html': [
         ' index.html',
@@ -51,14 +49,29 @@ function bindScrollDemo(demo) {
 
     demo.dataset.scrollBound = 'true';
     demoController?.abort();
-    demoVisibilityObserver?.disconnect();
 
     demoController = new AbortController();
     const markers = [...demo.querySelectorAll('.demo-stage-marker')];
+    const sticky = demo.querySelector('.scroll-demo-sticky');
     let scrollFrame = 0;
 
     function updateStep() {
         scrollFrame = 0;
+
+        const stickyRect = sticky.getBoundingClientRect();
+
+        const fullscreen = stickyRect.top <= 0
+            && stickyRect.bottom >= innerHeight;
+
+        document.body.classList.toggle('demo-active', fullscreen);
+
+        if (!fullscreen) {
+            if (stickyRect.top > 0 && Number(demo.dataset.step) !== -1) {
+                setDemoStep(demo, -1);
+            }
+
+            return;
+        }
 
         const viewportCenter = innerHeight / 2;
 
@@ -90,12 +103,6 @@ function bindScrollDemo(demo) {
     addEventListener('resize', requestStepUpdate, {
         signal: demoController.signal,
     });
-
-    demoVisibilityObserver = new IntersectionObserver(
-        ([entry]) => document.body.classList.toggle('demo-active', entry.isIntersecting),
-        { threshold: 0.01 },
-    );
-    demoVisibilityObserver.observe(demo);
 
     const frame = demo.querySelector('iframe');
     frame.addEventListener('load', function () {
