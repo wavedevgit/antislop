@@ -15,6 +15,11 @@ window.$docsify = {
     plugins: [
         function (hook) {
             hook.doneEach(function () {
+                document.body.classList.toggle(
+                    'landing-page',
+                    location.hash === '#/' || !location.hash,
+                );
+
                 const heading = document.querySelector(
                     '.markdown-section h1',
                 );

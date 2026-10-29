@@ -5,6 +5,7 @@
 ## Documentation
 
 - [Documentation home](https://antislop.wavedev.qzz.io/README.md): Overview, installation, and common workflows
+- [Getting started](https://antislop.wavedev.qzz.io/getting-started.md): Agent skill installation and scanner commands
 - [CLI reference](https://antislop.wavedev.qzz.io/cli.md): Commands, options, defaults, and exit statuses
 - [JavaScript API](https://antislop.wavedev.qzz.io/api.md): Programmatic scanner usage
 - [Rule reference](https://antislop.wavedev.qzz.io/rules/README.md): Index of all rules with detection details and examples

@@ -1,77 +1,41 @@
 <section class="hero">
-  <h1>Catch the patterns that make generated sites feel generated.</h1>
-  <p class="lede">AntiSlop scans source files or a live page for the recurring design decisions that make AI-built interfaces feel interchangeable.</p>
-  <div class="actions">
-    <a class="button primary" href="#/rules/README">Browse 44 rules</a>
-    <a class="button" href="https://github.com/wavedevgit/antislop">View source</a>
+  <div class="hero-copy">
+    <h1>Catch generated design patterns.</h1>
+    <p class="lede">AntiSlop scans source files or a live page for the recurring design decisions that make AI-built interfaces feel interchangeable.</p>
+    <div class="actions">
+      <a class="button primary" href="#/getting-started">Install</a>
+      <a class="button" href="https://github.com/wavedevgit/antislop">View source</a>
+    </div>
+    <a class="scroll-cue" href="#live-demo">
+      <span>See a live scan</span>
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 8 5 5 5-5" /></svg>
+    </a>
   </div>
 </section>
 
-<div class="scan-example">
-  <strong>Actual browser scan</strong>
-  <p>Output from a page containing an inset accent-stripe card.</p>
-</div>
-
-```json
-[
-  {
-    "rule": {
-      "id": "no-accent-stripe-cards",
-      "title": "Accent stripe cards",
-      "description": "AI-generated landing pages often decorate rounded cards with a thick colored stripe along the top or left edge."
-    },
-    "explanation": "1 accent-stripe card was found.",
-    "references": [
-      {
-        "type": "element",
-        "selector": "xpath=/html/body/div",
-        "source": "<div class=\"card\">Stripe card</div>"
-      }
-    ]
-  }
-]
-```
-
-## Run it
-
-<div class="commands">
-  <div class="command">
-    <div>
-      <h3>Install the agent skill</h3>
-      <p>Set the palette, typography, and themes before implementation, then require a scan before completion.</p>
+<section class="scroll-demo" id="live-demo" data-scroll-demo data-step="-1" data-started="false">
+  <div class="scroll-demo-sticky">
+    <div class="demo-browser">
+      <iframe src="demo.html?v=2" title="Live AntiSlop scan of a coworking landing page" sandbox="allow-scripts"></iframe>
     </div>
-    <pre><code class="language-bash">npx skills add wavedevgit/antislop \
-  --skill antislop-design</code></pre>
-  </div>
-  <div class="command">
-    <div>
-      <h3>Find a browser</h3>
-      <p>Locate and verify a Chromium-compatible executable. The working path is cached for later scans.</p>
+    <div class="demo-intro">
+      <h2>See what gets<br>flagged.</h2>
     </div>
-    <pre><code class="language-bash">npx --yes \
-  --package=github:wavedevgit/antislop \
-  antislop --find-browser</code></pre>
+    <div class="demo-progress" aria-hidden="true"><span></span></div>
   </div>
-  <div class="command">
-    <div>
-      <h3>Scan a page</h3>
-      <p>Inspect computed styles, rendered layout, and interaction states in a real browser.</p>
-    </div>
-    <pre><code class="language-bash">npx --yes \
-  --package=github:wavedevgit/antislop \
-  antislop --browser /path/to/chromium \
-  --url http://localhost:3000</code></pre>
+  <div class="demo-stages" aria-hidden="true">
+    <div class="demo-stage" data-demo-step="-1"><span class="demo-stage-marker"></span></div>
+    <div class="demo-stage" data-demo-step="0"><span class="demo-stage-marker"></span></div>
+    <div class="demo-stage" data-demo-step="1"><span class="demo-stage-marker"></span></div>
+    <div class="demo-stage" data-demo-step="2"><span class="demo-stage-marker"></span></div>
+    <div class="demo-stage" data-demo-step="3"><span class="demo-stage-marker"></span></div>
+    <div class="demo-stage" data-demo-step="4"><span class="demo-stage-marker"></span></div>
+    <div class="demo-stage" data-demo-step="5"><span class="demo-stage-marker"></span></div>
+    <div class="demo-stage" data-demo-step="6"><span class="demo-stage-marker"></span></div>
+    <div class="demo-stage" data-demo-step="7"><span class="demo-stage-marker"></span></div>
+    <div class="demo-stage" data-demo-step="8"><span class="demo-stage-marker"></span></div>
   </div>
-  <div class="command">
-    <div>
-      <h3>Scan source</h3>
-      <p>Check HTML, CSS, and supported Tailwind utilities when no browser is available.</p>
-    </div>
-    <pre><code class="language-bash">npx --yes \
-  --package=github:wavedevgit/antislop \
-  antislop --folder ./path/to/site</code></pre>
-  </div>
-</div>
+</section>
 
 ## What it checks
 
@@ -83,9 +47,3 @@
   <a class="category" href="#/rules/README"><span>Structure</span><small>3 rules</small></a>
   <a class="category" href="#/rules/README"><span>Quality</span><small>2 rules</small></a>
 </div>
-
-## Why browser scans
-
-<p>File scans cannot reliably resolve computed styles, rendered layout, or responsive behavior. Browser scans run against the page a visitor actually sees and return the element, the rule, and the reason.</p>
-
-<p>Both modes share the same rule IDs and exit behavior. Unknown rule IDs fail instead of being ignored. See the <a href="#/cli">CLI reference</a> for every option, default, and exit status.</p>
