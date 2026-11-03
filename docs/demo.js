@@ -8,10 +8,10 @@ const findings = [
     },
     {
         selector: '[data-highlight="gradient"]',
-        title: 'Visible gradients',
+        title: 'AI-style gradients',
         ruleId: 'no-visible-gradients',
-        description: 'AI-generated websites often overuse clearly visible gradients; subtle lighting effects are allowed.',
-        explanation: '2 clearly visible gradients were found out of 2 total gradients.',
+        description: 'AI-generated websites often reuse vivid multi-hue gradients on text, buttons, and decorative surfaces.',
+        explanation: '2 vivid multi-hue gradients were found out of 2 linear gradients.',
     },
     {
         selector: '[data-highlight="badge"]',

@@ -16,7 +16,7 @@
 - [CTA headings](/rules/no-oversized-cta-headings.md)
 - [Hero heading lines](/rules/limit-hero-heading-lines.md)
 - **Visual**
-- [Visible gradients](/rules/no-visible-gradients.md)
+- [AI-style gradients](/rules/no-visible-gradients.md)
 - [Aurora backgrounds](/rules/no-aurora-backgrounds.md)
 - [Patterned backgrounds](/rules/no-patterned-backgrounds.md)
 - [AI color palette](/rules/no-ai-color-palette.md)

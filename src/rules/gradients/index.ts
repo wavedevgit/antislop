@@ -1,80 +1,60 @@
+import { converter, parse, type Oklch } from "culori";
+
 import { defineRule, type Reference } from "../../api/index.ts";
-import { count, markup } from "../shared/index.ts";
+import { markup } from "../shared/index.ts";
 
-type Color = { red: number; green: number; blue: number; alpha: number };
+const toOklch = converter("oklch");
 
-const gradientPattern = /(?:linear|radial|conic)-gradient\s*\(/gi;
+function gradientFunctions(value: string): string[] {
+  const gradients: string[] = [];
 
-function parseColor(token: string): Color | undefined {
-  if (token.toLowerCase() === "transparent") {
-    return { red: 0, green: 0, blue: 0, alpha: 0 };
+  for (const match of value.matchAll(/linear-gradient\s*\(/gi)) {
+    const start = match.index;
+    let depth = 0;
+
+    for (let index = value.indexOf("(", start); index < value.length; index += 1) {
+      if (value[index] === "(") depth += 1;
+
+      if (value[index] === ")") depth -= 1;
+
+      if (depth === 0) {
+        gradients.push(value.slice(start, index + 1));
+        break;
+      }
+    }
   }
 
-  if (token.startsWith("#")) {
-    const hex = token.slice(1);
-
-    const expanded = hex.length <= 4
-      ? Array.from(hex, (character) => character + character).join("")
-      : hex;
-
-    return {
-      red: Number.parseInt(expanded.slice(0, 2), 16),
-      green: Number.parseInt(expanded.slice(2, 4), 16),
-      blue: Number.parseInt(expanded.slice(4, 6), 16),
-      alpha: expanded.length === 8 ? Number.parseInt(expanded.slice(6, 8), 16) / 255 : 1,
-    };
-  }
-
-  const body = token.match(/rgba?\(([^)]*)\)/i)?.[1];
-
-  if (!body) {
-    return undefined;
-  }
-
-  const parts = body.trim().split(/[\s,/]+/);
-  const red = Number(parts[0]);
-  const green = Number(parts[1]);
-  const blue = Number(parts[2]);
-  const alpha = parts[3] === undefined ? 1 : Number(parts[3]);
-
-  if (![red, green, blue, alpha].every(Number.isFinite)) {
-    return undefined;
-  }
-
-  return { red, green, blue, alpha };
+  return gradients;
 }
 
-function isClearGradient(value: string): boolean {
-  const colors: Color[] = [];
+function parseColor(token: string): Oklch | undefined {
+  const color = parse(token);
 
-  for (const match of value.matchAll(/#[\da-f]{3,8}\b|rgba?\([^)]*\)|\btransparent\b/gi)) {
+  return color ? toOklch(color) : undefined;
+}
+
+export function isAiStyleGradient(value: string): boolean {
+  if (!/linear-gradient\s*\(/i.test(value)) return false;
+
+  const colors: Oklch[] = [];
+
+  for (const match of value.matchAll(/#[\da-f]{6}(?:[\da-f]{2})?\b|#[\da-f]{3,4}\b|\b(?:rgba?|hsla?|hwb|lab|lch|oklab|oklch|color)\([^)]*\)|\btransparent\b/gi)) {
     const color = parseColor(match[0]);
 
-    if (color) {
+    if (color && (color.alpha ?? 1) >= 0.65) {
       colors.push(color);
     }
   }
 
-  if (colors.length < 2) {
-    return true;
-  }
+  if (colors.length < 2) return false;
 
-  for (let left = 0; left < colors.length; left += 1) {
-    for (let right = left + 1; right < colors.length; right += 1) {
-      const first = colors[left];
-      const second = colors[right];
+  const vivid = colors.filter((color) => color.c >= 0.12 && color.l >= 0.3 && color.l <= 0.9).flatMap((color) => color.h ?? []);
 
-      if (!first || !second) {
-        continue;
-      }
+  for (let left = 0; left < vivid.length; left += 1) {
+    for (let right = left + 1; right < vivid.length; right += 1) {
+      const distance = Math.abs((vivid[left] ?? 0) - (vivid[right] ?? 0));
 
-      const red = first.red * first.alpha - second.red * second.alpha;
-      const green = first.green * first.alpha - second.green * second.alpha;
-      const blue = first.blue * first.alpha - second.blue * second.alpha;
-
-      if (Math.hypot(red, green, blue) >= 100 || Math.abs(first.alpha - second.alpha) >= 0.4) {
-        return true;
-      }
+      if (Math.min(distance, 360 - distance) >= 25) return true;
     }
   }
 
@@ -83,8 +63,8 @@ function isClearGradient(value: string): boolean {
 
 export default defineRule({
   id: "no-visible-gradients",
-  title: "Visible gradients",
-  description: "AI-generated websites often overuse clearly visible gradients; subtle lighting effects are allowed.",
+  title: "AI-style gradients",
+  description: "AI-generated websites often reuse vivid multi-hue gradients on text, buttons, and decorative surfaces.",
   async match(context) {
     let declarations: Array<{ value: string; reference?: Reference }>;
 
@@ -123,16 +103,18 @@ export default defineRule({
     }
 
     let total = 0;
-    let clear = 0;
+    let sloppy = 0;
     const references: Reference[] = [];
 
     for (const declaration of declarations) {
-      const gradientCount = count(declaration.value, gradientPattern);
+      const gradients = gradientFunctions(declaration.value);
 
-      total += gradientCount;
+      total += gradients.length;
 
-      if (isClearGradient(declaration.value)) {
-        clear += gradientCount;
+      const matches = gradients.filter(isAiStyleGradient).length;
+
+      if (matches > 0) {
+        sloppy += matches;
 
         if (declaration.reference) {
           references.push(declaration.reference);
@@ -140,8 +122,8 @@ export default defineRule({
       }
     }
 
-    return clear > 0
-      ? { matches: true, explanation: `${clear} clearly visible gradients were found out of ${total} total gradients.`, references }
+    return sloppy > 0
+      ? { matches: true, explanation: `${sloppy} vivid multi-hue ${sloppy === 1 ? "gradient was" : "gradients were"} found out of ${total} linear gradients.`, references }
       : { matches: false };
   },
 });

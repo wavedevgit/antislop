@@ -1,20 +1,20 @@
-# Visible gradients
+# AI-style gradients
 
 ![Visible gradients example](./assets/no-visible-gradients.png)
 
-AI-generated websites often overuse clearly visible gradients; subtle lighting effects are allowed.
+AI-generated websites often reuse vivid multi-hue gradients such as pink to purple, blue to cyan, or orange to magenta on text, buttons, and decorative surfaces.
 
 ## How it works
 
-Finds clearly visible CSS gradients while allowing subtle lighting effects.
+Finds saturated linear gradients that move between distinct hues. Subtle same-hue shading, transparency masks, and radial aurora backgrounds are not reported by this rule. Aurora backgrounds are covered by `no-aurora-backgrounds`.
 
 ## How to fix
 
-Replace the gradient with a solid color or make the lighting effect subtle enough that it does not compete with content.
+Use a solid brand color, or keep the gradient within one hue when it communicates depth or state.
 
 ## Common false positives
 
-Data scales, image masks, progress indicators, and established brand artwork may require a visible gradient.
+Data scales, progress indicators, color pickers, and established brand artwork may require a vivid multi-hue gradient.
 
 ## Scan support
 

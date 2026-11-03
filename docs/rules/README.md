@@ -11,7 +11,7 @@ Browser scans are recommended for computed layout and style checks.
 | [`no-aurora-backgrounds`](./no-aurora-backgrounds.md) | Aurora glow background |
 | [`no-eyebrows-over-all-titles`](./no-eyebrows-over-all-titles.md) | Eyebrows over every title |
 | [`no-unicode-bullets`](./no-unicode-bullets.md) | Unicode bullets |
-| [`no-visible-gradients`](./no-visible-gradients.md) | Visible gradients |
+| [`no-visible-gradients`](./no-visible-gradients.md) | AI-style gradients |
 | [`no-headline-badges`](./no-headline-badges.md) | Headline badge |
 | [`limit-hero-heading-lines`](./limit-hero-heading-lines.md) | Hero heading over three lines |
 | [`no-hover-card-borders`](./no-hover-card-borders.md) | Card border on hover |
