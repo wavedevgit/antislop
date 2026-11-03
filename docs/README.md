@@ -6,7 +6,7 @@
       <a class="button primary" href="#/getting-started">Install</a>
       <a class="button" href="https://github.com/wavedevgit/antislop">View source</a>
     </div>
-    <a class="scroll-cue" href="#live-demo">
+    <a class="scroll-cue" href="#/?id=live-demo">
       <span>See a live scan</span>
       <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 8 5 5 5-5" /></svg>
     </a>
