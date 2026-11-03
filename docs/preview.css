@@ -66,7 +66,10 @@ button { border: 0; font: inherit; }
 .thick-border { border: 5px solid #4285f4; width: 230px; }
 .unicode-list { color: #657087; font-size: 13px; line-height: 2; }
 .unstyled { align-items: center; border-bottom: 1px solid #d8dee8; display: flex; justify-content: space-between; padding: 12px; width: min(520px, 100%); }.unstyled button { background: transparent; color: #657087; margin-left: 12px; }
-.gradient { background: linear-gradient(120deg, #743cff, #00aeea); color: white; padding: 65px; text-align: center; width: min(520px, 100%); }
+.gradient { background: #121827; color: white; padding: 54px; text-align: center; width: min(520px, 100%); }
+.gradient h2 { font-size: 28px; line-height: 1.2; margin: 0 0 24px; }
+.gradient h2 span { background: linear-gradient(90deg, #2563eb, #a855f7, #f97316); background-clip: text; color: transparent; }
+.gradient button { background: linear-gradient(90deg, #ec4899, #a855f7); }
 
 @media (max-width: 560px) {
     #preview { min-height: 240px; padding: 20px; }

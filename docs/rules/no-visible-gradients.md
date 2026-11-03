@@ -1,16 +1,29 @@
 # AI-style gradients
 
-![Visible gradients example](./assets/no-visible-gradients.png)
+![AI-style gradient text and button](./assets/no-visible-gradients.png)
 
 AI-generated websites often reuse vivid multi-hue gradients such as pink to purple, blue to cyan, or orange to magenta on text, buttons, and decorative surfaces.
 
 ## How it works
 
-Finds saturated linear gradients that move between distinct hues. Subtle same-hue shading, transparency masks, and radial aurora backgrounds are not reported by this rule. Aurora backgrounds are covered by `no-aurora-backgrounds`.
+Finds linear gradients with at least two vivid, mostly opaque color stops separated by a clear hue shift. This includes the familiar pink-to-purple, blue-to-cyan, and blue-to-orange treatments used on display text, buttons, and decorative surfaces.
+
+### Reported
+
+- Saturated multi-hue linear gradients
+- Gradients clipped into text
+- Vivid gradient fills on buttons and decorative surfaces
+
+### Not reported
+
+- Same-hue shading such as dark blue to light blue
+- Neutral fades and image-readability overlays
+- Low-opacity lighting effects
+- Radial aurora backgrounds, which are covered by `no-aurora-backgrounds`
 
 ## How to fix
 
-Use a solid brand color, or keep the gradient within one hue when it communicates depth or state.
+Use a solid brand color. If a gradient communicates depth or state, keep it restrained and within one hue.
 
 ## Common false positives
 

@@ -40,7 +40,7 @@ const examples = {
     'no-thick-colored-card-borders': `<article class="card thick-border"><strong>Featured plan</strong><p>A thick blue outline competes with content.</p></article>`,
     'no-unicode-bullets': `<div class="unicode-list">• Fast setup<br>• Seamless workflow<br>• Built with love</div>`,
     'no-unstyled-text-buttons': `<nav class="unstyled"><strong>Northstar</strong><span><button>Docs</button><button>Pricing</button><button>Log in</button></span></nav>`,
-    'no-visible-gradients': `<section class="gradient"><h2>Ship your next idea</h2><button>Get started</button></section>`,
+    'no-visible-gradients': `<section class="gradient"><h2><span>Design intelligence</span><br>for every interface</h2><button>Explore styles</button></section>`,
 };
 
 const rule = new URLSearchParams(location.search).get('rule');
